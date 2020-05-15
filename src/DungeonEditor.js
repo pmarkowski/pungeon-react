@@ -9,15 +9,16 @@ export default class DungeonEditor extends React.Component {
 
     componentDidMount() {
         const app = new PIXI.Application({
-            backgroundColor: 0xaaaaff,
-            width: 500 * 2,
-            height: 400 * 2,
+            backgroundColor: 0x5f5f5f,
+            width: 800,
+            height: 600,
             sharedLoader: true,
             sharedTicker: true
         });
         this.app = app;
-
         this.canvasDiv.appendChild(app.view);
+        this.app.resizeTo = this.canvasDiv;
+        this.app.resize();
 
         // Render a circle to a texture
         var graphics = new PIXI.Graphics();
@@ -40,9 +41,12 @@ export default class DungeonEditor extends React.Component {
         // });
         // s.id = '823cc811-9499-4f3d-abeb-941d2ee4fd98';
         // app.stage.addChild(s);
-
-        let progress = 0;
+        // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
         let gridSize = 20;
+        // var gridOverlay = PIXI.Texture.from('/textures/grid-tile-overlay.png');
+        // var tilingSprite = new PIXI.TilingSprite(gridOverlay, 800, 600);
+        // tilingSprite.tileScale.set(gridSize / 128);
+        // app.stage.addChild(tilingSprite);
         app.ticker.add((delta) => {
             var state = store.getState();
             // progress += (delta * 0.1);
@@ -57,7 +61,8 @@ export default class DungeonEditor extends React.Component {
 
             graphics.clear();
 
-            graphics.beginFill(0x00ffff);
+            graphics.position.set(0,0);
+            graphics.beginFill(0xd6d5d5);
             dungeonRooms.forEach(space => {
                 graphics.drawRect(
                     space.Position.X * gridSize,
@@ -68,19 +73,30 @@ export default class DungeonEditor extends React.Component {
             graphics.endFill();
             graphics.interactive = true;
             
-            graphics.on('mouseup', (sp) => {
-                console.log(sp.currentTarget.id);
-                store.dispatch({
-                    type: 'TOGGLE_SELECT'
-                });
-            });
+            // graphics.on('mouseup', (sp) => {
+            //     console.log(sp.currentTarget.id);
+            //     store.dispatch({
+            //         type: 'TOGGLE_SELECT'
+            //     });
+            // });
 
-            graphics.mouseover = function(mouseData) {
-                this.alpha = 0.5;
-            };
-            graphics.mouseout = function(mouseData) {
-                this.alpha = 1;
-            };
+            // graphics.mouseover = function(mouseData) {
+            //     this.alpha = 0.5;
+            // };
+            // graphics.mouseout = function(mouseData) {
+            //     this.alpha = 1;
+            // };
+
+            graphics.lineStyle(1, 0x000000, 1, 0.5);
+            for (var i = 0; i < 32; i++) {
+                graphics.moveTo(i * gridSize, 0);
+                graphics.lineTo(i * gridSize, 400);
+            }
+
+            for (var j = 0; j < 32; j++) {
+                graphics.moveTo(0, j * gridSize);
+                graphics.lineTo(400, j * gridSize);
+            }
         });
     }
 }
