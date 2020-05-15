@@ -42,7 +42,7 @@ export default class DungeonEditor extends React.Component {
         // s.id = '823cc811-9499-4f3d-abeb-941d2ee4fd98';
         // app.stage.addChild(s);
         // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
-        let gridSize = 20;
+        let gridSize = 32;
         // var gridOverlay = PIXI.Texture.from('/textures/grid-tile-overlay.png');
         // var tilingSprite = new PIXI.TilingSprite(gridOverlay, 800, 600);
         // tilingSprite.tileScale.set(gridSize / 128);
@@ -61,7 +61,6 @@ export default class DungeonEditor extends React.Component {
 
             graphics.clear();
 
-            graphics.position.set(0,0);
             graphics.beginFill(0xd6d5d5);
             dungeonRooms.forEach(space => {
                 graphics.drawRect(
@@ -87,15 +86,29 @@ export default class DungeonEditor extends React.Component {
             //     this.alpha = 1;
             // };
 
-            graphics.lineStyle(1, 0x000000, 1, 0.5);
+            graphics.lineStyle(1, 0x444444, 1, 0.5);
             for (var i = 0; i < 32; i++) {
                 graphics.moveTo(i * gridSize, 0);
-                graphics.lineTo(i * gridSize, 400);
+                graphics.lineTo(i * gridSize, 800);
             }
 
             for (var j = 0; j < 32; j++) {
                 graphics.moveTo(0, j * gridSize);
-                graphics.lineTo(400, j * gridSize);
+                graphics.lineTo(1000, j * gridSize);
+            }
+
+            if (app.renderer.plugins.interaction.mouseOverRenderer) {
+                let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
+                // snap to nearest grid point
+                // for now for simplicity let's say top left
+                let snappedX = Math.floor(mousePoint.x / gridSize) * gridSize;
+                let snappedY = Math.floor(mousePoint.y / gridSize) * gridSize;
+
+                // draw a yellow rect
+                graphics.beginFill(0, 0);
+                graphics.lineStyle(1, 0x00ff00);
+                graphics.drawRect(snappedX, snappedY, gridSize, gridSize);
+                graphics.endFill();
             }
         });
     }

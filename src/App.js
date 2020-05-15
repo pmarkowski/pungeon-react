@@ -7,7 +7,7 @@ import StateEditor from './StateEditor';
 function App() {
   return (
     <React.Fragment>
-      <nav className="navbar navbar-light bg-light">
+      <nav className="navbar navbar-dark bg-secondary">
         <span className="navbar-brand">
           Pungeon
         </span>
