@@ -42,11 +42,20 @@ export default class DungeonEditor extends React.Component {
         // s.id = '823cc811-9499-4f3d-abeb-941d2ee4fd98';
         // app.stage.addChild(s);
         // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
-        let gridSize = 32;
+        let gridSize = 32.0;
         // var gridOverlay = PIXI.Texture.from('/textures/grid-tile-overlay.png');
         // var tilingSprite = new PIXI.TilingSprite(gridOverlay, 800, 600);
         // tilingSprite.tileScale.set(gridSize / 128);
         // app.stage.addChild(tilingSprite);
+        app.stage.scale.set(1.0);
+        app.renderer.plugins.interaction.on('pointerdown', () => {
+            let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
+            store.dispatch({ type: 'MOUSE_DOWN', x: mousePoint.x, y: mousePoint.y });
+        });
+        app.renderer.plugins.interaction.on('pointerup', () => {
+            store.dispatch({ type: 'MOUSE_UP' });
+        });
+
         app.ticker.add((delta) => {
             var state = store.getState();
             // progress += (delta * 0.1);
@@ -86,28 +95,52 @@ export default class DungeonEditor extends React.Component {
             //     this.alpha = 1;
             // };
 
-            graphics.lineStyle(1, 0x444444, 1, 0.5);
-            for (var i = 0; i < 32; i++) {
+            graphics.lineStyle(1.0, 0x444444, 1.0, 0.5);
+            for (var i = 0.0; i < 32; i++) {
                 graphics.moveTo(i * gridSize, 0);
                 graphics.lineTo(i * gridSize, 800);
             }
 
-            for (var j = 0; j < 32; j++) {
+            for (var j = 0.0; j < 32; j++) {
                 graphics.moveTo(0, j * gridSize);
                 graphics.lineTo(1000, j * gridSize);
             }
 
             if (app.renderer.plugins.interaction.mouseOverRenderer) {
                 let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
-                // snap to nearest grid point
-                // for now for simplicity let's say top left
-                let snappedX = Math.floor(mousePoint.x / gridSize) * gridSize;
-                let snappedY = Math.floor(mousePoint.y / gridSize) * gridSize;
 
-                // draw a yellow rect
+                let snappedX, snappedY, width, height;
+                if (state.mouseDown) {
+                    let startX = Math.min(state.mouseStartX, mousePoint.x);
+                    let startY = Math.min(state.mouseStartY, mousePoint.y);
+
+                    let endX = Math.max(state.mouseStartX, mousePoint.x);
+                    let endY = Math.max(state.mouseStartY, mousePoint.y);
+                    // let startX = Math.floor(state.mouseStartX / gridSize) * gridSize;
+                    // let startY = Math.floor(state.mouseStartY / gridSize) * gridSize;
+
+                    // let endX = Math.floor(mousePoint.x / gridSize) * gridSize + gridSize;
+                    // let endY = Math.floor(mousePoint.y / gridSize) * gridSize + gridSize;
+
+                    snappedX = Math.floor(startX / gridSize) * gridSize;
+                    snappedY = Math.floor(startY / gridSize) * gridSize;
+                    endX = Math.floor(endX / gridSize) * gridSize + gridSize;
+                    endY = Math.floor(endY / gridSize) * gridSize + gridSize;
+                    width = endX - snappedX;
+                    height = endY - snappedY;
+                }
+                else {
+                    // snap to nearest grid point
+                    // for now for simplicity let's say top left
+                    snappedX = Math.floor(mousePoint.x / gridSize) * gridSize;
+                    snappedY = Math.floor(mousePoint.y / gridSize) * gridSize;
+                    width = gridSize;
+                    height = gridSize;
+                }
+                // draw a hover rect
                 graphics.beginFill(0, 0);
-                graphics.lineStyle(1, 0x00ff00);
-                graphics.drawRect(snappedX, snappedY, gridSize, gridSize);
+                graphics.lineStyle(1.0, 0xddff00);
+                graphics.drawRect(snappedX, snappedY, width, height);
                 graphics.endFill();
             }
         });

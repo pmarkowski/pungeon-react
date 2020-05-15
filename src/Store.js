@@ -4,8 +4,10 @@ const store = createStore((state = {}, action) => {
     switch (action.type) {
       case 'TOGGLE_MOVE_Y':
         return { ...state, moveY: !state.moveY };
-      case 'TOGGLE_SELECT':
-        return { ...state, selected: !state.selected }
+      case 'MOUSE_DOWN':
+        return { ...state, mouseDown: true, mouseStartX: action.x, mouseStartY: action.y };
+      case 'MOUSE_UP':
+        return { ...state, mouseDown: false };
       default:
         return state
     }
@@ -13,7 +15,9 @@ const store = createStore((state = {}, action) => {
   {
     id: '823cc811-9499-4f3d-abeb-941d2ee4fd98',
     moveY: false,
-    selected: false,
+    mouseDown: false,
+    mouseStartX: 0,
+    mouseStartY: 0,
     dungeon: {
       "Size": {
         "Width": 0,
