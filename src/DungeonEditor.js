@@ -47,13 +47,33 @@ export default class DungeonEditor extends React.Component {
         // var tilingSprite = new PIXI.TilingSprite(gridOverlay, 800, 600);
         // tilingSprite.tileScale.set(gridSize / 128);
         // app.stage.addChild(tilingSprite);
-        app.stage.scale.set(1.0);
+        app.stage.scale.set(1);
         app.renderer.plugins.interaction.on('pointerdown', () => {
             let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
             store.dispatch({ type: 'MOUSE_DOWN', x: mousePoint.x, y: mousePoint.y });
         });
         app.renderer.plugins.interaction.on('pointerup', () => {
+            let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
             store.dispatch({ type: 'MOUSE_UP' });
+            // Some terrible redux practices here I'm sure
+            let state = store.getState();
+            let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / gridSize);
+            let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / gridSize);
+
+            let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / gridSize);
+            let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / gridSize);
+
+
+            store.dispatch({ type: 'ADD_SPACE', newSpace: {
+                Position: {
+                    X: startX,
+                    Y: startY
+                },
+                Size: {
+                    Width: endX - startX,
+                    Height: endY - startY
+                }
+            }});
         });
 
         app.ticker.add((delta) => {
@@ -116,11 +136,6 @@ export default class DungeonEditor extends React.Component {
 
                     let endX = Math.max(state.mouseStartX, mousePoint.x);
                     let endY = Math.max(state.mouseStartY, mousePoint.y);
-                    // let startX = Math.floor(state.mouseStartX / gridSize) * gridSize;
-                    // let startY = Math.floor(state.mouseStartY / gridSize) * gridSize;
-
-                    // let endX = Math.floor(mousePoint.x / gridSize) * gridSize + gridSize;
-                    // let endY = Math.floor(mousePoint.y / gridSize) * gridSize + gridSize;
 
                     snappedX = Math.floor(startX / gridSize) * gridSize;
                     snappedY = Math.floor(startY / gridSize) * gridSize;
@@ -139,7 +154,7 @@ export default class DungeonEditor extends React.Component {
                 }
                 // draw a hover rect
                 graphics.beginFill(0, 0);
-                graphics.lineStyle(1.0, 0xddff00);
+                graphics.lineStyle(1.0, 0xfffd00);
                 graphics.drawRect(snappedX, snappedY, width, height);
                 graphics.endFill();
             }

@@ -8,6 +8,16 @@ const store = createStore((state = {}, action) => {
         return { ...state, mouseDown: true, mouseStartX: action.x, mouseStartY: action.y };
       case 'MOUSE_UP':
         return { ...state, mouseDown: false };
+      case 'ADD_SPACE':
+        let spaceArray = state.dungeon.Spaces.slice();
+        spaceArray = [...spaceArray, action.newSpace ];
+        return {
+          ...state,
+          dungeon: {
+            ...state.dungeon,
+            Spaces: spaceArray
+          }
+        };
       default:
         return state
     }
