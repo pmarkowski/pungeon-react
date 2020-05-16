@@ -36,11 +36,20 @@ export default class DungeonEditor extends React.Component {
                 app.stage.scale.x + scaleDelta,
                 app.stage.scale.y + scaleDelta);
         });
-        app.renderer.plugins.interaction.on('pointerdown', () => {
+        this.canvasDiv.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+        })
+        this.canvasDiv.addEventListener('pointerdown', () => {
             this.onMouseDown(app);
         });
-        app.renderer.plugins.interaction.on('pointerup', () => {
+        this.canvasDiv.addEventListener('pointerup', () => {
             this.onMouseUp(app, gridSize);
+        });
+        this.canvasDiv.addEventListener('pointermove', (pointerEvent) => {
+            if (pointerEvent.buttons === 2) {
+                app.stage.position.x += pointerEvent.movementX;
+                app.stage.position.y += pointerEvent.movementY;
+            }
         });
 
         app.ticker.add((delta) => {
