@@ -26,15 +26,20 @@ export default class DungeonEditor extends React.Component {
         let graphics = new PIXI.Graphics();
         app.stage.addChild(graphics);
 
-        let gridTileSize = 32.0;
+        let gridTileSize = 70.0;
         this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
             let scaleDelta = 0.1;
             if (wheelEvent.wheelDeltaY < 0) {
                 scaleDelta *= -1;
             }
-            app.stage.scale.set(
-                app.stage.scale.x + scaleDelta,
-                app.stage.scale.y + scaleDelta);
+            let newScale = Math.min(Math.max(app.stage.scale.x + scaleDelta, 0.1), 2);
+            if (newScale != app.stage.scale.x) {
+                app.stage.scale.set(newScale);
+
+                let localMousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
+                app.stage.position.x -= (localMousePoint.x) * scaleDelta;
+                app.stage.position.y -= (localMousePoint.y) * scaleDelta;
+            }
         });
         this.canvasDiv.addEventListener('contextmenu', (event) => {
             event.preventDefault();
