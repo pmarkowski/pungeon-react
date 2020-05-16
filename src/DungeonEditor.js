@@ -14,7 +14,8 @@ export default class DungeonEditor extends React.Component {
             width: 800,
             height: 600,
             sharedLoader: true,
-            sharedTicker: true
+            sharedTicker: true,
+            antialias: true
         });
         this.app = app;
         this.canvasDiv.appendChild(app.view);
@@ -26,8 +27,16 @@ export default class DungeonEditor extends React.Component {
         app.stage.addChild(graphics);
 
         let gridSize = 32.0;
-
-        app.renderer.plugins.interaction.on('pointerdown', (mouseEvent) => {
+        this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
+            let scaleDelta = 0.1;
+            if (wheelEvent.wheelDeltaY < 0) {
+                scaleDelta *= -1;
+            }
+            app.stage.scale.set(
+                app.stage.scale.x + scaleDelta,
+                app.stage.scale.y + scaleDelta);
+        });
+        app.renderer.plugins.interaction.on('pointerdown', () => {
             this.onMouseDown(app);
         });
         app.renderer.plugins.interaction.on('pointerup', () => {
@@ -37,12 +46,10 @@ export default class DungeonEditor extends React.Component {
         app.ticker.add((delta) => {
             var state = store.getState();
 
-            let dungeonSpaces = state.dungeon.spaces;
-
             graphics.clear();
 
-            this.drawSpaces(graphics, dungeonSpaces, gridSize);
-
+            this.drawSpaces(graphics, state.dungeon.spaces, gridSize);
+            this.drawWalls(graphics, state.dungeon.walls, gridSize);
             this.drawGrid(graphics, gridSize);
 
             if (app.renderer.plugins.interaction.mouseOverRenderer) {
@@ -96,7 +103,20 @@ export default class DungeonEditor extends React.Component {
                 space.size.height * gridSize);
         });
         graphics.endFill();
-        graphics.interactive = true;
+    }
+
+    drawWalls(graphics, dungeonWalls, gridSize) {
+        graphics.beginFill();
+        dungeonWalls.forEach(wall => {
+            graphics.beginFill(0x0266e6, 1);
+            graphics.lineStyle(10, 0x0266e6, 1, 0.5);
+            graphics.moveTo(wall.start.x * gridSize, wall.start.y * gridSize);
+            graphics.lineTo(wall.end.x * gridSize, wall.end.y * gridSize);
+            graphics.lineStyle();
+            graphics.drawCircle(wall.start.x * gridSize, wall.start.y * gridSize, 5);
+            graphics.drawCircle(wall.end.x * gridSize, wall.end.y * gridSize, 5);
+            graphics.endFill();
+        })
     }
 
     drawSelectedGridBox(app, state, gridSize, graphics) {
