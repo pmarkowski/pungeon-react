@@ -59,7 +59,7 @@ export default class DungeonEditor extends React.Component {
 
             this.drawSpaces(graphics, state.dungeon.spaces, gridTileSize);
             this.drawWalls(graphics, state.dungeon.walls, gridTileSize);
-            this.drawGrid(graphics, gridTileSize);
+            this.drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height, gridTileSize);
 
             if (app.renderer.plugins.interaction.mouseOverRenderer) {
                 this.drawSelectedGridBox(app, state, gridTileSize, graphics);
@@ -153,20 +153,20 @@ export default class DungeonEditor extends React.Component {
         }
         // draw a hover rect
         graphics.beginFill(0, 0);
-        graphics.lineStyle(1.0, 0xfffd00);
+        graphics.lineStyle(1, 0xfffd00);
         graphics.drawRect(snappedX, snappedY, width, height);
         graphics.endFill();
     }
 
-    drawGrid(graphics, gridTileSize) {
-        graphics.lineStyle(1.0, 0x444444, 1.0, 0.5);
-        for (var i = 0.0; i < 32; i++) {
+    drawGrid(graphics, gridWidth, gridHeight, gridTileSize) {
+        graphics.lineStyle(1, 0x444444, 1, 0.5);
+        for (var i = 0; i < gridWidth; i++) {
             graphics.moveTo(i * gridTileSize, 0);
-            graphics.lineTo(i * gridTileSize, 800);
+            graphics.lineTo(i * gridTileSize, (gridHeight - 1) * gridTileSize);
         }
-        for (var j = 0.0; j < 32; j++) {
+        for (var j = 0; j < gridHeight; j++) {
             graphics.moveTo(0, j * gridTileSize);
-            graphics.lineTo(1000, j * gridTileSize);
+            graphics.lineTo((gridWidth - 1) * gridTileSize, j * gridTileSize);
         }
     }
 }

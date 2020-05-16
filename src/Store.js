@@ -30,8 +30,8 @@ const store = createStore((state = {}, action) => {
     mouseStartY: 0,
     dungeon: {
       size: {
-        width: 42,
-        height: 42
+        width: 28,
+        height: 32
       },
       spaces: [
         {
