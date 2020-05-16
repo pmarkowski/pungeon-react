@@ -48,32 +48,38 @@ export default class DungeonEditor extends React.Component {
         // tilingSprite.tileScale.set(gridSize / 128);
         // app.stage.addChild(tilingSprite);
         app.stage.scale.set(1);
-        app.renderer.plugins.interaction.on('pointerdown', () => {
-            let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
-            store.dispatch({ type: 'MOUSE_DOWN', x: mousePoint.x, y: mousePoint.y });
+        app.renderer.plugins.interaction.on('pointerdown', (mouseEvent) => {
+            if (app.renderer.plugins.interaction.mouse.button == 0) {
+                let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
+                store.dispatch({ type: 'MOUSE_DOWN', x: mousePoint.x, y: mousePoint.y });
+            }
         });
         app.renderer.plugins.interaction.on('pointerup', () => {
-            let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
-            store.dispatch({ type: 'MOUSE_UP' });
-            // Some terrible redux practices here I'm sure
-            let state = store.getState();
-            let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / gridSize);
-            let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / gridSize);
+            if (app.renderer.plugins.interaction.mouse.button == 0) {
+                let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
+                store.dispatch({ type: 'MOUSE_UP' });
+                // TODO: Some terrible redux practices here I'm sure
+                // Yep, this should go into the reducer or dispatch a thunk that will have access
+                // to the full state.
+                let state = store.getState();
+                let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / gridSize);
+                let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / gridSize);
 
-            let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / gridSize);
-            let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / gridSize);
+                let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / gridSize);
+                let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / gridSize);
 
 
-            store.dispatch({ type: 'ADD_SPACE', newSpace: {
-                Position: {
-                    X: startX,
-                    Y: startY
-                },
-                Size: {
-                    Width: endX - startX,
-                    Height: endY - startY
-                }
-            }});
+                store.dispatch({ type: 'ADD_SPACE', newSpace: {
+                    Position: {
+                        X: startX,
+                        Y: startY
+                    },
+                    Size: {
+                        Width: endX - startX,
+                        Height: endY - startY
+                    }
+                }});
+            }
         });
 
         app.ticker.add((delta) => {
