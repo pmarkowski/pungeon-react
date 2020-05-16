@@ -9,13 +9,13 @@ const store = createStore((state = {}, action) => {
       case 'MOUSE_UP':
         return { ...state, mouseDown: false };
       case 'ADD_SPACE':
-        let spaceArray = state.dungeon.Spaces.slice();
+        let spaceArray = state.dungeon.spaces.slice();
         spaceArray = [...spaceArray, action.newSpace ];
         return {
           ...state,
           dungeon: {
             ...state.dungeon,
-            Spaces: spaceArray
+            spaces: spaceArray
           }
         };
       default:
@@ -29,215 +29,215 @@ const store = createStore((state = {}, action) => {
     mouseStartX: 0,
     mouseStartY: 0,
     dungeon: {
-      "Size": {
-        "Width": 0,
-        "Height": 0
+      size: {
+        width: 0,
+        height: 0
       },
-      "Spaces": [
+      spaces: [
         {
-          "Id": "01f998f7-3ad4-43c6-b498-3249ab470b05",
-          "Position": {
-            "X": 1,
-            "Y": 1
+          id: "01f998f7-3ad4-43c6-b498-3249ab470b05",
+          position: {
+            x: 1,
+            y: 1
           },
-          "Size": {
-            "Width": 5,
-            "Height": 5
+          size: {
+            width: 5,
+            height: 5
           }
         },
         {
-          "Id": "79178d8c-3a3e-42ee-b1ec-00dc37a045fc",
-          "Position": {
-            "X": 6,
-            "Y": 4
+          id: "79178d8c-3a3e-42ee-b1ec-00dc37a045fc",
+          position: {
+            x: 6,
+            y: 4
           },
-          "Size": {
-            "Width": 7,
-            "Height": 9
+          size: {
+            width: 7,
+            height: 9
           }
         },
         {
-          "Id": "6ce25fdc-9fd4-46c0-a924-74f5f9174193",
-          "Position": {
-            "X": 15,
-            "Y": 15
+          id: "6ce25fdc-9fd4-46c0-a924-74f5f9174193",
+          position: {
+            x: 15,
+            y: 15
           },
-          "Size": {
-            "Width": 6,
-            "Height": 7
+          size: {
+            width: 6,
+            height: 7
           }
         },
         {
-          "Id": "e211fbd3-a817-47a5-bb47-481ba330e46d",
-          "Position": {
-            "X": 21,
-            "Y": 19
+          id: "e211fbd3-a817-47a5-bb47-481ba330e46d",
+          position: {
+            x: 21,
+            y: 19
           },
-          "Size": {
-            "Width": 4,
-            "Height": 9
+          size: {
+            width: 4,
+            height: 9
           }
         }
       ],
-      "Walls": [
+      walls: [
         {
-          "Start": {
-            "X": 1,
-            "Y": 1
+          start: {
+            x: 1,
+            y: 1
           },
-          "End": {
-            "X": 1,
-            "Y": 6
+          end: {
+            x: 1,
+            y: 6
           }
         },
         {
-          "Start": {
-            "X": 6,
-            "Y": 6
+          start: {
+            x: 6,
+            y: 6
           },
-          "End": {
-            "X": 1,
-            "Y": 6
+          end: {
+            x: 1,
+            y: 6
           }
         },
         {
-          "Start": {
-            "X": 6,
-            "Y": 13
+          start: {
+            x: 6,
+            y: 13
           },
-          "End": {
-            "X": 6,
-            "Y": 6
+          end: {
+            x: 6,
+            y: 6
           }
         },
         {
-          "Start": {
-            "X": 13,
-            "Y": 13
+          start: {
+            x: 13,
+            y: 13
           },
-          "End": {
-            "X": 6,
-            "Y": 13
+          end: {
+            x: 6,
+            y: 13
           }
         },
         {
-          "Start": {
-            "X": 13,
-            "Y": 4
+          start: {
+            x: 13,
+            y: 4
           },
-          "End": {
-            "X": 13,
-            "Y": 13
+          end: {
+            x: 13,
+            y: 13
           }
         },
         {
-          "Start": {
-            "X": 6,
-            "Y": 4
+          start: {
+            x: 6,
+            y: 4
           },
-          "End": {
-            "X": 13,
-            "Y": 4
+          end: {
+            x: 13,
+            y: 4
           }
         },
         {
-          "Start": {
-            "X": 6,
-            "Y": 1
+          start: {
+            x: 6,
+            y: 1
           },
-          "End": {
-            "X": 6,
-            "Y": 4
+          end: {
+            x: 6,
+            y: 4
           }
         },
         {
-          "Start": {
-            "X": 1,
-            "Y": 1
+          start: {
+            x: 1,
+            y: 1
           },
-          "End": {
-            "X": 6,
-            "Y": 1
+          end: {
+            x: 6,
+            y: 1
           }
         },
         {
-          "Start": {
-            "X": 15,
-            "Y": 15
+          start: {
+            x: 15,
+            y: 15
           },
-          "End": {
-            "X": 15,
-            "Y": 22
+          end: {
+            x: 15,
+            y: 22
           }
         },
         {
-          "Start": {
-            "X": 21,
-            "Y": 22
+          start: {
+            x: 21,
+            y: 22
           },
-          "End": {
-            "X": 15,
-            "Y": 22
+          end: {
+            x: 15,
+            y: 22
           }
         },
         {
-          "Start": {
-            "X": 21,
-            "Y": 15
+          start: {
+            x: 21,
+            y: 15
           },
-          "End": {
-            "X": 15,
-            "Y": 15
+          end: {
+            x: 15,
+            y: 15
           }
         },
         {
-          "Start": {
-            "X": 21,
-            "Y": 19
+          start: {
+            x: 21,
+            y: 19
           },
-          "End": {
-            "X": 21,
-            "Y": 15
+          end: {
+            x: 21,
+            y: 15
           }
         },
         {
-          "Start": {
-            "X": 25,
-            "Y": 19
+          start: {
+            x: 25,
+            y: 19
           },
-          "End": {
-            "X": 21,
-            "Y": 19
+          end: {
+            x: 21,
+            y: 19
           }
         },
         {
-          "Start": {
-            "X": 21,
-            "Y": 22
+          start: {
+            x: 21,
+            y: 22
           },
-          "End": {
-            "X": 21,
-            "Y": 28
+          end: {
+            x: 21,
+            y: 28
           }
         },
         {
-          "Start": {
-            "X": 21,
-            "Y": 28
+          start: {
+            x: 21,
+            y: 28
           },
-          "End": {
-            "X": 25,
-            "Y": 28
+          end: {
+            x: 25,
+            y: 28
           }
         },
         {
-          "Start": {
-            "X": 25,
-            "Y": 19
+          start: {
+            x: 25,
+            y: 19
           },
-          "End": {
-            "X": 25,
-            "Y": 28
+          end: {
+            x: 25,
+            y: 28
           }
         }
       ]

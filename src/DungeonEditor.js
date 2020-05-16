@@ -1,6 +1,7 @@
 import React from 'react'
 import * as PIXI from 'pixi.js'
 import store from './Store.js'
+import { v4 as uuid } from 'uuid'
 
 export default class DungeonEditor extends React.Component {
     render() {
@@ -36,7 +37,7 @@ export default class DungeonEditor extends React.Component {
         app.ticker.add((delta) => {
             var state = store.getState();
 
-            let dungeonSpaces = state.dungeon.Spaces;
+            let dungeonSpaces = state.dungeon.spaces;
 
             graphics.clear();
 
@@ -70,16 +71,17 @@ export default class DungeonEditor extends React.Component {
             let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / gridSize);
             let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / gridSize);
             store.dispatch({
-            type: 'ADD_SPACE', newSpace: {
-                Position: {
-                    X: startX,
-                    Y: startY
-                },
-                Size: {
-                    Width: endX - startX,
-                    Height: endY - startY
+                type: 'ADD_SPACE', newSpace: {
+                    id: uuid(),
+                    position: {
+                        x: startX,
+                        y: startY
+                    },
+                    size: {
+                        width: endX - startX,
+                        height: endY - startY
+                    }
                 }
-            }
             });
         }
     }
@@ -87,7 +89,11 @@ export default class DungeonEditor extends React.Component {
     drawSpaces(graphics, dungeonRooms, gridSize) {
         graphics.beginFill(0xd6d5d5);
         dungeonRooms.forEach(space => {
-            graphics.drawRect(space.Position.X * gridSize, space.Position.Y * gridSize, space.Size.Width * gridSize, space.Size.Height * gridSize);
+            graphics.drawRect(
+                space.position.x * gridSize,
+                space.position.y * gridSize,
+                space.size.width * gridSize,
+                space.size.height * gridSize);
         });
         graphics.endFill();
         graphics.interactive = true;
