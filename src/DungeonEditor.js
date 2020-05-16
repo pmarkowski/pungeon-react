@@ -33,7 +33,7 @@ export default class DungeonEditor extends React.Component {
                 scaleDelta *= -1;
             }
             let newScale = Math.min(Math.max(app.stage.scale.x + scaleDelta, 0.1), 2);
-            if (newScale != app.stage.scale.x) {
+            if (newScale !== app.stage.scale.x) {
                 app.stage.scale.set(newScale);
 
                 let localMousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
