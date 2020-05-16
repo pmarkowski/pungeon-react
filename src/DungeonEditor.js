@@ -26,7 +26,7 @@ export default class DungeonEditor extends React.Component {
         let graphics = new PIXI.Graphics();
         app.stage.addChild(graphics);
 
-        let gridSize = 32.0;
+        let gridTileSize = 32.0;
         this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
             let scaleDelta = 0.1;
             if (wheelEvent.wheelDeltaY < 0) {
@@ -43,7 +43,7 @@ export default class DungeonEditor extends React.Component {
             this.onMouseDown(app);
         });
         this.canvasDiv.addEventListener('pointerup', () => {
-            this.onMouseUp(app, gridSize);
+            this.onMouseUp(app, gridTileSize);
         });
         this.canvasDiv.addEventListener('pointermove', (pointerEvent) => {
             if (pointerEvent.buttons === 2) {
@@ -57,12 +57,12 @@ export default class DungeonEditor extends React.Component {
 
             graphics.clear();
 
-            this.drawSpaces(graphics, state.dungeon.spaces, gridSize);
-            this.drawWalls(graphics, state.dungeon.walls, gridSize);
-            this.drawGrid(graphics, gridSize);
+            this.drawSpaces(graphics, state.dungeon.spaces, gridTileSize);
+            this.drawWalls(graphics, state.dungeon.walls, gridTileSize);
+            this.drawGrid(graphics, gridTileSize);
 
             if (app.renderer.plugins.interaction.mouseOverRenderer) {
-                this.drawSelectedGridBox(app, state, gridSize, graphics);
+                this.drawSelectedGridBox(app, state, gridTileSize, graphics);
             }
         });
     }
@@ -74,7 +74,7 @@ export default class DungeonEditor extends React.Component {
         }
     }
 
-    onMouseUp(app, gridSize) {
+    onMouseUp(app, gridTileSize) {
         if (app.renderer.plugins.interaction.mouse.button === 0) {
             let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
             store.dispatch({ type: 'MOUSE_UP' });
@@ -82,10 +82,10 @@ export default class DungeonEditor extends React.Component {
             // Yep, this should go into the reducer or dispatch a thunk that will have access
             // to the full state.
             let state = store.getState();
-            let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / gridSize);
-            let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / gridSize);
-            let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / gridSize);
-            let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / gridSize);
+            let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / gridTileSize);
+            let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / gridTileSize);
+            let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / gridTileSize);
+            let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / gridTileSize);
             store.dispatch({
                 type: 'ADD_SPACE', newSpace: {
                     id: uuid(),
@@ -102,33 +102,33 @@ export default class DungeonEditor extends React.Component {
         }
     }
 
-    drawSpaces(graphics, dungeonRooms, gridSize) {
+    drawSpaces(graphics, dungeonRooms, gridTileSize) {
         graphics.beginFill(0xd6d5d5);
         dungeonRooms.forEach(space => {
             graphics.drawRect(
-                space.position.x * gridSize,
-                space.position.y * gridSize,
-                space.size.width * gridSize,
-                space.size.height * gridSize);
+                space.position.x * gridTileSize,
+                space.position.y * gridTileSize,
+                space.size.width * gridTileSize,
+                space.size.height * gridTileSize);
         });
         graphics.endFill();
     }
 
-    drawWalls(graphics, dungeonWalls, gridSize) {
+    drawWalls(graphics, dungeonWalls, gridTileSize) {
         graphics.beginFill();
         dungeonWalls.forEach(wall => {
             graphics.beginFill(0x0266e6, 1);
             graphics.lineStyle(10, 0x0266e6, 1, 0.5);
-            graphics.moveTo(wall.start.x * gridSize, wall.start.y * gridSize);
-            graphics.lineTo(wall.end.x * gridSize, wall.end.y * gridSize);
+            graphics.moveTo(wall.start.x * gridTileSize, wall.start.y * gridTileSize);
+            graphics.lineTo(wall.end.x * gridTileSize, wall.end.y * gridTileSize);
             graphics.lineStyle();
-            graphics.drawCircle(wall.start.x * gridSize, wall.start.y * gridSize, 5);
-            graphics.drawCircle(wall.end.x * gridSize, wall.end.y * gridSize, 5);
+            graphics.drawCircle(wall.start.x * gridTileSize, wall.start.y * gridTileSize, 5);
+            graphics.drawCircle(wall.end.x * gridTileSize, wall.end.y * gridTileSize, 5);
             graphics.endFill();
         })
     }
 
-    drawSelectedGridBox(app, state, gridSize, graphics) {
+    drawSelectedGridBox(app, state, gridTileSize, graphics) {
         let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
         let snappedX, snappedY, width, height;
         if (state.mouseDown) {
@@ -136,20 +136,20 @@ export default class DungeonEditor extends React.Component {
             let startY = Math.min(state.mouseStartY, mousePoint.y);
             let endX = Math.max(state.mouseStartX, mousePoint.x);
             let endY = Math.max(state.mouseStartY, mousePoint.y);
-            snappedX = Math.floor(startX / gridSize) * gridSize;
-            snappedY = Math.floor(startY / gridSize) * gridSize;
-            endX = Math.floor(endX / gridSize) * gridSize + gridSize;
-            endY = Math.floor(endY / gridSize) * gridSize + gridSize;
+            snappedX = Math.floor(startX / gridTileSize) * gridTileSize;
+            snappedY = Math.floor(startY / gridTileSize) * gridTileSize;
+            endX = Math.floor(endX / gridTileSize) * gridTileSize + gridTileSize;
+            endY = Math.floor(endY / gridTileSize) * gridTileSize + gridTileSize;
             width = endX - snappedX;
             height = endY - snappedY;
         }
         else {
             // snap to nearest grid point
             // for now for simplicity let's say top left
-            snappedX = Math.floor(mousePoint.x / gridSize) * gridSize;
-            snappedY = Math.floor(mousePoint.y / gridSize) * gridSize;
-            width = gridSize;
-            height = gridSize;
+            snappedX = Math.floor(mousePoint.x / gridTileSize) * gridTileSize;
+            snappedY = Math.floor(mousePoint.y / gridTileSize) * gridTileSize;
+            width = gridTileSize;
+            height = gridTileSize;
         }
         // draw a hover rect
         graphics.beginFill(0, 0);
@@ -158,15 +158,15 @@ export default class DungeonEditor extends React.Component {
         graphics.endFill();
     }
 
-    drawGrid(graphics, gridSize) {
+    drawGrid(graphics, gridTileSize) {
         graphics.lineStyle(1.0, 0x444444, 1.0, 0.5);
         for (var i = 0.0; i < 32; i++) {
-            graphics.moveTo(i * gridSize, 0);
-            graphics.lineTo(i * gridSize, 800);
+            graphics.moveTo(i * gridTileSize, 0);
+            graphics.lineTo(i * gridTileSize, 800);
         }
         for (var j = 0.0; j < 32; j++) {
-            graphics.moveTo(0, j * gridSize);
-            graphics.lineTo(1000, j * gridSize);
+            graphics.moveTo(0, j * gridTileSize);
+            graphics.lineTo(1000, j * gridTileSize);
         }
     }
 }
