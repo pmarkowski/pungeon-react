@@ -31,6 +31,7 @@ let StateEditor = ({ dispatch, selectedObjectId }) => {
                 <p><i>Scroll</i> to zoom in and out.</p>
                 <p><i>Left click and drag</i> to create new spaces with the New Space tool.</p>
                 <p><i>Left click</i> to select spaces with the Select tool.</p>
+                <p><i>Arrow keys</i> will move the currently selected space.</p>
                 <p><i>Delete</i> will delete the currently selected space.</p>
             </div>
         </div>
