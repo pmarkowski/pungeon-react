@@ -1,14 +1,21 @@
 import React from "react"
 import { connect } from 'react-redux'
+import { deleteSelectedObject } from '../reducers/dungeonReducer'
 
-let StateEditor = ({ dispatch }) => {
+let StateEditor = ({ dispatch, selectedObjectId }) => {
     return (
-      <div>
-        <button onClick={() => dispatch({type: 'TOGGLE_MOVE_Y'})}>Toggle Y Movement</button>
-      </div>
+        <div>
+            {selectedObjectId &&
+                <button className="btn btn-outline-danger" onClick={() => dispatch(deleteSelectedObject())}>Delete Object</button>
+            }
+        </div>
     )
 }
 
-StateEditor = connect()(StateEditor)
+const mapStateToProps = state => ({
+    selectedObjectId: state.selectedObject
+})
+
+StateEditor = connect(mapStateToProps)(StateEditor)
 
 export default StateEditor
