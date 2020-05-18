@@ -23,6 +23,8 @@ export default class DungeonEditor extends React.Component {
         this.app.resize();
 
         let graphics = new PIXI.Graphics();
+        graphics.zIndex = Number.MAX_SAFE_INTEGER;
+        app.stage.sortableChildren = true;
         app.stage.addChild(graphics);
 
         let gridTileSize = 70.0;
