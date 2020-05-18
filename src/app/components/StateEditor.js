@@ -6,7 +6,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject }) => {
     if (selectedObjectId) {
         return <React.Fragment>
             {selectedObject.position &&
-                <div className="card bg-dark text-light border-secondary">
+                <div className="card bg-dark text-light border-secondary mb-3">
                     <div className="card-header border-secondary">
                         <h5>Position</h5>
                     </div>
@@ -41,7 +41,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject }) => {
                 </div>
             }
             {selectedObject.size &&
-                <div className="card bg-dark text-light border-secondary">
+                <div className="card bg-dark text-light border-secondary mb-3">
                     <div className="card-header border-secondary">
                         <h5>Size</h5>
                     </div>
@@ -76,7 +76,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject }) => {
                 </div>
             }
             {selectedObjectId &&
-                <div className="card bg-dark text-light border-secondary">
+                <div className="card bg-dark text-light border-secondary mb-3">
                     <div className="card-header border-secondary">
                         <h5>Actions</h5>
                     </div>
@@ -92,7 +92,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject }) => {
         </React.Fragment>
     }
     else {
-        return <div className="card bg-dark text-light border-secondary">
+        return <div className="card bg-dark text-light border-secondary mb-3">
             <div className="card-header border-secondary">
                 <h5>Instructions</h5>
             </div>
