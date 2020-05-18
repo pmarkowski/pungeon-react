@@ -4,11 +4,19 @@ import { deleteSelectedObject } from '../reducers/dungeonReducer'
 
 let StateEditor = ({ dispatch, selectedObjectId }) => {
     return (
-        <div>
+        <React.Fragment>
             {selectedObjectId &&
-                <button className="btn btn-outline-danger" onClick={() => dispatch(deleteSelectedObject())}>Delete Object</button>
+                <div className="card bg-dark text-light border-secondary">
+                    <div className="card-header border-secondary">
+                        <h5>Actions</h5>
+                    </div>
+                    <div className="card-body">
+
+                        <button className="btn btn-outline-danger" onClick={() => dispatch(deleteSelectedObject())}>Delete Object</button>
+                    </div>
+                </div>
             }
-        </div>
+        </React.Fragment>
     )
 }
 
