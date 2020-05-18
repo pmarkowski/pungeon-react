@@ -14,11 +14,6 @@ export const deleteSelectedObject = () => ({
 
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
-        case 'TOGGLE_MOVE_Y':
-            return {
-                ...state,
-                moveY: !state.moveY
-            };
         case 'MOUSE_DOWN':
             return {
                 ...state,
