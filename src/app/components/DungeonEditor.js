@@ -3,10 +3,11 @@ import * as PIXI from 'pixi.js'
 import store from '../store.js'
 import { v4 as uuid } from 'uuid'
 import { selectObject } from "../reducers/dungeonReducer";
+import handleKeyboardEvent from '../utils/handleKeyboardEvent.js';
 
 export default class DungeonEditor extends React.Component {
     render() {
-        return <div ref={(element) => this.canvasDiv = element}></div>
+        return <div tabIndex={-1} ref={(element) => this.canvasDiv = element}></div>
     }
 
     componentDidMount() {
@@ -59,22 +60,25 @@ export default class DungeonEditor extends React.Component {
                 app.stage.position.x -= (localMousePoint.x) * scaleDelta
                 app.stage.position.y -= (localMousePoint.y) * scaleDelta
             }
-        })
+        });
         this.canvasDiv.addEventListener('contextmenu', (event) => {
             event.preventDefault()
-        })
+        });
         this.canvasDiv.addEventListener('pointerdown', () => {
             this.onMouseDown(app)
-        })
+        });
         this.canvasDiv.addEventListener('pointerup', () => {
             this.onMouseUp(app, gridTileSize)
-        })
+        });
         this.canvasDiv.addEventListener('pointermove', (pointerEvent) => {
             if (pointerEvent.buttons === 2) {
                 app.stage.position.x += pointerEvent.movementX
                 app.stage.position.y += pointerEvent.movementY
             }
-        })
+        });
+        this.canvasDiv.addEventListener('keyup', (event) => {
+            handleKeyboardEvent(event, store);
+        });
     }
 
     onMouseDown(app) {
@@ -135,21 +139,26 @@ export default class DungeonEditor extends React.Component {
         // Sync all child graphics with state
         container.children.forEach(graphics => {
             if (graphics.id) {
-                graphics.clear();
-                graphics.beginFill(0xd6d5d5);
                 let space = stateSpaceMap[graphics.id];
-                graphics.drawRect(
-                    space.position.x * gridTileSize,
-                    space.position.y * gridTileSize,
-                    space.size.width * gridTileSize,
-                    space.size.height * gridTileSize);
-                graphics.endFill();
+                if (space) {
+                    graphics.clear();
+                    graphics.beginFill(0xd6d5d5);
+                    graphics.drawRect(
+                        space.position.x * gridTileSize,
+                        space.position.y * gridTileSize,
+                        space.size.width * gridTileSize,
+                        space.size.height * gridTileSize);
+                    graphics.endFill();
 
-                if (state.selectedObject === graphics.id) {
-                    graphics.tint = 0xffffcc;
+                    if (state.selectedObject === graphics.id) {
+                        graphics.tint = 0xffffcc;
+                    }
+                    else {
+                        graphics.tint = 0xffffff;
+                    }
                 }
                 else {
-                    graphics.tint = 0xffffff;
+                    container.removeChild(graphics);
                 }
             }
         });
@@ -201,11 +210,11 @@ export default class DungeonEditor extends React.Component {
 
     drawGrid(graphics, gridWidth, gridHeight, gridTileSize) {
         graphics.lineStyle(1, 0x444444, 1, 0.5);
-        for (var i = 0; i < gridWidth; i++) {
+        for (let i = 0; i < gridWidth; i++) {
             graphics.moveTo(i * gridTileSize, 0);
             graphics.lineTo(i * gridTileSize, (gridHeight - 1) * gridTileSize);
         }
-        for (var j = 0; j < gridHeight; j++) {
+        for (let j = 0; j < gridHeight; j++) {
             graphics.moveTo(0, j * gridTileSize);
             graphics.lineTo((gridWidth - 1) * gridTileSize, j * gridTileSize);
         }

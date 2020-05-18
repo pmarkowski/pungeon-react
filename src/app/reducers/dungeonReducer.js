@@ -8,6 +8,10 @@ export const selectObject = (objectId) => ({
     objectId: objectId
 })
 
+export const deleteSelectedObject = () => ({
+    type: 'DELETE_OBJECT'
+})
+
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
         case 'TOGGLE_MOVE_Y':
@@ -56,6 +60,22 @@ export const dungeonReducer = (state = {}, action) => {
             }
             else {
                 return state;
+            }
+        case 'DELETE_OBJECT':
+            let selectedObjectId = state.selectedObject;
+            if (selectedObjectId) {
+                let newSpaceArray = state.dungeon.spaces.filter(space => space.id !== selectedObjectId);
+                return {
+                    ...state,
+                    selectedObject: null,
+                    dungeon: {
+                        ...state.dungeon,
+                        spaces: newSpaceArray
+                    }
+                }
+            }
+            else {
+                return state;   
             }
         default:
             return state
