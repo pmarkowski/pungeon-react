@@ -78,7 +78,7 @@ export default class DungeonEditor extends React.Component {
                 app.stage.position.y += pointerEvent.movementY
             }
         });
-        this.canvasDiv.addEventListener('keyup', (event) => {
+        this.canvasDiv.addEventListener('keydown', (event) => {
             handleKeyboardEvent(event, store);
         });
     }

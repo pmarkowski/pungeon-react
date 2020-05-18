@@ -12,6 +12,12 @@ export const deleteSelectedObject = () => ({
     type: 'DELETE_OBJECT'
 })
 
+export const moveSelectedObject = (deltaX, deltaY) => ({
+    type: 'MOVE_SELECTED_OBJECT',
+    deltaX: deltaX,
+    deltaY: deltaY
+})
+
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
         case 'MOUSE_DOWN':
@@ -25,6 +31,28 @@ export const dungeonReducer = (state = {}, action) => {
             return {
                 ...state,
                 mouseDown: false
+            };
+        case 'MOVE_SELECTED_OBJECT':
+            let arrayWithUpdatedObject = state.dungeon.spaces.map(space => {
+                if (space.id === state.selectedObject) {
+                    return {
+                        ...space,
+                        position: {
+                            x: space.position.x + action.deltaX,
+                            y: space.position.y + action.deltaY
+                        }
+                    };
+                }
+                else {
+                    return space;
+                }
+            });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    spaces: arrayWithUpdatedObject
+                }
             };
         case 'ADD_SPACE':
             if (state.selectedTool === 'NewSpace') {
@@ -43,7 +71,7 @@ export const dungeonReducer = (state = {}, action) => {
             }
         case 'SELECT_TOOL':
             let selectedObject = state.selectedObject;
-            if (action.selectedTool != 'Select') {
+            if (action.selectedTool !== 'Select') {
                 selectedObject = null;
             }
             return {
