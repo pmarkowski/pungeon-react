@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import DungeonEditor from "./DungeonEditor.js";
 import StateEditor from './StateEditor';
+import Toolbar from './Toolbar';
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
         </span>
       </nav>
       <div className="container">
+        <div className="py-2">
+          <Toolbar />
+        </div>
         <div className="row">
           <div className="col-md-9">
             <DungeonEditor />

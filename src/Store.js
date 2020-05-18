@@ -3,11 +3,22 @@ import { createStore } from 'redux';
 const store = createStore((state = {}, action) => {
     switch (action.type) {
       case 'TOGGLE_MOVE_Y':
-        return { ...state, moveY: !state.moveY };
+        return {
+          ...state,
+          moveY: !state.moveY
+        };
       case 'MOUSE_DOWN':
-        return { ...state, mouseDown: true, mouseStartX: action.x, mouseStartY: action.y };
+        return {
+          ...state,
+          mouseDown: true,
+          mouseStartX: action.x,
+          mouseStartY: action.y
+        };
       case 'MOUSE_UP':
-        return { ...state, mouseDown: false };
+        return {
+          ...state,
+          mouseDown: false
+        };
       case 'ADD_SPACE':
         let spaceArray = state.dungeon.spaces.slice();
         spaceArray = [...spaceArray, action.newSpace ];
@@ -17,6 +28,11 @@ const store = createStore((state = {}, action) => {
             ...state.dungeon,
             spaces: spaceArray
           }
+        };
+      case 'SELECT_TOOL':
+        return {
+          ...state,
+          selectedTool: action.selectedTool
         };
       default:
         return state
@@ -28,6 +44,7 @@ const store = createStore((state = {}, action) => {
     mouseDown: false,
     mouseStartX: 0,
     mouseStartY: 0,
+    selectedTool: 'NewSpace',
     dungeon: {
       size: {
         width: 28,
