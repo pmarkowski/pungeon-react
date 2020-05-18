@@ -33,7 +33,7 @@ export default class DungeonEditor extends React.Component {
 
             graphics.clear();
 
-            this.drawSpaces(graphics, state.dungeon.spaces, gridTileSize);
+            this.drawSpaces(app.stage, state.dungeon.spaces, gridTileSize);
             this.drawWalls(graphics, state.dungeon.walls, gridTileSize);
             this.drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height, gridTileSize);
 
@@ -109,16 +109,36 @@ export default class DungeonEditor extends React.Component {
         }
     }
 
-    drawSpaces(graphics, dungeonRooms, gridTileSize) {
-        graphics.beginFill(0xd6d5d5);
-        dungeonRooms.forEach(space => {
-            graphics.drawRect(
-                space.position.x * gridTileSize,
-                space.position.y * gridTileSize,
-                space.size.width * gridTileSize,
-                space.size.height * gridTileSize);
+    drawSpaces(container, dungeonRooms, gridTileSize) {
+        let stateSpaceMap = dungeonRooms.reduce((map, space) => {
+            map[space.id] = space;
+            return map;
+        }, {});
+        // Add any spaces that are in state but not in pixi
+        let containerSpaceIds = new Set(container.children.map(child => child.id));
+        let stateSpaceIds = Object.keys(stateSpaceMap);
+        stateSpaceIds.forEach(spaceId => {
+            if (!containerSpaceIds.has(spaceId)) {
+                let newChildGraphics = new PIXI.Graphics();
+                newChildGraphics.id = spaceId;
+                container.addChild(newChildGraphics);
+            }
         });
-        graphics.endFill();
+
+        // Sync all child graphics with state
+        container.children.forEach(graphics => {
+            if (graphics.id) {
+                graphics.clear();
+                graphics.beginFill(0xd6d5d5);
+                let space = stateSpaceMap[graphics.id];
+                graphics.drawRect(
+                    space.position.x * gridTileSize,
+                    space.position.y * gridTileSize,
+                    space.size.width * gridTileSize,
+                    space.size.height * gridTileSize);
+                graphics.endFill();
+            }
+        });
     }
 
     drawWalls(graphics, dungeonWalls, gridTileSize) {
