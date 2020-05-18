@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import DungeonEditor from "./DungeonEditor.js";
-import StateEditor from './StateEditor';
-import Toolbar from './Toolbar';
+import DungeonEditor from "./components/DungeonEditor.js";
+import StateEditor from './components/StateEditor';
+import Toolbar from './components/Toolbar';
 
 function App() {
   return (
