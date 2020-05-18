@@ -18,21 +18,35 @@ export const moveSelectedObject = (deltaX, deltaY) => ({
     deltaY: deltaY
 })
 
+export const setSelectedObjectPosition = (x, y) => ({
+    type: 'SET_SELECTED_OBJECT_POSITION',
+    x: x,
+    y: y
+})
+
+export const setSelectedObjectSize = (width, height) => ({
+    type: 'SET_SELECTED_OBJECT_SIZE',
+    width: width,
+    height: height
+})
+
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
-        case 'MOUSE_DOWN':
+        case 'MOUSE_DOWN': {
             return {
                 ...state,
                 mouseDown: true,
                 mouseStartX: action.x,
                 mouseStartY: action.y
             };
-        case 'MOUSE_UP':
+        }
+        case 'MOUSE_UP': {
             return {
                 ...state,
                 mouseDown: false
             };
-        case 'MOVE_SELECTED_OBJECT':
+        }
+        case 'MOVE_SELECTED_OBJECT': {
             let arrayWithUpdatedObject = state.dungeon.spaces.map(space => {
                 if (space.id === state.selectedObject) {
                     return {
@@ -54,7 +68,54 @@ export const dungeonReducer = (state = {}, action) => {
                     spaces: arrayWithUpdatedObject
                 }
             };
-        case 'ADD_SPACE':
+        }
+        case 'SET_SELECTED_OBJECT_POSITION': {
+            let arrayWithUpdatedObject = state.dungeon.spaces.map(space => {
+                if (space.id === state.selectedObject) {
+                    return {
+                        ...space,
+                        position: {
+                            x: action.x,
+                            y: action.y
+                        }
+                    };
+                }
+                else {
+                    return space;
+                }
+            });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    spaces: arrayWithUpdatedObject
+                }
+            };
+        }
+        case 'SET_SELECTED_OBJECT_SIZE': {
+            let arrayWithUpdatedObject = state.dungeon.spaces.map(space => {
+                if (space.id === state.selectedObject) {
+                    return {
+                        ...space,
+                        size: {
+                            width: action.width,
+                            height: action.height
+                        }
+                    };
+                }
+                else {
+                    return space;
+                }
+            });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    spaces: arrayWithUpdatedObject
+                }
+            };
+        }
+        case 'ADD_SPACE': {
             if (state.selectedTool === 'NewSpace') {
                 let spaceArray = state.dungeon.spaces.slice();
                 spaceArray = [...spaceArray, action.newSpace];
@@ -69,7 +130,8 @@ export const dungeonReducer = (state = {}, action) => {
             else {
                 return state;
             }
-        case 'SELECT_TOOL':
+        }
+        case 'SELECT_TOOL': {
             let selectedObject = state.selectedObject;
             if (action.selectedTool !== 'Select') {
                 selectedObject = null;
@@ -79,7 +141,8 @@ export const dungeonReducer = (state = {}, action) => {
                 selectedTool: action.selectedTool,
                 selectedObject: selectedObject
             };
-        case 'SELECT_OBJECT':
+        }
+        case 'SELECT_OBJECT': {
             if (state.selectedTool === 'Select') {
                 return {
                     ...state,
@@ -89,7 +152,8 @@ export const dungeonReducer = (state = {}, action) => {
             else {
                 return state;
             }
-        case 'DELETE_OBJECT':
+        }
+        case 'DELETE_OBJECT': {
             let selectedObjectId = state.selectedObject;
             if (selectedObjectId) {
                 let newSpaceArray = state.dungeon.spaces.filter(space => space.id !== selectedObjectId);
@@ -105,6 +169,7 @@ export const dungeonReducer = (state = {}, action) => {
             else {
                 return state;   
             }
+        }
         default:
             return state
     }

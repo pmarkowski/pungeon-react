@@ -1,10 +1,80 @@
 import React from "react"
 import { connect } from 'react-redux'
-import { deleteSelectedObject } from '../reducers/dungeonReducer'
+import { deleteSelectedObject, setSelectedObjectPosition, setSelectedObjectSize } from '../reducers/dungeonReducer'
 
-let StateEditor = ({ dispatch, selectedObjectId }) => {
+let StateEditor = ({ dispatch, selectedObjectId, selectedObject }) => {
     if (selectedObjectId) {
         return <React.Fragment>
+            {selectedObject.position &&
+                <div className="card bg-dark text-light border-secondary">
+                    <div className="card-header border-secondary">
+                        <h5>Position</h5>
+                    </div>
+                    <div className="card-body">
+                        <div className="form-group">
+                            <label>
+                                X:
+                                <input
+                                    className="form-control bg-secondary text-light"
+                                    type="number"
+                                    value={selectedObject.position.x}
+                                    onChange={(changeEvent) => dispatch(setSelectedObjectPosition(
+                                        parseInt(changeEvent.target.value),
+                                        selectedObject.position.y
+                                    ))}>
+                                </input>
+                            </label>
+                            <label>
+                                Y:
+                                <input
+                                    className="form-control bg-secondary text-light"
+                                    type="number"
+                                    value={selectedObject.position.y}
+                                    onChange={(changeEvent) => dispatch(setSelectedObjectPosition(
+                                        selectedObject.position.x,
+                                        parseInt(changeEvent.target.value)
+                                    ))}>
+                                </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            }
+            {selectedObject.size &&
+                <div className="card bg-dark text-light border-secondary">
+                    <div className="card-header border-secondary">
+                        <h5>Size</h5>
+                    </div>
+                    <div className="card-body">
+                        <div className="form-group">
+                            <label>
+                                Width:
+                                <input
+                                    className="form-control bg-secondary text-light"
+                                    type="number"
+                                    value={selectedObject.size.width}
+                                    onChange={(changeEvent) => dispatch(setSelectedObjectSize(
+                                        parseInt(changeEvent.target.value),
+                                        selectedObject.size.height
+                                    ))}>
+                                </input>
+                            </label>
+                            <label>
+                                Height:
+                                <input
+                                    className="form-control bg-secondary text-light"
+                                    type="number"
+                                    value={selectedObject.size.height}
+                                    onChange={(changeEvent) => dispatch(setSelectedObjectSize(
+                                        selectedObject.size.width,
+                                        parseInt(changeEvent.target.value)
+                                    ))}>
+                                </input>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            }
             {selectedObjectId &&
                 <div className="card bg-dark text-light border-secondary">
                     <div className="card-header border-secondary">
@@ -39,7 +109,8 @@ let StateEditor = ({ dispatch, selectedObjectId }) => {
 }
 
 const mapStateToProps = state => ({
-    selectedObjectId: state.selectedObject
+    selectedObjectId: state.selectedObject,
+    selectedObject: state.dungeon.spaces.filter(space => space.id === state.selectedObject)[0]
 })
 
 StateEditor = connect(mapStateToProps)(StateEditor)
