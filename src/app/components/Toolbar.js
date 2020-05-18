@@ -1,5 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
+import { selectTool } from '../reducers/dungeonReducer'
 
 let Toolbar = ({ dispatch, selectedTool }) => {
     return (
@@ -19,11 +20,6 @@ let Toolbar = ({ dispatch, selectedTool }) => {
         </div>
     )
 }
-
-const selectTool = (toolName) => ({
-    type: 'SELECT_TOOL',
-    selectedTool: toolName
-})
 
 const mapStateToProps = state => ({
     selectedTool: state.selectedTool
