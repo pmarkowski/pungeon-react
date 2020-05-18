@@ -7,14 +7,16 @@ import handleKeyboardEvent from '../utils/handleKeyboardEvent.js';
 
 export default class DungeonEditor extends React.Component {
     render() {
-        return <div tabIndex={-1} ref={(element) => this.canvasDiv = element}></div>
+        return <div
+            style={{height:"85vh"}}
+            tabIndex={-1}
+            ref={(element) => this.canvasDiv = element}>
+        </div>
     }
 
     componentDidMount() {
         const app = new PIXI.Application({
             backgroundColor: 0x5f5f5f,
-            width: 800,
-            height: 600,
             sharedLoader: true,
             sharedTicker: true,
             antialias: true

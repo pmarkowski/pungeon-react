@@ -12,7 +12,7 @@ function App() {
           Pungeon
         </span>
       </nav>
-      <div className="container">
+      <div className="px-5">
         <div className="py-2">
           <Toolbar />
         </div>
