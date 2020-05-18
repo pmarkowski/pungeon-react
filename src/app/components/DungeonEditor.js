@@ -22,40 +22,11 @@ export default class DungeonEditor extends React.Component {
         this.app.resizeTo = this.canvasDiv;
         this.app.resize();
 
-        // Render a circle to a texture
         let graphics = new PIXI.Graphics();
         app.stage.addChild(graphics);
 
         let gridTileSize = 70.0;
-        this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
-            let scaleDelta = 0.1;
-            if (wheelEvent.wheelDeltaY < 0) {
-                scaleDelta *= -1;
-            }
-            let newScale = Math.min(Math.max(app.stage.scale.x + scaleDelta, 0.1), 2);
-            if (newScale !== app.stage.scale.x) {
-                app.stage.scale.set(newScale);
-
-                let localMousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
-                app.stage.position.x -= (localMousePoint.x) * scaleDelta;
-                app.stage.position.y -= (localMousePoint.y) * scaleDelta;
-            }
-        });
-        this.canvasDiv.addEventListener('contextmenu', (event) => {
-            event.preventDefault();
-        })
-        this.canvasDiv.addEventListener('pointerdown', () => {
-            this.onMouseDown(app);
-        });
-        this.canvasDiv.addEventListener('pointerup', () => {
-            this.onMouseUp(app, gridTileSize);
-        });
-        this.canvasDiv.addEventListener('pointermove', (pointerEvent) => {
-            if (pointerEvent.buttons === 2) {
-                app.stage.position.x += pointerEvent.movementX;
-                app.stage.position.y += pointerEvent.movementY;
-            }
-        });
+        this.setupInteractions(app, gridTileSize)
 
         app.ticker.add((delta) => {
             var state = store.getState();
@@ -70,6 +41,37 @@ export default class DungeonEditor extends React.Component {
                 this.drawSelectedGridBox(app, state, gridTileSize, graphics);
             }
         });
+    }
+
+    setupInteractions(app, gridTileSize) {
+        this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
+            let scaleDelta = 0.1
+            if (wheelEvent.wheelDeltaY < 0) {
+                scaleDelta *= -1
+            }
+            let newScale = Math.min(Math.max(app.stage.scale.x + scaleDelta, 0.1), 2)
+            if (newScale !== app.stage.scale.x) {
+                app.stage.scale.set(newScale)
+                let localMousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage)
+                app.stage.position.x -= (localMousePoint.x) * scaleDelta
+                app.stage.position.y -= (localMousePoint.y) * scaleDelta
+            }
+        })
+        this.canvasDiv.addEventListener('contextmenu', (event) => {
+            event.preventDefault()
+        })
+        this.canvasDiv.addEventListener('pointerdown', () => {
+            this.onMouseDown(app)
+        })
+        this.canvasDiv.addEventListener('pointerup', () => {
+            this.onMouseUp(app, gridTileSize)
+        })
+        this.canvasDiv.addEventListener('pointermove', (pointerEvent) => {
+            if (pointerEvent.buttons === 2) {
+                app.stage.position.x += pointerEvent.movementX
+                app.stage.position.y += pointerEvent.movementY
+            }
+        })
     }
 
     onMouseDown(app) {
