@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import DungeonEditor from "./components/DungeonEditor.js";
 import StateEditor from './components/StateEditor';
 import Toolbar from './components/Toolbar';
