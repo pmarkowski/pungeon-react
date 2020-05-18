@@ -47,9 +47,14 @@ export const dungeonReducer = (state = {}, action) => {
                 return state;
             }
         case 'SELECT_TOOL':
+            let selectedObject = state.selectedObject;
+            if (action.selectedTool != 'Select') {
+                selectedObject = null;
+            }
             return {
                 ...state,
-                selectedTool: action.selectedTool
+                selectedTool: action.selectedTool,
+                selectedObject: selectedObject
             };
         case 'SELECT_OBJECT':
             if (state.selectedTool === 'Select') {
