@@ -1,6 +1,6 @@
 import React from 'react'
 import * as PIXI from 'pixi.js'
-import store from '../Store.js'
+import store from '../store.js'
 import { v4 as uuid } from 'uuid'
 
 export default class DungeonEditor extends React.Component {
