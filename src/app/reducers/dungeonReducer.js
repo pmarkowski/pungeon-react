@@ -3,6 +3,11 @@ export const selectTool = (toolName) => ({
     selectedTool: toolName
 })
 
+export const selectObject = (objectId) => ({
+    type: 'SELECT_OBJECT',
+    objectId: objectId
+})
+
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
         case 'TOGGLE_MOVE_Y':
@@ -23,20 +28,35 @@ export const dungeonReducer = (state = {}, action) => {
                 mouseDown: false
             };
         case 'ADD_SPACE':
-            let spaceArray = state.dungeon.spaces.slice();
-            spaceArray = [...spaceArray, action.newSpace];
-            return {
-                ...state,
-                dungeon: {
-                    ...state.dungeon,
-                    spaces: spaceArray
-                }
-            };
+            if (state.selectedTool === 'NewSpace') {
+                let spaceArray = state.dungeon.spaces.slice();
+                spaceArray = [...spaceArray, action.newSpace];
+                return {
+                    ...state,
+                    dungeon: {
+                        ...state.dungeon,
+                        spaces: spaceArray
+                    }
+                };
+            }
+            else {
+                return state;
+            }
         case 'SELECT_TOOL':
             return {
                 ...state,
                 selectedTool: action.selectedTool
             };
+        case 'SELECT_OBJECT':
+            if (state.selectedTool === 'Select') {
+                return {
+                    ...state,
+                    selectedObject: action.objectId
+                };
+            }
+            else {
+                return state;
+            }
         default:
             return state
     }

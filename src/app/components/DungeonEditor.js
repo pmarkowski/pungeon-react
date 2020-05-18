@@ -2,6 +2,7 @@ import React from 'react'
 import * as PIXI from 'pixi.js'
 import store from '../store.js'
 import { v4 as uuid } from 'uuid'
+import { selectObject } from "../reducers/dungeonReducer";
 
 export default class DungeonEditor extends React.Component {
     render() {
@@ -35,7 +36,7 @@ export default class DungeonEditor extends React.Component {
 
             graphics.clear();
 
-            this.drawSpaces(app.stage, state.dungeon.spaces, gridTileSize);
+            this.drawSpaces(app.stage, state, gridTileSize);
             this.drawWalls(graphics, state.dungeon.walls, gridTileSize);
             this.drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height, gridTileSize);
 
@@ -111,8 +112,8 @@ export default class DungeonEditor extends React.Component {
         }
     }
 
-    drawSpaces(container, dungeonRooms, gridTileSize) {
-        let stateSpaceMap = dungeonRooms.reduce((map, space) => {
+    drawSpaces(container, state, gridTileSize) {
+        let stateSpaceMap = state.dungeon.spaces.reduce((map, space) => {
             map[space.id] = space;
             return map;
         }, {});
@@ -123,6 +124,10 @@ export default class DungeonEditor extends React.Component {
             if (!containerSpaceIds.has(spaceId)) {
                 let newChildGraphics = new PIXI.Graphics();
                 newChildGraphics.id = spaceId;
+                newChildGraphics.interactive = true;
+                newChildGraphics.mouseup = function() {
+                    store.dispatch(selectObject(this.id));
+                };
                 container.addChild(newChildGraphics);
             }
         });
@@ -139,6 +144,13 @@ export default class DungeonEditor extends React.Component {
                     space.size.width * gridTileSize,
                     space.size.height * gridTileSize);
                 graphics.endFill();
+
+                if (state.selectedObject === graphics.id) {
+                    graphics.tint = 0xffffcc;
+                }
+                else {
+                    graphics.tint = 0xffffff;
+                }
             }
         });
     }
