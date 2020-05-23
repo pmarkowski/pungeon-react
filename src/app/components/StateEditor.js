@@ -1,44 +1,16 @@
 import React from "react"
 import { connect } from 'react-redux'
 import { deleteSelectedObject, setSelectedObjectPosition, setSelectedObjectSize, setSelectedObjectStart, setSelectedObjectEnd } from '../reducers/dungeonReducer'
+import PositionEditor from "./PositionEditor"
 
 let StateEditor = ({ dispatch, selectedObjectId, selectedObject }) => {
     if (selectedObjectId) {
         return <React.Fragment>
             {selectedObject.position &&
-                <div className="card bg-dark text-light border-secondary mb-3">
-                    <div className="card-header border-secondary">
-                        <h5>Position</h5>
-                    </div>
-                    <div className="card-body">
-                        <div className="form-group">
-                            <label>
-                                X:
-                                <input
-                                    className="form-control bg-secondary text-light"
-                                    type="number"
-                                    value={selectedObject.position.x}
-                                    onChange={(changeEvent) => dispatch(setSelectedObjectPosition(
-                                        parseInt(changeEvent.target.value),
-                                        selectedObject.position.y
-                                    ))}>
-                                </input>
-                            </label>
-                            <label>
-                                Y:
-                                <input
-                                    className="form-control bg-secondary text-light"
-                                    type="number"
-                                    value={selectedObject.position.y}
-                                    onChange={(changeEvent) => dispatch(setSelectedObjectPosition(
-                                        selectedObject.position.x,
-                                        parseInt(changeEvent.target.value)
-                                    ))}>
-                                </input>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                <PositionEditor
+                    x={selectedObject.position.x}
+                    y={selectedObject.position.y}
+                    onUpdate={(x, y) => dispatch(setSelectedObjectPosition(x, y))} />
             }
             {selectedObject.size &&
                 <div className="card bg-dark text-light border-secondary mb-3">
@@ -76,74 +48,18 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject }) => {
                 </div>
             }
             {selectedObject.start &&
-                <div className="card bg-dark text-light border-secondary mb-3">
-                    <div className="card-header border-secondary">
-                        <h5>Start</h5>
-                    </div>
-                    <div className="card-body">
-                        <div className="form-group">
-                            <label>
-                                X:
-                                <input
-                                    className="form-control bg-secondary text-light"
-                                    type="number"
-                                    value={selectedObject.start.x}
-                                    onChange={(changeEvent) => dispatch(setSelectedObjectStart(
-                                        parseInt(changeEvent.target.value),
-                                        selectedObject.start.y
-                                    ))}>
-                                </input>
-                            </label>
-                            <label>
-                                Y:
-                                <input
-                                    className="form-control bg-secondary text-light"
-                                    type="number"
-                                    value={selectedObject.start.y}
-                                    onChange={(changeEvent) => dispatch(setSelectedObjectStart(
-                                        selectedObject.start.x,
-                                        parseInt(changeEvent.target.value)
-                                    ))}>
-                                </input>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                <PositionEditor
+                    title="Start"
+                    x={selectedObject.start.x}
+                    y={selectedObject.start.y}
+                    onUpdate={(x,y) => dispatch(setSelectedObjectStart(x, y))} />
             }
             {selectedObject.end &&
-                <div className="card bg-dark text-light border-secondary mb-3">
-                    <div className="card-header border-secondary">
-                        <h5>End</h5>
-                    </div>
-                    <div className="card-body">
-                        <div className="form-group">
-                            <label>
-                                X:
-                                <input
-                                    className="form-control bg-secondary text-light"
-                                    type="number"
-                                    value={selectedObject.end.x}
-                                    onChange={(changeEvent) => dispatch(setSelectedObjectEnd(
-                                        parseInt(changeEvent.target.value),
-                                        selectedObject.end.y
-                                    ))}>
-                                </input>
-                            </label>
-                            <label>
-                                Y:
-                                <input
-                                    className="form-control bg-secondary text-light"
-                                    type="number"
-                                    value={selectedObject.end.y}
-                                    onChange={(changeEvent) => dispatch(setSelectedObjectEnd(
-                                        selectedObject.end.x,
-                                        parseInt(changeEvent.target.value)
-                                    ))}>
-                                </input>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                <PositionEditor
+                    title="End"
+                    x={selectedObject.end.x}
+                    y={selectedObject.end.y}
+                    onUpdate={(x,y) => dispatch(setSelectedObjectEnd(x, y))} />
             }
             {selectedObjectId &&
                 <div className="card bg-dark text-light border-secondary mb-3">
