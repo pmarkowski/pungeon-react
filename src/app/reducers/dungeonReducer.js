@@ -1,4 +1,4 @@
-import { createArrayWithUpdatedObject } from '../utils/updateArray'
+import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
 
 export const selectTool = (toolName) => ({
     type: 'SELECT_TOOL',
