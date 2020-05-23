@@ -17,6 +17,12 @@ let Toolbar = ({ dispatch, selectedTool }) => {
                 onClick={() => dispatch(selectTool('NewSpace'))}>
                     New Space
             </button>
+            <button
+                className={"btn btn-secondary" +
+                    (selectedTool === 'NewWall' ? ' active' : '')}
+                onClick={() => dispatch(selectTool('NewWall'))}>
+                    New Wall
+            </button>
         </div>
     )
 }

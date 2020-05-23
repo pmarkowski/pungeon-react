@@ -8,7 +8,7 @@ import handleKeyboardEvent from '../utils/handleKeyboardEvent.js';
 export default class DungeonEditor extends React.Component {
     render() {
         return <div
-            style={{height:"85vh"}}
+            style={{ height: "85vh" }}
             tabIndex={-1}
             ref={(element) => this.canvasDiv = element}>
         </div>
@@ -94,27 +94,49 @@ export default class DungeonEditor extends React.Component {
         if (app.renderer.plugins.interaction.mouse.button === 0) {
             let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
             store.dispatch({ type: 'MOUSE_UP' });
-            // TODO: Some terrible redux practices here I'm sure
-            // Yep, this should go into the reducer or dispatch a thunk that will have access
-            // to the full state.
             let state = store.getState();
-            let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / gridTileSize);
-            let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / gridTileSize);
-            let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / gridTileSize);
-            let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / gridTileSize);
-            store.dispatch({
-                type: 'ADD_SPACE', newSpace: {
-                    id: uuid(),
-                    position: {
-                        x: startX,
-                        y: startY
-                    },
-                    size: {
-                        width: endX - startX,
-                        height: endY - startY
+            if (state.selectedTool === 'NewSpace') {
+                // TODO: Some terrible redux practices here I'm sure
+                // Yep, this should go into the reducer or dispatch a thunk that will have access
+                // to the full state.
+                let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / gridTileSize);
+                let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / gridTileSize);
+                let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / gridTileSize);
+                let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / gridTileSize);
+                store.dispatch({
+                    type: 'ADD_SPACE',
+                    newSpace: {
+                        id: uuid(),
+                        position: {
+                            x: startX,
+                            y: startY
+                        },
+                        size: {
+                            width: endX - startX,
+                            height: endY - startY
+                        }
                     }
-                }
-            });
+                });
+            }
+            else if (state.selectedTool === 'NewWall') {
+                let startX = Math.round(state.mouseStartX / gridTileSize);
+                let startY = Math.round(state.mouseStartY / gridTileSize);
+                let endX = Math.round(mousePoint.x / gridTileSize);
+                let endY = Math.round(mousePoint.y / gridTileSize);
+                store.dispatch({
+                    type: 'ADD_WALL',
+                    newWall: {
+                        start: {
+                            x: startX,
+                            y: startY
+                        },
+                        end: {
+                            x: endX,
+                            y: endY
+                        }
+                    }
+                });
+            }
         }
     }
 
@@ -131,7 +153,7 @@ export default class DungeonEditor extends React.Component {
                 let newChildGraphics = new PIXI.Graphics();
                 newChildGraphics.id = spaceId;
                 newChildGraphics.interactive = true;
-                newChildGraphics.mouseup = function() {
+                newChildGraphics.mouseup = function () {
                     store.dispatch(selectObject(this.id));
                 };
                 container.addChild(newChildGraphics);
@@ -183,31 +205,59 @@ export default class DungeonEditor extends React.Component {
     drawSelectedGridBox(app, state, gridTileSize, graphics) {
         let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
         let snappedX, snappedY, width, height;
-        if (state.mouseDown) {
-            let startX = Math.min(state.mouseStartX, mousePoint.x);
-            let startY = Math.min(state.mouseStartY, mousePoint.y);
-            let endX = Math.max(state.mouseStartX, mousePoint.x);
-            let endY = Math.max(state.mouseStartY, mousePoint.y);
-            snappedX = Math.floor(startX / gridTileSize) * gridTileSize;
-            snappedY = Math.floor(startY / gridTileSize) * gridTileSize;
-            endX = Math.floor(endX / gridTileSize) * gridTileSize + gridTileSize;
-            endY = Math.floor(endY / gridTileSize) * gridTileSize + gridTileSize;
-            width = endX - snappedX;
-            height = endY - snappedY;
+        if (state.selectedTool !== 'NewWall') {
+            if (state.mouseDown) {
+                let startX = Math.min(state.mouseStartX, mousePoint.x);
+                let startY = Math.min(state.mouseStartY, mousePoint.y);
+                let endX = Math.max(state.mouseStartX, mousePoint.x);
+                let endY = Math.max(state.mouseStartY, mousePoint.y);
+                snappedX = Math.floor(startX / gridTileSize) * gridTileSize;
+                snappedY = Math.floor(startY / gridTileSize) * gridTileSize;
+                endX = Math.floor(endX / gridTileSize) * gridTileSize + gridTileSize;
+                endY = Math.floor(endY / gridTileSize) * gridTileSize + gridTileSize;
+                width = endX - snappedX;
+                height = endY - snappedY;
+            }
+            else {
+                // snap to nearest grid point
+                // for now for simplicity let's say top left
+                snappedX = Math.floor(mousePoint.x / gridTileSize) * gridTileSize;
+                snappedY = Math.floor(mousePoint.y / gridTileSize) * gridTileSize;
+                width = gridTileSize;
+                height = gridTileSize;
+            }
+            // draw a hover rect
+            graphics.beginFill(0, 0);
+            graphics.lineStyle(1, 0xfffd00);
+            graphics.drawRect(snappedX, snappedY, width, height);
+            graphics.endFill();
         }
         else {
-            // snap to nearest grid point
-            // for now for simplicity let's say top left
-            snappedX = Math.floor(mousePoint.x / gridTileSize) * gridTileSize;
-            snappedY = Math.floor(mousePoint.y / gridTileSize) * gridTileSize;
-            width = gridTileSize;
-            height = gridTileSize;
+            if (state.mouseDown) {
+                let startX = Math.round(state.mouseStartX / gridTileSize) * gridTileSize;
+                let startY = Math.round(state.mouseStartY / gridTileSize) * gridTileSize;
+                let endX = Math.round(mousePoint.x / gridTileSize) * gridTileSize;
+                let endY = Math.round(mousePoint.y / gridTileSize) * gridTileSize;
+                graphics.lineStyle(5, 0xfffd00);
+                graphics.moveTo(startX, startY);
+                graphics.lineTo(endX, endY);
+                graphics.lineStyle();
+                graphics.beginFill(0xfffd00);
+                graphics.drawCircle(startX, startY, 2.5);
+                graphics.drawCircle(endX, endY, 2.5);
+                graphics.endFill();
+            }
+            else {
+                // get nearest center point
+                let hoverX = Math.round(mousePoint.x / gridTileSize) * gridTileSize;
+                let hoverY = Math.round(mousePoint.y / gridTileSize) * gridTileSize;
+
+                graphics.lineStyle();
+                graphics.beginFill(0xfffd00);
+                graphics.drawCircle(hoverX, hoverY, 2.5);
+                graphics.endFill();
+            }
         }
-        // draw a hover rect
-        graphics.beginFill(0, 0);
-        graphics.lineStyle(1, 0xfffd00);
-        graphics.drawRect(snappedX, snappedY, width, height);
-        graphics.endFill();
     }
 
     drawGrid(graphics, gridWidth, gridHeight, gridTileSize) {

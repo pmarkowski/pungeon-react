@@ -116,20 +116,26 @@ export const dungeonReducer = (state = {}, action) => {
             };
         }
         case 'ADD_SPACE': {
-            if (state.selectedTool === 'NewSpace') {
-                let spaceArray = state.dungeon.spaces.slice();
-                spaceArray = [...spaceArray, action.newSpace];
-                return {
-                    ...state,
-                    dungeon: {
-                        ...state.dungeon,
-                        spaces: spaceArray
-                    }
-                };
-            }
-            else {
-                return state;
-            }
+            let spaceArray = state.dungeon.spaces.slice();
+            spaceArray = [...spaceArray, action.newSpace];
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    spaces: spaceArray
+                }
+            };
+        }
+        case 'ADD_WALL': {
+            let wallArray = state.dungeon.walls.slice();
+            wallArray = [...wallArray, action.newWall];
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    walls: wallArray
+                }
+            };
         }
         case 'SELECT_TOOL': {
             let selectedObject = state.selectedObject;
