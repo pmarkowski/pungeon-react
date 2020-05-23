@@ -30,6 +30,18 @@ export const setSelectedObjectSize = (width, height) => ({
     height: height
 })
 
+export const setSelectedObjectStart = (x, y) => ({
+    type: 'SET_SELECTED_OBJECT_START',
+    x: x,
+    y: y
+})
+
+export const setSelectedObjectEnd = (x, y) => ({
+    type: 'SET_SELECTED_OBJECT_END',
+    x: x,
+    y: y
+})
+
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
         case 'MOUSE_DOWN': {
@@ -115,6 +127,53 @@ export const dungeonReducer = (state = {}, action) => {
                 }
             };
         }
+        case 'SET_SELECTED_OBJECT_START': {
+            let arrayWithUpdatedObject = state.dungeon.walls.map(wall => {
+                if (wall.id === state.selectedObject) {
+                    return {
+                        ...wall,
+                        start: {
+                            x: action.x,
+                            y: action.y
+                        }
+                    };
+                }
+                else {
+                    return wall;
+                }
+            });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    walls: arrayWithUpdatedObject
+                }
+            };
+        }
+        case 'SET_SELECTED_OBJECT_END': {
+            let arrayWithUpdatedObject = state.dungeon.walls.map(wall => {
+                if (wall.id === state.selectedObject) {
+                    return {
+                        ...wall,
+                        end: {
+                            x: action.x,
+                            y: action.y
+                        }
+                    };
+                }
+                else {
+                    return wall;
+                }
+            });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    walls: arrayWithUpdatedObject
+                }
+            };
+
+        }
         case 'ADD_SPACE': {
             let spaceArray = state.dungeon.spaces.slice();
             spaceArray = [...spaceArray, action.newSpace];
@@ -163,12 +222,14 @@ export const dungeonReducer = (state = {}, action) => {
             let selectedObjectId = state.selectedObject;
             if (selectedObjectId) {
                 let newSpaceArray = state.dungeon.spaces.filter(space => space.id !== selectedObjectId);
+                let newWallArray = state.dungeon.walls.filter(wall => wall.id !== selectedObjectId);
                 return {
                     ...state,
                     selectedObject: null,
                     dungeon: {
                         ...state.dungeon,
-                        spaces: newSpaceArray
+                        spaces: newSpaceArray,
+                        walls: newWallArray
                     }
                 }
             }

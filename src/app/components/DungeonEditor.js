@@ -40,7 +40,6 @@ export default class DungeonEditor extends React.Component {
             graphics.clear();
 
             this.drawSpaces(app.stage, state, gridTileSize);
-            this.drawWalls(graphics, state.dungeon.walls, gridTileSize);
             this.drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height, gridTileSize);
 
             if (app.renderer.plugins.interaction.mouseOverRenderer) {
@@ -126,6 +125,7 @@ export default class DungeonEditor extends React.Component {
                 store.dispatch({
                     type: 'ADD_WALL',
                     newWall: {
+                        id: uuid(),
                         start: {
                             x: startX,
                             y: startY
@@ -146,12 +146,28 @@ export default class DungeonEditor extends React.Component {
             return map;
         }, {});
         // Add any spaces that are in state but not in pixi
-        let containerSpaceIds = new Set(container.children.map(child => child.id));
+        let containerObjectIds = new Set(container.children.map(child => child.id));
         let stateSpaceIds = Object.keys(stateSpaceMap);
         stateSpaceIds.forEach(spaceId => {
-            if (!containerSpaceIds.has(spaceId)) {
+            if (!containerObjectIds.has(spaceId)) {
                 let newChildGraphics = new PIXI.Graphics();
                 newChildGraphics.id = spaceId;
+                newChildGraphics.interactive = true;
+                newChildGraphics.mouseup = function () {
+                    store.dispatch(selectObject(this.id));
+                };
+                container.addChild(newChildGraphics);
+            }
+        });
+        let stateWallMap = state.dungeon.walls.reduce((map, wall) => {
+            map[wall.id] = wall;
+            return map;
+        }, {});
+        let stateWallIds = Object.keys(stateWallMap);
+        stateWallIds.forEach(wallId => {
+            if (!containerObjectIds.has(wallId)) {
+                let newChildGraphics = new PIXI.Graphics();
+                newChildGraphics.id = wallId;
                 newChildGraphics.interactive = true;
                 newChildGraphics.mouseup = function () {
                     store.dispatch(selectObject(this.id));
@@ -164,6 +180,7 @@ export default class DungeonEditor extends React.Component {
         container.children.forEach(graphics => {
             if (graphics.id) {
                 let space = stateSpaceMap[graphics.id];
+                let wall = stateWallMap[graphics.id];
                 if (space) {
                     graphics.clear();
                     graphics.beginFill(0xd6d5d5);
@@ -181,25 +198,36 @@ export default class DungeonEditor extends React.Component {
                         graphics.tint = 0xffffff;
                     }
                 }
+                else if (wall) {
+                    graphics.clear();
+                    graphics.beginFill(0x0266e6, 1);
+                    graphics.lineStyle(10, 0x0266e6, 1, 0.5);
+                    graphics.moveTo(wall.start.x * gridTileSize, wall.start.y * gridTileSize);
+                    graphics.lineTo(wall.end.x * gridTileSize, wall.end.y * gridTileSize);
+                    graphics.lineStyle();
+                    graphics.drawCircle(wall.start.x * gridTileSize, wall.start.y * gridTileSize, 5);
+                    graphics.drawCircle(wall.end.x * gridTileSize, wall.end.y * gridTileSize, 5);
+                    var half = 10 / 2;
+                    graphics.endFill();
+
+                    if (state.selectedObject === graphics.id) {
+                        graphics.tint = 0xffff33;
+                    }
+                    else {
+                        graphics.tint = 0xffffff;
+                    }
+                    graphics.hitArea = new PIXI.Polygon([
+                        wall.start.x * gridTileSize - half, wall.start.y * gridTileSize - half,
+                        wall.start.x * gridTileSize + half, wall.start.y * gridTileSize + half,
+                        wall.end.x * gridTileSize + half, wall.end.y * gridTileSize + half,
+                        wall.end.x * gridTileSize - half, wall.end.y * gridTileSize -half,
+                    ]);
+                }
                 else {
                     container.removeChild(graphics);
                 }
             }
         });
-    }
-
-    drawWalls(graphics, dungeonWalls, gridTileSize) {
-        graphics.beginFill();
-        dungeonWalls.forEach(wall => {
-            graphics.beginFill(0x0266e6, 1);
-            graphics.lineStyle(10, 0x0266e6, 1, 0.5);
-            graphics.moveTo(wall.start.x * gridTileSize, wall.start.y * gridTileSize);
-            graphics.lineTo(wall.end.x * gridTileSize, wall.end.y * gridTileSize);
-            graphics.lineStyle();
-            graphics.drawCircle(wall.start.x * gridTileSize, wall.start.y * gridTileSize, 5);
-            graphics.drawCircle(wall.end.x * gridTileSize, wall.end.y * gridTileSize, 5);
-            graphics.endFill();
-        })
     }
 
     drawSelectedGridBox(app, state, gridTileSize, graphics) {

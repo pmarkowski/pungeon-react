@@ -60,6 +60,7 @@ const store = createStore(dungeonReducer,
       ],
       walls: [
         {
+          id: '4abe3330-4a95-4c29-b71d-8ea768da1ee6',
           start: {
             x: 1,
             y: 1
@@ -70,6 +71,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: 'ad3c6f9b-f3f0-4025-8073-daacc68483ec',
           start: {
             x: 6,
             y: 6
@@ -80,6 +82,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '68365136-d12f-4e54-8f7b-4cbd3ab424eb',
           start: {
             x: 6,
             y: 13
@@ -90,6 +93,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '3d6435e5-8d67-4405-87d0-72c4e8f4dfaa',
           start: {
             x: 13,
             y: 13
@@ -100,6 +104,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '384ac23d-f5fc-4cd1-9ad7-b528b62fa732',
           start: {
             x: 13,
             y: 4
@@ -110,6 +115,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '161e3147-ca11-4dc4-a26b-ca8295c5abaa',
           start: {
             x: 6,
             y: 4
@@ -120,6 +126,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: 'e8092d63-e7e2-4cd2-8c80-8cd6030980f1',
           start: {
             x: 6,
             y: 1
@@ -130,6 +137,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '71ed94d3-177b-428b-a8e5-fe25eb79a4ea',
           start: {
             x: 1,
             y: 1
@@ -140,6 +148,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '0ea47a6f-af9f-4ec6-a7f3-881332643e2a',
           start: {
             x: 15,
             y: 15
@@ -150,6 +159,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: 'f7ec5579-7966-4ba4-b8ee-fdaad6372842',
           start: {
             x: 21,
             y: 22
@@ -160,6 +170,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '1e587060-37cc-4b87-a88a-852c8055cabb',
           start: {
             x: 21,
             y: 15
@@ -170,6 +181,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '79e1f702-6d60-435b-ba1e-584077a7d479',
           start: {
             x: 21,
             y: 19
@@ -180,6 +192,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '231997d1-1453-4573-a2c0-0571428d7ac9',
           start: {
             x: 25,
             y: 19
@@ -190,6 +203,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '85033454-8145-4d36-9b58-5e891f731f25',
           start: {
             x: 21,
             y: 22
@@ -200,6 +214,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '2c6b4f88-4163-4847-ba05-c4ce865dfd87',
           start: {
             x: 21,
             y: 28
@@ -210,6 +225,7 @@ const store = createStore(dungeonReducer,
           }
         },
         {
+          id: '57013c9b-609f-4e59-ae1a-fd94a49bac80',
           start: {
             x: 25,
             y: 19
