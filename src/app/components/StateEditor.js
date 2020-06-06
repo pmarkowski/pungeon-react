@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
-import { deleteSelectedObject, setSelectedObjectPosition, setSelectedObjectSize, setSelectedObjectStart, setSelectedObjectEnd, setDungeonSize } from '../reducers/dungeonReducer'
+import * as DungeonActions from '../reducers/dungeonReducer'
 import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 
@@ -11,27 +11,27 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize }) 
                 <PositionEditor
                     x={selectedObject.position.x}
                     y={selectedObject.position.y}
-                    onUpdate={(x, y) => dispatch(setSelectedObjectPosition(x, y))} />
+                    onUpdate={(x, y) => dispatch(DungeonActions.setSelectedObjectPosition(x, y))} />
             }
             {selectedObject.size &&
                 <SizeEditor
                     width={selectedObject.size.width}
                     height={selectedObject.size.height}
-                    onUpdate={(width, height) => dispatch(setSelectedObjectSize(width, height))} />
+                    onUpdate={(width, height) => dispatch(DungeonActions.setSelectedObjectSize(width, height))} />
             }
             {selectedObject.start &&
                 <PositionEditor
                     title="Start"
                     x={selectedObject.start.x}
                     y={selectedObject.start.y}
-                    onUpdate={(x,y) => dispatch(setSelectedObjectStart(x, y))} />
+                    onUpdate={(x,y) => dispatch(DungeonActions.setSelectedObjectStart(x, y))} />
             }
             {selectedObject.end &&
                 <PositionEditor
                     title="End"
                     x={selectedObject.end.x}
                     y={selectedObject.end.y}
-                    onUpdate={(x,y) => dispatch(setSelectedObjectEnd(x, y))} />
+                    onUpdate={(x,y) => dispatch(DungeonActions.setSelectedObjectEnd(x, y))} />
             }
             {selectedObjectId &&
                 <div className="card bg-dark text-light border-secondary mb-3">
@@ -41,7 +41,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize }) 
                     <div className="card-body">
                         <button
                             className="btn btn-outline-danger"
-                            onClick={() => dispatch(deleteSelectedObject())}>
+                            onClick={() => dispatch(DungeonActions.deleteSelectedObject())}>
                                 Delete Object
                         </button>
                     </div>
@@ -65,9 +65,10 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize }) 
                 </div>
             </div>
             <SizeEditor
+                title="Dungeon Size"
                 width={dungeonSize.width}
                 height={dungeonSize.height}
-                onUpdate={(width, height) => dispatch(setDungeonSize(width, height))} />
+                onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
         </React.Fragment>
     }
 }
