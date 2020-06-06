@@ -44,6 +44,12 @@ export const setSelectedObjectEnd = (x, y) => ({
     y: y
 })
 
+export const setDungeonSize = (width, height) => ({
+    type: 'SET_DUNGEON_SIZE',
+    width: width,
+    height: height
+})
+
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
         case 'MOUSE_DOWN': {
@@ -59,6 +65,18 @@ export const dungeonReducer = (state = {}, action) => {
                 ...state,
                 mouseDown: false
             };
+        }
+        case 'SET_DUNGEON_SIZE': {
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    size: {
+                        width: action.width,
+                        height: action.height
+                    }
+                }
+            }
         }
         case 'MOVE_SELECTED_OBJECT': {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
