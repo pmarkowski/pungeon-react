@@ -50,16 +50,24 @@ export default class DungeonEditor extends React.Component {
 
     setupInteractions(app, gridTileSize) {
         this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
-            let scaleDelta = 0.1
-            if (wheelEvent.wheelDeltaY < 0) {
-                scaleDelta *= -1
+            let state = store.getState();
+            if (!state.scrollMovesViewport || wheelEvent.getModifierState("Control")) {
+                let scaleDelta = 0.1
+                if (wheelEvent.wheelDeltaY < 0) {
+                    scaleDelta *= -1
+                }
+                let newScale = Math.min(Math.max(app.stage.scale.x + scaleDelta, 0.1), 2)
+                if (newScale !== app.stage.scale.x) {
+                    app.stage.scale.set(newScale)
+                    let localMousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage)
+                    app.stage.position.x -= (localMousePoint.x) * scaleDelta
+                    app.stage.position.y -= (localMousePoint.y) * scaleDelta
+                }
             }
-            let newScale = Math.min(Math.max(app.stage.scale.x + scaleDelta, 0.1), 2)
-            if (newScale !== app.stage.scale.x) {
-                app.stage.scale.set(newScale)
-                let localMousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage)
-                app.stage.position.x -= (localMousePoint.x) * scaleDelta
-                app.stage.position.y -= (localMousePoint.y) * scaleDelta
+            else {
+                let scaleDelta = 0.5;
+                app.stage.position.x += wheelEvent.wheelDeltaX * scaleDelta;
+                app.stage.position.y += wheelEvent.wheelDeltaY * scaleDelta;
             }
         });
         this.canvasDiv.addEventListener('contextmenu', (event) => {
