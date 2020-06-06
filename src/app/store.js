@@ -3,6 +3,7 @@ import dungeonReducer from './reducers/dungeonReducer.js'
 
 const store = createStore(dungeonReducer,
   {
+    scrollMovesViewport: false,
     mouseDown: false,
     mouseStartX: 0,
     mouseStartY: 0,
