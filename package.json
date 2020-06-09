@@ -1,5 +1,6 @@
 {
-  "name": "pungeon-react-experiments",
+  "name": "pungeon-react",
+  "homepage": "/pungeon-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
