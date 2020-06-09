@@ -50,6 +50,11 @@ export const setDungeonSize = (width, height) => ({
     height: height
 })
 
+export const setScrollMovesViewport = (scrollMovesViewport) => ({
+    type: 'SET_SCROLL_MOVES_VIEWPORT',
+    scrollMovesViewport: scrollMovesViewport
+})
+
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
         case 'MOUSE_DOWN': {
@@ -76,6 +81,12 @@ export const dungeonReducer = (state = {}, action) => {
                         height: action.height
                     }
                 }
+            }
+        }
+        case 'SET_SCROLL_MOVES_VIEWPORT': {
+            return {
+                ...state,
+                scrollMovesViewport: action.scrollMovesViewport
             }
         }
         case 'MOVE_SELECTED_OBJECT': {

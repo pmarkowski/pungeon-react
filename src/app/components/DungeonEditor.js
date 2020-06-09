@@ -69,6 +69,7 @@ export default class DungeonEditor extends React.Component {
                 app.stage.position.x += wheelEvent.wheelDeltaX * scaleDelta;
                 app.stage.position.y += wheelEvent.wheelDeltaY * scaleDelta;
             }
+            wheelEvent.preventDefault();
         });
         this.canvasDiv.addEventListener('contextmenu', (event) => {
             event.preventDefault()

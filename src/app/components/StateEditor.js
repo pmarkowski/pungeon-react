@@ -4,7 +4,7 @@ import * as DungeonActions from '../reducers/dungeonReducer'
 import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 
-let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize }) => {
+let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, scrollPansViewport }) => {
     if (selectedObjectId) {
         return <React.Fragment>
             {selectedObject.position &&
@@ -69,6 +69,19 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize }) 
                 width={dungeonSize.width}
                 height={dungeonSize.height}
                 onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
+            <div className="card bg-dark text-light border-secondary mb-3">
+                <div className="card-header border-secondary">
+                    <h5>Editor Options</h5>
+                </div>
+                <div className="card-body">
+                    <div>
+                        <label>
+                            <input type='checkbox' value={scrollPansViewport} onChange={(event) => dispatch(DungeonActions.setScrollMovesViewport(event.target.checked))}></input>
+                            Scroll to pan
+                        </label>
+                    </div>
+                </div>
+            </div>
         </React.Fragment>
     }
 }
@@ -77,7 +90,8 @@ const mapStateToProps = state => ({
     selectedObjectId: state.selectedObject,
     selectedObject: state.dungeon.spaces.filter(space => space.id === state.selectedObject)[0] ||
         state.dungeon.walls.filter(wall => wall.id === state.selectedObject)[0],
-    dungeonSize: state.dungeon.size
+    dungeonSize: state.dungeon.size,
+    scrollPansViewport: state.scrollPansViewport
 })
 
 StateEditor = connect(mapStateToProps)(StateEditor)
