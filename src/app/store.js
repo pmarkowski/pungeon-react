@@ -9,6 +9,19 @@ const store = createStore(dungeonReducer,
     mouseStartX: 0,
     mouseStartY: 0,
     selectedTool: TOOLTYPE.NEW_SPACE,
+    editor: {
+      scale: 1,
+      position: {
+        x: 0,
+        y: 0
+      },
+      mouse: {
+        dungeonPosition: {
+          x: 0,
+          y: 0
+        }
+      }
+    },
     dungeon: {
       size: {
         width: 28,

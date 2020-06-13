@@ -1,6 +1,19 @@
 import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
 import TOOLTYPE from '../utils/toolTypes'
 
+export const scroll = (wheelEvent) => ({
+    type: 'SCROLL_EVENT',
+    scrollX: wheelEvent.deltaX,
+    scrollY: wheelEvent.deltaY,
+    holdingCtrl: wheelEvent.getModifierState("Control")
+})
+
+export const moveViewport = (deltaX, deltaY) => ({
+    type: 'MOVE_VIEWPORT',
+    deltaX: deltaX,
+    deltaY: deltaY
+})
+
 export const selectTool = (toolName) => ({
     type: 'SELECT_TOOL',
     selectedTool: toolName
@@ -56,8 +69,79 @@ export const setScrollMovesViewport = (scrollMovesViewport) => ({
     scrollMovesViewport: scrollMovesViewport
 })
 
+export const setMouseDungeonPosition = (x, y) => ({
+    type: 'SET_MOUSE_DUNGEON_POSITION',
+    x: x,
+    y: y
+})
+
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
+        case 'MOVE_VIEWPORT': {
+            return {
+                ...state,
+                editor: {
+                    ...state.editor,
+                    position: {
+                        x: state.editor.position.x + action.deltaX,
+                        y: state.editor.position.y + action.deltaY
+                    }
+                }
+            }
+        }
+        case 'SET_MOUSE_DUNGEON_POSITION': {
+            return {
+                ...state,
+                editor: {
+                    ...state.editor,
+                    mouse: {
+                        ...state.editor.mouse,
+                        dungeonPosition: {
+                            x: action.x,
+                            y: action.y
+                        }
+                    }
+                }
+            }
+        }
+        case 'SCROLL_EVENT': {
+            if (!state.scrollMovesViewport || action.holdingCtrl) {
+                let scaleDelta = 0.1
+                if (action.scrollY < 0) {
+                    scaleDelta *= -1
+                }
+                let newScale = Math.min(Math.max(state.editor.scale + scaleDelta, 0.1), 2)
+                if (state.editor.scale !== newScale) {
+                    return {
+                        ...state,
+                        editor: {
+                            ...state.editor,
+                            scale: newScale,
+                            position: {
+                                x: state.editor.position.x - (state.editor.mouse.dungeonPosition.x * scaleDelta),
+                                y: state.editor.position.y - (state.editor.mouse.dungeonPosition.y * scaleDelta),
+                            }
+                        }
+                    };
+                }
+                else {
+                    return state;
+                }
+            }
+            else {
+                let scaleDelta = 0.5;
+                return {
+                    ...state,
+                    editor: {
+                        ...state.editor,
+                        position: {
+                           x: state.editor.position.x + action.scrollX * scaleDelta,
+                           y: state.editor.position.y + action.scrollY * scaleDelta
+                        }
+                    }
+                };
+            }
+        }
         case 'MOUSE_DOWN': {
             return {
                 ...state,

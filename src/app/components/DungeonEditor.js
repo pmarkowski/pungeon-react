@@ -2,9 +2,10 @@ import React from 'react'
 import * as PIXI from 'pixi.js'
 import store from '../store.js'
 import { v4 as uuid } from 'uuid'
-import { selectObject } from "../reducers/dungeonReducer";
+import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReducer";
 import handleKeyboardEvent from '../utils/keyboardEventHandlers.js';
 import TOOLTYPE from '../utils/toolTypes.js';
+import { handleWheelEvent, handleMouseMove } from '../utils/mouseEventHandlers.js';
 
 export default class DungeonEditor extends React.Component {
     render() {
@@ -38,6 +39,11 @@ export default class DungeonEditor extends React.Component {
         app.ticker.add((delta) => {
             var state = store.getState();
 
+            app.stage.position.set(state.editor.position.x, state.editor.position.y);
+            if (app.stage.scale.x !== state.editor.scale) {
+                app.stage.scale.set(state.editor.scale);
+            }
+
             graphics.clear();
 
             this.drawSpaces(app.stage, state, gridTileSize);
@@ -45,31 +51,19 @@ export default class DungeonEditor extends React.Component {
 
             if (app.renderer.plugins.interaction.mouseOverRenderer) {
                 this.drawSelectedGridBox(app, state, gridTileSize, graphics);
+
+                let mousePosition = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
+                store.dispatch(setMouseDungeonPosition(mousePosition.x, mousePosition.y));
+            }
+            else {
+                store.dispatch(setMouseDungeonPosition(null, null));
             }
         });
     }
 
     setupInteractions(app, gridTileSize) {
         this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
-            let state = store.getState();
-            if (!state.scrollMovesViewport || wheelEvent.getModifierState("Control")) {
-                let scaleDelta = 0.1
-                if (wheelEvent.wheelDeltaY < 0) {
-                    scaleDelta *= -1
-                }
-                let newScale = Math.min(Math.max(app.stage.scale.x + scaleDelta, 0.1), 2)
-                if (newScale !== app.stage.scale.x) {
-                    app.stage.scale.set(newScale)
-                    let localMousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage)
-                    app.stage.position.x -= (localMousePoint.x) * scaleDelta
-                    app.stage.position.y -= (localMousePoint.y) * scaleDelta
-                }
-            }
-            else {
-                let scaleDelta = 0.5;
-                app.stage.position.x += wheelEvent.wheelDeltaX * scaleDelta;
-                app.stage.position.y += wheelEvent.wheelDeltaY * scaleDelta;
-            }
+            handleWheelEvent(wheelEvent, store);
             wheelEvent.preventDefault();
         });
         this.canvasDiv.addEventListener('contextmenu', (event) => {
@@ -82,10 +76,7 @@ export default class DungeonEditor extends React.Component {
             this.onMouseUp(app, gridTileSize)
         });
         this.canvasDiv.addEventListener('pointermove', (pointerEvent) => {
-            if (pointerEvent.buttons === 2) {
-                app.stage.position.x += pointerEvent.movementX
-                app.stage.position.y += pointerEvent.movementY
-            }
+            handleMouseMove(pointerEvent, store);
         });
         this.canvasDiv.addEventListener('keydown', (event) => {
             handleKeyboardEvent(event, store);
