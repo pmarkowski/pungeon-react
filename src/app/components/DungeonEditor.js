@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 import store from '../store.js'
 import { v4 as uuid } from 'uuid'
 import { selectObject } from "../reducers/dungeonReducer";
-import handleKeyboardEvent from '../utils/handleKeyboardEvent.js';
+import handleKeyboardEvent from '../utils/keyboardEventHandlers.js';
 import TOOLTYPE from '../utils/toolTypes.js';
 
 export default class DungeonEditor extends React.Component {
