@@ -1,4 +1,5 @@
 import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
+import TOOLTYPE from '../utils/toolTypes'
 
 export const selectTool = (toolName) => ({
     type: 'SELECT_TOOL',
@@ -194,7 +195,7 @@ export const dungeonReducer = (state = {}, action) => {
         }
         case 'SELECT_TOOL': {
             let selectedObject = state.selectedObject;
-            if (action.selectedTool !== 'Select') {
+            if (action.selectedTool !== TOOLTYPE.SELECT) {
                 selectedObject = null;
             }
             return {
@@ -204,7 +205,7 @@ export const dungeonReducer = (state = {}, action) => {
             };
         }
         case 'SELECT_OBJECT': {
-            if (state.selectedTool === 'Select') {
+            if (state.selectedTool === TOOLTYPE.SELECT) {
                 return {
                     ...state,
                     selectedObject: action.objectId

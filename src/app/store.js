@@ -1,5 +1,6 @@
 import { createStore } from 'redux';
 import dungeonReducer from './reducers/dungeonReducer.js'
+import TOOLTYPE from './utils/toolTypes.js';
 
 const store = createStore(dungeonReducer,
   {
@@ -7,7 +8,7 @@ const store = createStore(dungeonReducer,
     mouseDown: false,
     mouseStartX: 0,
     mouseStartY: 0,
-    selectedTool: 'NewSpace',
+    selectedTool: TOOLTYPE.NEW_SPACE,
     dungeon: {
       size: {
         width: 28,

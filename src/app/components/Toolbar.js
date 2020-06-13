@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from 'react-redux'
 import { selectTool } from '../reducers/dungeonReducer'
 import ToolbarButton from "./ToolbarButton"
+import TOOLTYPE from "../utils/toolTypes"
 
 let Toolbar = ({ dispatch, selectedTool }) => {
     const dispatchSelectedTool = (toolId) => dispatch(selectTool(toolId))
@@ -10,17 +11,17 @@ let Toolbar = ({ dispatch, selectedTool }) => {
         <div className="btn-group" role="group">
             <ToolbarButton
                 toolName='Select'
-                toolId='Select'
+                toolId={TOOLTYPE.SELECT}
                 selectedTool={selectedTool}
                 onClick={dispatchSelectedTool} />
             <ToolbarButton
                 toolName='New Space'
-                toolId='NewSpace'
+                toolId={TOOLTYPE.NEW_SPACE}
                 selectedTool={selectedTool}
                 onClick={dispatchSelectedTool} />
             <ToolbarButton
                 toolName='New Wall'
-                toolId='NewWall'
+                toolId={TOOLTYPE.NEW_WALL}
                 selectedTool={selectedTool}
                 onClick={dispatchSelectedTool} />
         </div>

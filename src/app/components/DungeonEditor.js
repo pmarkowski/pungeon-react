@@ -4,6 +4,7 @@ import store from '../store.js'
 import { v4 as uuid } from 'uuid'
 import { selectObject } from "../reducers/dungeonReducer";
 import handleKeyboardEvent from '../utils/handleKeyboardEvent.js';
+import TOOLTYPE from '../utils/toolTypes.js';
 
 export default class DungeonEditor extends React.Component {
     render() {
@@ -103,7 +104,7 @@ export default class DungeonEditor extends React.Component {
             let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
             store.dispatch({ type: 'MOUSE_UP' });
             let state = store.getState();
-            if (state.selectedTool === 'NewSpace') {
+            if (state.selectedTool === TOOLTYPE.NEW_SPACE) {
                 // TODO: Some terrible redux practices here I'm sure
                 // Yep, this should go into the reducer or dispatch a thunk that will have access
                 // to the full state.
@@ -126,7 +127,7 @@ export default class DungeonEditor extends React.Component {
                     }
                 });
             }
-            else if (state.selectedTool === 'NewWall') {
+            else if (state.selectedTool === TOOLTYPE.NEW_WALL) {
                 let startX = Math.round(state.mouseStartX / gridTileSize);
                 let startY = Math.round(state.mouseStartY / gridTileSize);
                 let endX = Math.round(mousePoint.x / gridTileSize);
@@ -242,7 +243,7 @@ export default class DungeonEditor extends React.Component {
     drawSelectedGridBox(app, state, gridTileSize, graphics) {
         let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
         let snappedX, snappedY, width, height;
-        if (state.selectedTool !== 'NewWall') {
+        if (state.selectedTool !== TOOLTYPE.NEW_WALL) {
             if (state.mouseDown) {
                 let startX = Math.min(state.mouseStartX, mousePoint.x);
                 let startY = Math.min(state.mouseStartY, mousePoint.y);
