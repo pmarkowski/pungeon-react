@@ -107,7 +107,7 @@ export const dungeonReducer = (state = {}, action) => {
         case 'SCROLL_EVENT': {
             if (!state.scrollMovesViewport || action.holdingCtrl) {
                 let scaleDelta = 0.1
-                if (action.scrollY < 0) {
+                if (action.scrollY > 0) {
                     scaleDelta *= -1
                 }
                 let newScale = Math.min(Math.max(state.editor.scale + scaleDelta, 0.1), 2)
@@ -135,8 +135,8 @@ export const dungeonReducer = (state = {}, action) => {
                     editor: {
                         ...state.editor,
                         position: {
-                           x: state.editor.position.x + action.scrollX * scaleDelta,
-                           y: state.editor.position.y + action.scrollY * scaleDelta
+                           x: state.editor.position.x - action.scrollX * scaleDelta,
+                           y: state.editor.position.y - action.scrollY * scaleDelta
                         }
                     }
                 };
