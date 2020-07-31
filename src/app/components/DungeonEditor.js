@@ -6,6 +6,7 @@ import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReduce
 import handleKeyboardEvent from '../utils/keyboardEventHandlers.js';
 import TOOLTYPE from '../utils/toolTypes.js';
 import { handleWheelEvent, handleMouseMove } from '../utils/mouseEventHandlers.js';
+import { getClosestPointOnLine, lineLength } from '../utils/geometry.js';
 
 export default class DungeonEditor extends React.Component {
     render() {
@@ -234,7 +235,65 @@ export default class DungeonEditor extends React.Component {
     drawSelectedGridBox(app, state, gridTileSize, graphics) {
         let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
         let snappedX, snappedY, width, height;
-        if (state.selectedTool !== TOOLTYPE.NEW_WALL) {
+        
+        if (state.selectedTool === TOOLTYPE.NEW_WALL) {
+            if (state.mouseDown) {
+                let startX = Math.round(state.mouseStartX / gridTileSize) * gridTileSize;
+                let startY = Math.round(state.mouseStartY / gridTileSize) * gridTileSize;
+                let endX = Math.round(mousePoint.x / gridTileSize) * gridTileSize;
+                let endY = Math.round(mousePoint.y / gridTileSize) * gridTileSize;
+                graphics.lineStyle(5, 0xfffd00);
+                graphics.moveTo(startX, startY);
+                graphics.lineTo(endX, endY);
+                graphics.lineStyle();
+                graphics.beginFill(0xfffd00);
+                graphics.drawCircle(startX, startY, 2.5);
+                graphics.drawCircle(endX, endY, 2.5);
+                graphics.endFill();
+            }
+            else {
+                // get nearest center point
+                let hoverX = Math.round(mousePoint.x / gridTileSize) * gridTileSize;
+                let hoverY = Math.round(mousePoint.y / gridTileSize) * gridTileSize;
+
+                graphics.lineStyle();
+                graphics.beginFill(0xfffd00);
+                graphics.drawCircle(hoverX, hoverY, 2.5);
+                graphics.endFill();
+            }
+        }
+        else if (state.selectedTool === TOOLTYPE.NEW_DOOR) {
+            if (!state.mouseDown) {
+                // try to snap to the nearest line:
+                // for each line, get the nearest point on the line
+                let minDistance = null;
+                let snapPoint = null;
+                state.dungeon.walls.forEach(wall => {
+                    // try each point and get the shortest distance
+                    let scaledStart = {
+                        x: wall.start.x * gridTileSize,
+                        y: wall.start.y * gridTileSize
+                    };
+                    let scaledEnd = {
+                        x: wall.end.x * gridTileSize,
+                        y: wall.end.y * gridTileSize
+                    }
+                    let closestPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
+                    // if the shortest distance of one is < snapping threshold, snap to it
+                    let distance = lineLength(closestPoint, mousePoint);
+                    if (!minDistance || distance < minDistance) {
+                        minDistance = distance;
+                        snapPoint = closestPoint;
+                    }
+                });
+
+                graphics.lineStyle();
+                graphics.beginFill(0xfffd00);
+                graphics.drawCircle(snapPoint.x, snapPoint.y, 2.5);
+                graphics.endFill();
+            }
+        }
+        else {
             if (state.mouseDown) {
                 let startX = Math.min(state.mouseStartX, mousePoint.x);
                 let startY = Math.min(state.mouseStartY, mousePoint.y);
@@ -260,32 +319,6 @@ export default class DungeonEditor extends React.Component {
             graphics.lineStyle(1, 0xfffd00);
             graphics.drawRect(snappedX, snappedY, width, height);
             graphics.endFill();
-        }
-        else {
-            if (state.mouseDown) {
-                let startX = Math.round(state.mouseStartX / gridTileSize) * gridTileSize;
-                let startY = Math.round(state.mouseStartY / gridTileSize) * gridTileSize;
-                let endX = Math.round(mousePoint.x / gridTileSize) * gridTileSize;
-                let endY = Math.round(mousePoint.y / gridTileSize) * gridTileSize;
-                graphics.lineStyle(5, 0xfffd00);
-                graphics.moveTo(startX, startY);
-                graphics.lineTo(endX, endY);
-                graphics.lineStyle();
-                graphics.beginFill(0xfffd00);
-                graphics.drawCircle(startX, startY, 2.5);
-                graphics.drawCircle(endX, endY, 2.5);
-                graphics.endFill();
-            }
-            else {
-                // get nearest center point
-                let hoverX = Math.round(mousePoint.x / gridTileSize) * gridTileSize;
-                let hoverY = Math.round(mousePoint.y / gridTileSize) * gridTileSize;
-
-                graphics.lineStyle();
-                graphics.beginFill(0xfffd00);
-                graphics.drawCircle(hoverX, hoverY, 2.5);
-                graphics.endFill();
-            }
         }
     }
 
