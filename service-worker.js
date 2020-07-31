@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/pungeon-react/precache-manifest.d44fa8a840386e1d0b36187b4959413b.js"
+  "/pungeon-react/precache-manifest.ed9510b9a9bb3ebea01bfee2823da1ca.js"
 );
 
 self.addEventListener('message', (event) => {
