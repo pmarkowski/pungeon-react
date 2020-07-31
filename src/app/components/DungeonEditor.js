@@ -140,6 +140,61 @@ export default class DungeonEditor extends React.Component {
                     }
                 });
             }
+            else if (state.selectedTool === TOOLTYPE.NEW_DOOR) {
+                let minDistance = 25;
+                let snapPoint = null;
+                let minWallId = null;
+                state.dungeon.walls.forEach(wall => {
+                    // try each point and get the shortest distance
+                    let scaledStart = {
+                        x: wall.start.x * gridTileSize,
+                        y: wall.start.y * gridTileSize
+                    };
+                    let scaledEnd = {
+                        x: wall.end.x * gridTileSize,
+                        y: wall.end.y * gridTileSize
+                    }
+                    let closestPoint = getClosestPointOnLine({
+                            x: state.mouseStartX,
+                            y: state.mouseStartY
+                        }, scaledStart, scaledEnd);
+                    // if the shortest distance of one is < snapping threshold, snap to it
+                    let distance = lineLength(closestPoint, {
+                        x: state.mouseStartX,
+                        y: state.mouseStartY
+                    });
+                    if (!minDistance || distance < minDistance) {
+                        minDistance = distance;
+                        snapPoint = closestPoint;
+                        minWallId = wall.id;
+                    }
+                });
+
+                let doorWall = state.dungeon.walls.find(wall => wall.id === minWallId);
+                let scaledStart = {
+                    x: doorWall.start.x * gridTileSize,
+                    y: doorWall.start.y * gridTileSize
+                };
+                let scaledEnd = {
+                    x: doorWall.end.x * gridTileSize,
+                    y: doorWall.end.y * gridTileSize
+                }
+                let endPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
+                store.dispatch({
+                    type: 'ADD_DOOR',
+                    newDoor: {
+                        id: uuid(),
+                        start: {
+                            x: snapPoint.x / gridTileSize,
+                            y: snapPoint.y / gridTileSize,
+                        },
+                        end: {
+                            x: endPoint.x / gridTileSize,
+                            y: endPoint.y / gridTileSize,
+                        }
+                    }
+                });
+            }
         }
     }
 
@@ -178,12 +233,29 @@ export default class DungeonEditor extends React.Component {
                 container.addChild(newChildGraphics);
             }
         });
+        let stateDoorMap = state.dungeon.doors.reduce((map, door) => {
+            map[door.id] = door;
+            return map;
+        }, {});
+        let stateDoorIds = Object.keys(stateDoorMap);
+        stateDoorIds.forEach(doorId => {
+            if (!containerObjectIds.has(doorId)) {
+                let newChildGraphics = new PIXI.Graphics();
+                newChildGraphics.id = doorId;
+                newChildGraphics.interactive = true;
+                newChildGraphics.mouseup = function () {
+                    store.dispatch(selectObject(this.id));
+                };
+                container.addChild(newChildGraphics);
+            }
+        });
 
         // Sync all child graphics with state
         container.children.forEach(graphics => {
             if (graphics.id) {
                 let space = stateSpaceMap[graphics.id];
                 let wall = stateWallMap[graphics.id];
+                let door = stateDoorMap[graphics.id];
                 if (space) {
                     graphics.clear();
                     graphics.beginFill(0xd6d5d5);
@@ -227,6 +299,30 @@ export default class DungeonEditor extends React.Component {
                         wall.end.x * gridTileSize - half, wall.end.y * gridTileSize -half,
                     ]);
                 }
+                else if (door) {
+                    graphics.zIndex = 3;
+                    graphics.clear();
+                    graphics.beginFill(0x002b56, 1);
+                    graphics.lineStyle(20, 0x002b56, 1, 0.5);
+                    graphics.moveTo(door.start.x * gridTileSize, door.start.y * gridTileSize);
+                    graphics.lineTo(door.end.x * gridTileSize, door.end.y * gridTileSize);
+                    graphics.lineStyle();
+                    var half = 20 / 2;
+                    graphics.endFill();
+
+                    if (state.selectedObject === graphics.id) {
+                        graphics.tint = 0xffff33;
+                    }
+                    else {
+                        graphics.tint = 0xffffff;
+                    }
+                    graphics.hitArea = new PIXI.Polygon([
+                        door.start.x * gridTileSize - half, door.start.y * gridTileSize - half,
+                        door.start.x * gridTileSize + half, door.start.y * gridTileSize + half,
+                        door.end.x * gridTileSize + half, door.end.y * gridTileSize + half,
+                        door.end.x * gridTileSize - half, door.end.y * gridTileSize -half,
+                    ]);
+                }
                 else {
                     container.removeChild(graphics);
                 }
@@ -268,7 +364,7 @@ export default class DungeonEditor extends React.Component {
             if (!state.mouseDown) {
                 // try to snap to the nearest line:
                 // for each line, get the nearest point on the line
-                let minDistance = null;
+                let minDistance = 25;
                 let snapPoint = null;
                 state.dungeon.walls.forEach(wall => {
                     // try each point and get the shortest distance
@@ -288,10 +384,67 @@ export default class DungeonEditor extends React.Component {
                         snapPoint = closestPoint;
                     }
                 });
+                if (snapPoint) {
+                    graphics.lineStyle();
+                    graphics.beginFill(0xfffd00);
+                    graphics.drawCircle(snapPoint.x, snapPoint.y, 2.5);
+                    graphics.endFill();
+                }
+            }
+            else {
+                let minDistance = 25;
+                let snapPoint = null;
+                let minWallId = null;
+                state.dungeon.walls.forEach(wall => {
+                    // try each point and get the shortest distance
+                    let scaledStart = {
+                        x: wall.start.x * gridTileSize,
+                        y: wall.start.y * gridTileSize
+                    };
+                    let scaledEnd = {
+                        x: wall.end.x * gridTileSize,
+                        y: wall.end.y * gridTileSize
+                    }
+                    let closestPoint = getClosestPointOnLine({
+                            x: state.mouseStartX,
+                            y: state.mouseStartY
+                        }, scaledStart, scaledEnd);
+                    // if the shortest distance of one is < snapping threshold, snap to it
+                    let distance = lineLength(closestPoint, {
+                        x: state.mouseStartX,
+                        y: state.mouseStartY
+                    });
+                    if (!minDistance || distance < minDistance) {
+                        minDistance = distance;
+                        snapPoint = closestPoint;
+                        minWallId = wall.id;
+                    }
+                });
+                // draw a line from the start point 
+                let startX = snapPoint.x;
+                let startY = snapPoint.y;
 
+                let doorWall = state.dungeon.walls.find(wall => wall.id === minWallId);
+                let scaledStart = {
+                    x: doorWall.start.x * gridTileSize,
+                    y: doorWall.start.y * gridTileSize
+                };
+                let scaledEnd = {
+                    x: doorWall.end.x * gridTileSize,
+                    y: doorWall.end.y * gridTileSize
+                }
+                let endPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
+
+                let endX = endPoint.x;
+                let endY = endPoint.y;
+
+                graphics.lineStyle(5, 0xfffd00);
+                graphics.moveTo(startX, startY);
+                graphics.lineTo(endX, endY);
                 graphics.lineStyle();
                 graphics.beginFill(0xfffd00);
-                graphics.drawCircle(snapPoint.x, snapPoint.y, 2.5);
+                graphics.drawCircle(startX, startY, 2.5);
+                graphics.drawCircle(endX, endY, 2.5);
                 graphics.endFill();
             }
         }

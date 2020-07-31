@@ -88,8 +88,9 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
 
 const mapStateToProps = state => ({
     selectedObjectId: state.selectedObject,
-    selectedObject: state.dungeon.spaces.filter(space => space.id === state.selectedObject)[0] ||
-        state.dungeon.walls.filter(wall => wall.id === state.selectedObject)[0],
+    selectedObject: state.dungeon.spaces.find(space => space.id === state.selectedObject) ||
+        state.dungeon.walls.find(wall => wall.id === state.selectedObject) ||
+        state.dungeon.doors.find(door => door.id === state.selectedObject),
     dungeonSize: state.dungeon.size,
     scrollPansViewport: state.scrollPansViewport
 })

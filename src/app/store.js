@@ -27,6 +27,7 @@ const store = createStore(dungeonReducer,
         width: 28,
         height: 32
       },
+      doors: [],
       spaces: [
         {
           id: "01f998f7-3ad4-43c6-b498-3249ab470b05",

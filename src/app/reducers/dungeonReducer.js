@@ -223,26 +223,17 @@ export const dungeonReducer = (state = {}, action) => {
             };
         }
         case 'SET_SELECTED_OBJECT_START': {
-            let arrayWithUpdatedObject = createArrayWithUpdatedObject(
+            let wallArrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.dungeon.walls,
                 state.selectedObject,
                 (wall) => wall.start = {
                     x: action.x,
                     y: action.y
                 });
-            return {
-                ...state,
-                dungeon: {
-                    ...state.dungeon,
-                    walls: arrayWithUpdatedObject
-                }
-            };
-        }
-        case 'SET_SELECTED_OBJECT_END': {
-            let arrayWithUpdatedObject = createArrayWithUpdatedObject(
-                state.dungeon.walls,
+            let doorArrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.doors,
                 state.selectedObject,
-                (wall) => wall.end = {
+                (door) => door.start = {
                     x: action.x,
                     y: action.y
                 });
@@ -250,7 +241,32 @@ export const dungeonReducer = (state = {}, action) => {
                 ...state,
                 dungeon: {
                     ...state.dungeon,
-                    walls: arrayWithUpdatedObject
+                    walls: wallArrayWithUpdatedObject,
+                    doors: doorArrayWithUpdatedObject
+                }
+            };
+        }
+        case 'SET_SELECTED_OBJECT_END': {
+            let wallArrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.walls,
+                state.selectedObject,
+                (wall) => wall.end = {
+                    x: action.x,
+                    y: action.y
+                });
+            let doorArrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.doors,
+                state.selectedObject,
+                (door) => door.end = {
+                    x: action.x,
+                    y: action.y
+                });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    walls: wallArrayWithUpdatedObject,
+                    doors: doorArrayWithUpdatedObject
                 }
             };
 
@@ -274,6 +290,17 @@ export const dungeonReducer = (state = {}, action) => {
                 dungeon: {
                     ...state.dungeon,
                     walls: wallArray
+                }
+            };
+        }
+        case 'ADD_DOOR': {
+            let doorArray = state.dungeon.doors.slice();
+            doorArray = [...doorArray, action.newDoor];
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    doors: doorArray
                 }
             };
         }
@@ -304,13 +331,15 @@ export const dungeonReducer = (state = {}, action) => {
             if (selectedObjectId) {
                 let newSpaceArray = state.dungeon.spaces.filter(space => space.id !== selectedObjectId);
                 let newWallArray = state.dungeon.walls.filter(wall => wall.id !== selectedObjectId);
+                let newDoorArray = state.dungeon.doors.filter(door => door.id !== selectedObjectId);
                 return {
                     ...state,
                     selectedObject: null,
                     dungeon: {
                         ...state.dungeon,
                         spaces: newSpaceArray,
-                        walls: newWallArray
+                        walls: newWallArray,
+                        doors: newDoorArray
                     }
                 }
             }
