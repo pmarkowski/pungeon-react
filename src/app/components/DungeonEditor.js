@@ -52,7 +52,7 @@ export default class DungeonEditor extends React.Component {
             this.drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height, gridTileSize);
 
             if (app.renderer.plugins.interaction.mouseOverRenderer) {
-                this.drawSelectedGridBox(app, state, gridTileSize, graphics);
+                this.drawMouseCursor(app, state, gridTileSize, graphics);
 
                 let mousePosition = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
                 store.dispatch(setMouseDungeonPosition(mousePosition.x, mousePosition.y));
@@ -234,7 +234,7 @@ export default class DungeonEditor extends React.Component {
         });
     }
 
-    drawSelectedGridBox(app, state, gridTileSize, graphics) {
+    drawMouseCursor(app, state, gridTileSize, graphics) {
         let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
         let snappedX, snappedY, width, height;
         
