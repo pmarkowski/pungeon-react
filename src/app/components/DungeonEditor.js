@@ -7,6 +7,7 @@ import handleKeyboardEvent from '../utils/keyboardEventHandlers.js';
 import TOOLTYPE from '../utils/toolTypes.js';
 import { handleWheelEvent, handleMouseMove } from '../utils/mouseEventHandlers.js';
 import { getClosestPointOnLine, lineLength } from '../utils/geometry.js';
+import { GRID_TILE_SIZE } from '../utils/constants.js';
 
 export default class DungeonEditor extends React.Component {
     render() {
@@ -34,7 +35,7 @@ export default class DungeonEditor extends React.Component {
         app.stage.sortableChildren = true;
         app.stage.addChild(graphics);
 
-        let gridTileSize = 70.0;
+        let gridTileSize = GRID_TILE_SIZE;
         this.setupInteractions(app, gridTileSize)
 
         app.ticker.add((delta) => {
@@ -47,7 +48,7 @@ export default class DungeonEditor extends React.Component {
 
             graphics.clear();
 
-            this.drawSpaces(app.stage, state, gridTileSize);
+            this.drawDungeonObjects(app.stage, state, gridTileSize);
             this.drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height, gridTileSize);
 
             if (app.renderer.plugins.interaction.mouseOverRenderer) {
@@ -142,7 +143,7 @@ export default class DungeonEditor extends React.Component {
         }
     }
 
-    drawSpaces(container, state, gridTileSize) {
+    drawDungeonObjects(container, state, gridTileSize) {
         let stateSpaceMap = state.dungeon.spaces.reduce((map, space) => {
             map[space.id] = space;
             return map;
@@ -201,6 +202,7 @@ export default class DungeonEditor extends React.Component {
                     }
                 }
                 else if (wall) {
+                    graphics.zIndex = 2;
                     graphics.clear();
                     graphics.beginFill(0x0266e6, 1);
                     graphics.lineStyle(10, 0x0266e6, 1, 0.5);
