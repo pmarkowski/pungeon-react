@@ -65,31 +65,33 @@ export const handleMouseUp = (mouseEvent, store) => {
             let minDistance = 25;
             let snapPoint = null;
             let minWallId = null;
-            state.dungeon.objects.forEach(wall =>{ if (wall.type === DUNGEON_OBJECT_TYPE.WALL) {
-                // try each point and get the shortest distance
-                let scaledStart = {
-                    x: wall.start.x * GRID_TILE_SIZE,
-                    y: wall.start.y * GRID_TILE_SIZE
-                };
-                let scaledEnd = {
-                    x: wall.end.x * GRID_TILE_SIZE,
-                    y: wall.end.y * GRID_TILE_SIZE
-                }
-                let closestPoint = getClosestPointOnLine({
+            state.dungeon.objects
+                .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
+                .forEach(wall =>{
+                    // try each point and get the shortest distance
+                    let scaledStart = {
+                        x: wall.start.x * GRID_TILE_SIZE,
+                        y: wall.start.y * GRID_TILE_SIZE
+                    };
+                    let scaledEnd = {
+                        x: wall.end.x * GRID_TILE_SIZE,
+                        y: wall.end.y * GRID_TILE_SIZE
+                    }
+                    let closestPoint = getClosestPointOnLine({
+                            x: state.mouseStartX,
+                            y: state.mouseStartY
+                        }, scaledStart, scaledEnd);
+                    // if the shortest distance of one is < snapping threshold, snap to it
+                    let distance = lineLength(closestPoint, {
                         x: state.mouseStartX,
                         y: state.mouseStartY
-                    }, scaledStart, scaledEnd);
-                // if the shortest distance of one is < snapping threshold, snap to it
-                let distance = lineLength(closestPoint, {
-                    x: state.mouseStartX,
-                    y: state.mouseStartY
+                    });
+                    if (!minDistance || distance < minDistance) {
+                        minDistance = distance;
+                        snapPoint = closestPoint;
+                        minWallId = wall.id;
+                    }
                 });
-                if (!minDistance || distance < minDistance) {
-                    minDistance = distance;
-                    snapPoint = closestPoint;
-                    minWallId = wall.id;
-                }
-            }});
 
             let doorWall = state.dungeon.objects.find(wall => wall.id === minWallId);
             let scaledStart = {

@@ -36,7 +36,7 @@ const drawDungeonObjects = (container, state) => {
         map[space.id] = space;
         return map;
     }, {});
-    
+
     let containerObjectIds = new Set(container.children.map(child => child.id));
     let stateObjectIds = Object.keys(objectIdMap);
     stateObjectIds.forEach(spaceId => {
@@ -113,24 +113,26 @@ const drawMouseCursor = (state, graphics) => {
             // for each line, get the nearest point on the line
             let minDistance = 25;
             let snapPoint = null;
-            state.dungeon.objects.forEach(wall => { if (wall.type === DUNGEON_OBJECT_TYPE.WALL) {
-                // try each point and get the shortest distance
-                let scaledStart = {
-                    x: wall.start.x * GRID_TILE_SIZE,
-                    y: wall.start.y * GRID_TILE_SIZE
-                };
-                let scaledEnd = {
-                    x: wall.end.x * GRID_TILE_SIZE,
-                    y: wall.end.y * GRID_TILE_SIZE
-                }
-                let closestPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
-                // if the shortest distance of one is < snapping threshold, snap to it
-                let distance = lineLength(closestPoint, mousePoint);
-                if (!minDistance || distance < minDistance) {
-                    minDistance = distance;
-                    snapPoint = closestPoint;
-                }
-            }});
+            state.dungeon.objects
+                .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
+                .forEach(wall => {
+                    // try each point and get the shortest distance
+                    let scaledStart = {
+                        x: wall.start.x * GRID_TILE_SIZE,
+                        y: wall.start.y * GRID_TILE_SIZE
+                    };
+                    let scaledEnd = {
+                        x: wall.end.x * GRID_TILE_SIZE,
+                        y: wall.end.y * GRID_TILE_SIZE
+                    }
+                    let closestPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
+                    // if the shortest distance of one is < snapping threshold, snap to it
+                    let distance = lineLength(closestPoint, mousePoint);
+                    if (!minDistance || distance < minDistance) {
+                        minDistance = distance;
+                        snapPoint = closestPoint;
+                    }
+                });
             if (snapPoint) {
                 graphics.lineStyle();
                 graphics.beginFill(0xfffd00);
@@ -142,31 +144,33 @@ const drawMouseCursor = (state, graphics) => {
             let minDistance = 25;
             let snapPoint = null;
             let minWallId = null;
-            state.dungeon.objects.forEach(wall => { if (wall.type === DUNGEON_OBJECT_TYPE.WALL) {
-                // try each point and get the shortest distance
-                let scaledStart = {
-                    x: wall.start.x * GRID_TILE_SIZE,
-                    y: wall.start.y * GRID_TILE_SIZE
-                };
-                let scaledEnd = {
-                    x: wall.end.x * GRID_TILE_SIZE,
-                    y: wall.end.y * GRID_TILE_SIZE
-                }
-                let closestPoint = getClosestPointOnLine({
+            state.dungeon.objects
+                .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
+                .forEach(wall => {
+                    // try each point and get the shortest distance
+                    let scaledStart = {
+                        x: wall.start.x * GRID_TILE_SIZE,
+                        y: wall.start.y * GRID_TILE_SIZE
+                    };
+                    let scaledEnd = {
+                        x: wall.end.x * GRID_TILE_SIZE,
+                        y: wall.end.y * GRID_TILE_SIZE
+                    }
+                    let closestPoint = getClosestPointOnLine({
+                            x: state.mouseStartX,
+                            y: state.mouseStartY
+                        }, scaledStart, scaledEnd);
+                    // if the shortest distance of one is < snapping threshold, snap to it
+                    let distance = lineLength(closestPoint, {
                         x: state.mouseStartX,
                         y: state.mouseStartY
-                    }, scaledStart, scaledEnd);
-                // if the shortest distance of one is < snapping threshold, snap to it
-                let distance = lineLength(closestPoint, {
-                    x: state.mouseStartX,
-                    y: state.mouseStartY
+                    });
+                    if (!minDistance || distance < minDistance) {
+                        minDistance = distance;
+                        snapPoint = closestPoint;
+                        minWallId = wall.id;
+                    }
                 });
-                if (!minDistance || distance < minDistance) {
-                    minDistance = distance;
-                    snapPoint = closestPoint;
-                    minWallId = wall.id;
-                }
-            }});
             // draw a line from the start point 
             let startX = snapPoint.x;
             let startY = snapPoint.y;
