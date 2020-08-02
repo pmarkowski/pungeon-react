@@ -3,6 +3,7 @@ import { moveViewport, scroll } from "../reducers/dungeonReducer";
 import { GRID_TILE_SIZE } from "./constants";
 import { getClosestPointOnLine, lineLength } from "./geometry";
 import TOOL_TYPE from "./toolType";
+import DUNGEON_OBJECT_TYPE from './dungeonObjectTypes';
 
 export const handleMouseDown = (mouseEvent, store) => {
     if (mouseEvent.buttons === 1) {
@@ -27,6 +28,7 @@ export const handleMouseUp = (mouseEvent, store) => {
                 type: 'ADD_SPACE',
                 newSpace: {
                     id: uuid(),
+                    type: DUNGEON_OBJECT_TYPE.SPACE,
                     position: {
                         x: startX,
                         y: startY
@@ -47,6 +49,7 @@ export const handleMouseUp = (mouseEvent, store) => {
                 type: 'ADD_WALL',
                 newWall: {
                     id: uuid(),
+                    type: DUNGEON_OBJECT_TYPE.WALL,
                     start: {
                         x: startX,
                         y: startY
@@ -62,7 +65,7 @@ export const handleMouseUp = (mouseEvent, store) => {
             let minDistance = 25;
             let snapPoint = null;
             let minWallId = null;
-            state.dungeon.walls.forEach(wall => {
+            state.dungeon.objects.forEach(wall =>{ if (wall.type === DUNGEON_OBJECT_TYPE.WALL) {
                 // try each point and get the shortest distance
                 let scaledStart = {
                     x: wall.start.x * GRID_TILE_SIZE,
@@ -86,9 +89,9 @@ export const handleMouseUp = (mouseEvent, store) => {
                     snapPoint = closestPoint;
                     minWallId = wall.id;
                 }
-            });
+            }});
 
-            let doorWall = state.dungeon.walls.find(wall => wall.id === minWallId);
+            let doorWall = state.dungeon.objects.find(wall => wall.id === minWallId);
             let scaledStart = {
                 x: doorWall.start.x * GRID_TILE_SIZE,
                 y: doorWall.start.y * GRID_TILE_SIZE
@@ -102,6 +105,7 @@ export const handleMouseUp = (mouseEvent, store) => {
                 type: 'ADD_DOOR',
                 newDoor: {
                     id: uuid(),
+                    type: DUNGEON_OBJECT_TYPE.DOOR,
                     start: {
                         x: snapPoint.x / GRID_TILE_SIZE,
                         y: snapPoint.y / GRID_TILE_SIZE,
