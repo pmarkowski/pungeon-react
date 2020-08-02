@@ -36,7 +36,7 @@ const drawDungeonObjects = (container, state) => {
         map[space.id] = space;
         return map;
     }, {});
-    // Add any spaces that are in state but not in pixi
+    
     let containerObjectIds = new Set(container.children.map(child => child.id));
     let stateObjectIds = Object.keys(objectIdMap);
     stateObjectIds.forEach(spaceId => {
