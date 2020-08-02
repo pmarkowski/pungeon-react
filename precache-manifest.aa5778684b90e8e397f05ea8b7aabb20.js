@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "707c6c578699a65ad01f1be7ffad036a",
+    "revision": "0e8e0a7594d7bee66721fb53565220e3",
     "url": "/pungeon-react/index.html"
   },
   {
-    "revision": "30b60fdc0d3967f109ad",
+    "revision": "cb00977b8c270a87615c",
     "url": "/pungeon-react/static/css/main.5ecd60fb.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/pungeon-react/static/js/2.c71b3621.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "30b60fdc0d3967f109ad",
-    "url": "/pungeon-react/static/js/main.1d6476f8.chunk.js"
+    "revision": "cb00977b8c270a87615c",
+    "url": "/pungeon-react/static/js/main.99d60a8f.chunk.js"
   },
   {
     "revision": "8e55ebcccde70c4bfc7c",
