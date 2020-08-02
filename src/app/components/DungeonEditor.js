@@ -1,13 +1,12 @@
-import React from 'react'
-import * as PIXI from 'pixi.js'
-import store from '../store.js'
-import { v4 as uuid } from 'uuid'
+import * as PIXI from 'pixi.js';
+import React from 'react';
 import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReducer";
-import handleKeyboardEvent from '../utils/keyboardEventHandlers.js';
-import TOOLTYPE from '../utils/toolTypes.js';
-import * as MouseEventHandler from '../utils/mouseEventHandlers.js';
-import { getClosestPointOnLine, lineLength } from '../utils/geometry.js';
+import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants.js';
+import { getClosestPointOnLine, lineLength } from '../utils/geometry.js';
+import handleKeyboardEvent from '../utils/keyboardEventHandlers.js';
+import * as MouseEventHandler from '../utils/mouseEventHandlers.js';
+import TOOLTYPE from '../utils/toolTypes.js';
 
 export default class DungeonEditor extends React.Component {
     render() {
@@ -36,9 +35,9 @@ export default class DungeonEditor extends React.Component {
         app.stage.addChild(graphics);
 
         let gridTileSize = GRID_TILE_SIZE;
-        this.setupInteractions(app, gridTileSize)
+        this.setupInteractions()
 
-        app.ticker.add((delta) => {
+        app.ticker.add(() => {
             var state = store.getState();
 
             app.stage.position.set(state.editor.position.x, state.editor.position.y);
@@ -63,19 +62,19 @@ export default class DungeonEditor extends React.Component {
         });
     }
 
-    setupInteractions(app, gridTileSize) {
+    setupInteractions() {
         this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
             MouseEventHandler.handleWheelEvent(wheelEvent, store);
             wheelEvent.preventDefault();
         });
         this.canvasDiv.addEventListener('contextmenu', (event) => {
-            event.preventDefault()
+            event.preventDefault();
         });
         this.canvasDiv.addEventListener('pointerdown', (event) => {
-            MouseEventHandler.handleMouseDown(event, store)
+            MouseEventHandler.handleMouseDown(event, store);
         });
-        this.canvasDiv.addEventListener('pointerup', () => {
-            this.onMouseUp(app, gridTileSize)
+        this.canvasDiv.addEventListener('pointerup', (event) => {
+            MouseEventHandler.handleMouseUp(event, store);
         });
         this.canvasDiv.addEventListener('pointermove', (pointerEvent) => {
             MouseEventHandler.handleMouseMove(pointerEvent, store);
@@ -83,112 +82,6 @@ export default class DungeonEditor extends React.Component {
         this.canvasDiv.addEventListener('keydown', (event) => {
             handleKeyboardEvent(event, store);
         });
-    }
-
-    onMouseUp(app, gridTileSize) {
-        if (app.renderer.plugins.interaction.mouse.button === 0) {
-            let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
-            store.dispatch({ type: 'MOUSE_UP' });
-            let state = store.getState();
-            if (state.selectedTool === TOOLTYPE.NEW_SPACE) {
-                // TODO: Some terrible redux practices here I'm sure
-                // Yep, this should go into the reducer or dispatch a thunk that will have access
-                // to the full state.
-                let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / gridTileSize);
-                let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / gridTileSize);
-                let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / gridTileSize);
-                let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / gridTileSize);
-                store.dispatch({
-                    type: 'ADD_SPACE',
-                    newSpace: {
-                        id: uuid(),
-                        position: {
-                            x: startX,
-                            y: startY
-                        },
-                        size: {
-                            width: endX - startX,
-                            height: endY - startY
-                        }
-                    }
-                });
-            }
-            else if (state.selectedTool === TOOLTYPE.NEW_WALL) {
-                let startX = Math.round(state.mouseStartX / gridTileSize);
-                let startY = Math.round(state.mouseStartY / gridTileSize);
-                let endX = Math.round(mousePoint.x / gridTileSize);
-                let endY = Math.round(mousePoint.y / gridTileSize);
-                store.dispatch({
-                    type: 'ADD_WALL',
-                    newWall: {
-                        id: uuid(),
-                        start: {
-                            x: startX,
-                            y: startY
-                        },
-                        end: {
-                            x: endX,
-                            y: endY
-                        }
-                    }
-                });
-            }
-            else if (state.selectedTool === TOOLTYPE.NEW_DOOR) {
-                let minDistance = 25;
-                let snapPoint = null;
-                let minWallId = null;
-                state.dungeon.walls.forEach(wall => {
-                    // try each point and get the shortest distance
-                    let scaledStart = {
-                        x: wall.start.x * gridTileSize,
-                        y: wall.start.y * gridTileSize
-                    };
-                    let scaledEnd = {
-                        x: wall.end.x * gridTileSize,
-                        y: wall.end.y * gridTileSize
-                    }
-                    let closestPoint = getClosestPointOnLine({
-                            x: state.mouseStartX,
-                            y: state.mouseStartY
-                        }, scaledStart, scaledEnd);
-                    // if the shortest distance of one is < snapping threshold, snap to it
-                    let distance = lineLength(closestPoint, {
-                        x: state.mouseStartX,
-                        y: state.mouseStartY
-                    });
-                    if (!minDistance || distance < minDistance) {
-                        minDistance = distance;
-                        snapPoint = closestPoint;
-                        minWallId = wall.id;
-                    }
-                });
-
-                let doorWall = state.dungeon.walls.find(wall => wall.id === minWallId);
-                let scaledStart = {
-                    x: doorWall.start.x * gridTileSize,
-                    y: doorWall.start.y * gridTileSize
-                };
-                let scaledEnd = {
-                    x: doorWall.end.x * gridTileSize,
-                    y: doorWall.end.y * gridTileSize
-                }
-                let endPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
-                store.dispatch({
-                    type: 'ADD_DOOR',
-                    newDoor: {
-                        id: uuid(),
-                        start: {
-                            x: snapPoint.x / gridTileSize,
-                            y: snapPoint.y / gridTileSize,
-                        },
-                        end: {
-                            x: endPoint.x / gridTileSize,
-                            y: endPoint.y / gridTileSize,
-                        }
-                    }
-                });
-            }
-        }
     }
 
     drawDungeonObjects(container, state, gridTileSize) {
