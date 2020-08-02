@@ -5,6 +5,31 @@ import { GRID_TILE_SIZE } from '../utils/constants';
 import { getClosestPointOnLine, lineLength } from '../utils/geometry.js';
 import TOOLTYPE from '../utils/toolTypes.js';
 
+export const render = (app, graphics) => {
+    var state = store.getState();
+
+    app.stage.position.set(state.editor.position.x, state.editor.position.y);
+    if (app.stage.scale.x !== state.editor.scale) {
+        app.stage.scale.set(state.editor.scale);
+    }
+
+    graphics.clear();
+
+    drawDungeonObjects(app.stage, state);
+    drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height);
+
+    if (app.renderer.plugins.interaction.mouseOverRenderer) {
+        drawMouseCursor(app, state, graphics);
+
+        let mousePosition = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
+        store.dispatch(setMouseDungeonPosition(mousePosition.x, mousePosition.y));
+    }
+    else {
+        store.dispatch(setMouseDungeonPosition(null, null));
+    }
+}
+export default render;
+
 const drawDungeonObjects = (container, state) => {
     let stateSpaceMap = state.dungeon.spaces.reduce((map, space) => {
         map[space.id] = space;
@@ -64,71 +89,13 @@ const drawDungeonObjects = (container, state) => {
             let wall = stateWallMap[graphics.id];
             let door = stateDoorMap[graphics.id];
             if (space) {
-                graphics.clear();
-                graphics.beginFill(0xd6d5d5);
-                graphics.drawRect(
-                    space.position.x * GRID_TILE_SIZE,
-                    space.position.y * GRID_TILE_SIZE,
-                    space.size.width * GRID_TILE_SIZE,
-                    space.size.height * GRID_TILE_SIZE);
-                graphics.endFill();
-
-                if (state.selectedObject === graphics.id) {
-                    graphics.tint = 0xffffcc;
-                }
-                else {
-                    graphics.tint = 0xffffff;
-                }
+                drawSpace(graphics, space, state);
             }
             else if (wall) {
-                graphics.zIndex = 2;
-                graphics.clear();
-                graphics.beginFill(0x0266e6, 1);
-                graphics.lineStyle(10, 0x0266e6, 1, 0.5);
-                graphics.moveTo(wall.start.x * GRID_TILE_SIZE, wall.start.y * GRID_TILE_SIZE);
-                graphics.lineTo(wall.end.x * GRID_TILE_SIZE, wall.end.y * GRID_TILE_SIZE);
-                graphics.lineStyle();
-                graphics.drawCircle(wall.start.x * GRID_TILE_SIZE, wall.start.y * GRID_TILE_SIZE, 5);
-                graphics.drawCircle(wall.end.x * GRID_TILE_SIZE, wall.end.y * GRID_TILE_SIZE, 5);
-                var half = 10 / 2;
-                graphics.endFill();
-
-                if (state.selectedObject === graphics.id) {
-                    graphics.tint = 0xffff33;
-                }
-                else {
-                    graphics.tint = 0xffffff;
-                }
-                graphics.hitArea = new PIXI.Polygon([
-                    wall.start.x * GRID_TILE_SIZE - half, wall.start.y * GRID_TILE_SIZE - half,
-                    wall.start.x * GRID_TILE_SIZE + half, wall.start.y * GRID_TILE_SIZE + half,
-                    wall.end.x * GRID_TILE_SIZE + half, wall.end.y * GRID_TILE_SIZE + half,
-                    wall.end.x * GRID_TILE_SIZE - half, wall.end.y * GRID_TILE_SIZE -half,
-                ]);
+                drawWall(graphics, wall, state);
             }
             else if (door) {
-                graphics.zIndex = 3;
-                graphics.clear();
-                graphics.beginFill(0x002b56, 1);
-                graphics.lineStyle(20, 0x002b56, 1, 0.5);
-                graphics.moveTo(door.start.x * GRID_TILE_SIZE, door.start.y * GRID_TILE_SIZE);
-                graphics.lineTo(door.end.x * GRID_TILE_SIZE, door.end.y * GRID_TILE_SIZE);
-                graphics.lineStyle();
-                var half = 20 / 2;
-                graphics.endFill();
-
-                if (state.selectedObject === graphics.id) {
-                    graphics.tint = 0xffff33;
-                }
-                else {
-                    graphics.tint = 0xffffff;
-                }
-                graphics.hitArea = new PIXI.Polygon([
-                    door.start.x * GRID_TILE_SIZE - half, door.start.y * GRID_TILE_SIZE - half,
-                    door.start.x * GRID_TILE_SIZE + half, door.start.y * GRID_TILE_SIZE + half,
-                    door.end.x * GRID_TILE_SIZE + half, door.end.y * GRID_TILE_SIZE + half,
-                    door.end.x * GRID_TILE_SIZE - half, door.end.y * GRID_TILE_SIZE -half,
-                ]);
+                drawDoor(graphics, door, state);
             }
             else {
                 container.removeChild(graphics);
@@ -296,27 +263,75 @@ const drawGrid = (graphics, gridWidth, gridHeight) => {
     }
 }
 
-export const render = (app, graphics) => {
-    var state = store.getState();
 
-    app.stage.position.set(state.editor.position.x, state.editor.position.y);
-    if (app.stage.scale.x !== state.editor.scale) {
-        app.stage.scale.set(state.editor.scale);
-    }
-
+const drawWall = (graphics, wall, state) => {
+    graphics.zIndex = 2;
     graphics.clear();
+    graphics.beginFill(0x0266e6, 1);
+    graphics.lineStyle(10, 0x0266e6, 1, 0.5);
+    graphics.moveTo(wall.start.x * GRID_TILE_SIZE, wall.start.y * GRID_TILE_SIZE);
+    graphics.lineTo(wall.end.x * GRID_TILE_SIZE, wall.end.y * GRID_TILE_SIZE);
+    graphics.lineStyle();
+    graphics.drawCircle(wall.start.x * GRID_TILE_SIZE, wall.start.y * GRID_TILE_SIZE, 5);
+    graphics.drawCircle(wall.end.x * GRID_TILE_SIZE, wall.end.y * GRID_TILE_SIZE, 5);
+    let half = 10 / 2;
+    graphics.endFill();
 
-    drawDungeonObjects(app.stage, state);
-    drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height);
-
-    if (app.renderer.plugins.interaction.mouseOverRenderer) {
-        drawMouseCursor(app, state, graphics);
-
-        let mousePosition = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
-        store.dispatch(setMouseDungeonPosition(mousePosition.x, mousePosition.y));
+    if (state.selectedObject === graphics.id) {
+        graphics.tint = 0xffff33;
     }
     else {
-        store.dispatch(setMouseDungeonPosition(null, null));
+        graphics.tint = 0xffffff;
+    }
+    graphics.hitArea = new PIXI.Polygon([
+        wall.start.x * GRID_TILE_SIZE - half, wall.start.y * GRID_TILE_SIZE - half,
+        wall.start.x * GRID_TILE_SIZE + half, wall.start.y * GRID_TILE_SIZE + half,
+        wall.end.x * GRID_TILE_SIZE + half, wall.end.y * GRID_TILE_SIZE + half,
+        wall.end.x * GRID_TILE_SIZE - half, wall.end.y * GRID_TILE_SIZE - half,
+    ]);
+    return half;
+}
+
+const drawSpace = (graphics, space, state) => {
+    graphics.clear();
+    graphics.beginFill(0xd6d5d5);
+    graphics.drawRect(
+        space.position.x * GRID_TILE_SIZE,
+        space.position.y * GRID_TILE_SIZE,
+        space.size.width * GRID_TILE_SIZE,
+        space.size.height * GRID_TILE_SIZE);
+    graphics.endFill();
+
+    if (state.selectedObject === graphics.id) {
+        graphics.tint = 0xffffcc;
+    }
+    else {
+        graphics.tint = 0xffffff;
     }
 }
-export default render;
+
+const drawDoor = (graphics, door, state) => {
+    graphics.zIndex = 3;
+    graphics.clear();
+    graphics.beginFill(0x002b56, 1);
+    graphics.lineStyle(20, 0x002b56, 1, 0.5);
+    graphics.moveTo(door.start.x * GRID_TILE_SIZE, door.start.y * GRID_TILE_SIZE);
+    graphics.lineTo(door.end.x * GRID_TILE_SIZE, door.end.y * GRID_TILE_SIZE);
+    graphics.lineStyle();
+    let half = 20 / 2;
+    graphics.endFill();
+
+    if (state.selectedObject === graphics.id) {
+        graphics.tint = 0xffff33;
+    }
+    else {
+        graphics.tint = 0xffffff;
+    }
+    graphics.hitArea = new PIXI.Polygon([
+        door.start.x * GRID_TILE_SIZE - half, door.start.y * GRID_TILE_SIZE - half,
+        door.start.x * GRID_TILE_SIZE + half, door.start.y * GRID_TILE_SIZE + half,
+        door.end.x * GRID_TILE_SIZE + half, door.end.y * GRID_TILE_SIZE + half,
+        door.end.x * GRID_TILE_SIZE - half, door.end.y * GRID_TILE_SIZE - half,
+    ]);
+}
+
