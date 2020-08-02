@@ -1,7 +1,9 @@
 import { scroll, moveViewport } from "../reducers/dungeonReducer";
 
-export const handleMouseDown = (mouseEvent) => {
-
+export const handleMouseDown = (mouseEvent, store) => {
+    if (mouseEvent.buttons === 1) {
+        store.dispatch({ type: 'MOUSE_DOWN' });
+    }
 }
 
 export const handleMouseUp = (mouseEvent, store) => {

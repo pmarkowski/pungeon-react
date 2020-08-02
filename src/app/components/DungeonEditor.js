@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid'
 import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReducer";
 import handleKeyboardEvent from '../utils/keyboardEventHandlers.js';
 import TOOLTYPE from '../utils/toolTypes.js';
-import { handleWheelEvent, handleMouseMove } from '../utils/mouseEventHandlers.js';
+import * as MouseEventHandler from '../utils/mouseEventHandlers.js';
 import { getClosestPointOnLine, lineLength } from '../utils/geometry.js';
 import { GRID_TILE_SIZE } from '../utils/constants.js';
 
@@ -65,31 +65,24 @@ export default class DungeonEditor extends React.Component {
 
     setupInteractions(app, gridTileSize) {
         this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
-            handleWheelEvent(wheelEvent, store);
+            MouseEventHandler.handleWheelEvent(wheelEvent, store);
             wheelEvent.preventDefault();
         });
         this.canvasDiv.addEventListener('contextmenu', (event) => {
             event.preventDefault()
         });
-        this.canvasDiv.addEventListener('pointerdown', () => {
-            this.onMouseDown(app)
+        this.canvasDiv.addEventListener('pointerdown', (event) => {
+            MouseEventHandler.handleMouseDown(event, store)
         });
         this.canvasDiv.addEventListener('pointerup', () => {
             this.onMouseUp(app, gridTileSize)
         });
         this.canvasDiv.addEventListener('pointermove', (pointerEvent) => {
-            handleMouseMove(pointerEvent, store);
+            MouseEventHandler.handleMouseMove(pointerEvent, store);
         });
         this.canvasDiv.addEventListener('keydown', (event) => {
             handleKeyboardEvent(event, store);
         });
-    }
-
-    onMouseDown(app) {
-        if (app.renderer.plugins.interaction.mouse.button === 0) {
-            let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
-            store.dispatch({ type: 'MOUSE_DOWN', x: mousePoint.x, y: mousePoint.y });
-        }
     }
 
     onMouseUp(app, gridTileSize) {

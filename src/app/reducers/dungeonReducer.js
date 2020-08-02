@@ -146,8 +146,8 @@ export const dungeonReducer = (state = {}, action) => {
             return {
                 ...state,
                 mouseDown: true,
-                mouseStartX: action.x,
-                mouseStartY: action.y
+                mouseStartX: state.editor.mouse.dungeonPosition.x,
+                mouseStartY: state.editor.mouse.dungeonPosition.y
             };
         }
         case 'MOUSE_UP': {
