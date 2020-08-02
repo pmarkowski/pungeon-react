@@ -1,4 +1,18 @@
 import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
+import TOOLTYPE from '../utils/toolTypes'
+
+export const scroll = (wheelEvent) => ({
+    type: 'SCROLL_EVENT',
+    scrollX: wheelEvent.deltaX,
+    scrollY: wheelEvent.deltaY,
+    holdingCtrl: wheelEvent.getModifierState("Control")
+})
+
+export const moveViewport = (deltaX, deltaY) => ({
+    type: 'MOVE_VIEWPORT',
+    deltaX: deltaX,
+    deltaY: deltaY
+})
 
 export const selectTool = (toolName) => ({
     type: 'SELECT_TOOL',
@@ -55,14 +69,85 @@ export const setScrollMovesViewport = (scrollMovesViewport) => ({
     scrollMovesViewport: scrollMovesViewport
 })
 
+export const setMouseDungeonPosition = (x, y) => ({
+    type: 'SET_MOUSE_DUNGEON_POSITION',
+    x: x,
+    y: y
+})
+
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
+        case 'MOVE_VIEWPORT': {
+            return {
+                ...state,
+                editor: {
+                    ...state.editor,
+                    position: {
+                        x: state.editor.position.x + action.deltaX,
+                        y: state.editor.position.y + action.deltaY
+                    }
+                }
+            }
+        }
+        case 'SET_MOUSE_DUNGEON_POSITION': {
+            return {
+                ...state,
+                editor: {
+                    ...state.editor,
+                    mouse: {
+                        ...state.editor.mouse,
+                        dungeonPosition: {
+                            x: action.x,
+                            y: action.y
+                        }
+                    }
+                }
+            }
+        }
+        case 'SCROLL_EVENT': {
+            if (!state.scrollMovesViewport || action.holdingCtrl) {
+                let scaleDelta = 0.1
+                if (action.scrollY > 0) {
+                    scaleDelta *= -1
+                }
+                let newScale = Math.min(Math.max(state.editor.scale + scaleDelta, 0.1), 2)
+                if (state.editor.scale !== newScale) {
+                    return {
+                        ...state,
+                        editor: {
+                            ...state.editor,
+                            scale: newScale,
+                            position: {
+                                x: state.editor.position.x - (state.editor.mouse.dungeonPosition.x * scaleDelta),
+                                y: state.editor.position.y - (state.editor.mouse.dungeonPosition.y * scaleDelta),
+                            }
+                        }
+                    };
+                }
+                else {
+                    return state;
+                }
+            }
+            else {
+                let scaleDelta = 0.5;
+                return {
+                    ...state,
+                    editor: {
+                        ...state.editor,
+                        position: {
+                           x: state.editor.position.x - action.scrollX * scaleDelta,
+                           y: state.editor.position.y - action.scrollY * scaleDelta
+                        }
+                    }
+                };
+            }
+        }
         case 'MOUSE_DOWN': {
             return {
                 ...state,
                 mouseDown: true,
-                mouseStartX: action.x,
-                mouseStartY: action.y
+                mouseStartX: state.editor.mouse.dungeonPosition.x,
+                mouseStartY: state.editor.mouse.dungeonPosition.y
             };
         }
         case 'MOUSE_UP': {
@@ -138,26 +223,17 @@ export const dungeonReducer = (state = {}, action) => {
             };
         }
         case 'SET_SELECTED_OBJECT_START': {
-            let arrayWithUpdatedObject = createArrayWithUpdatedObject(
+            let wallArrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.dungeon.walls,
                 state.selectedObject,
                 (wall) => wall.start = {
                     x: action.x,
                     y: action.y
                 });
-            return {
-                ...state,
-                dungeon: {
-                    ...state.dungeon,
-                    walls: arrayWithUpdatedObject
-                }
-            };
-        }
-        case 'SET_SELECTED_OBJECT_END': {
-            let arrayWithUpdatedObject = createArrayWithUpdatedObject(
-                state.dungeon.walls,
+            let doorArrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.doors,
                 state.selectedObject,
-                (wall) => wall.end = {
+                (door) => door.start = {
                     x: action.x,
                     y: action.y
                 });
@@ -165,7 +241,32 @@ export const dungeonReducer = (state = {}, action) => {
                 ...state,
                 dungeon: {
                     ...state.dungeon,
-                    walls: arrayWithUpdatedObject
+                    walls: wallArrayWithUpdatedObject,
+                    doors: doorArrayWithUpdatedObject
+                }
+            };
+        }
+        case 'SET_SELECTED_OBJECT_END': {
+            let wallArrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.walls,
+                state.selectedObject,
+                (wall) => wall.end = {
+                    x: action.x,
+                    y: action.y
+                });
+            let doorArrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.doors,
+                state.selectedObject,
+                (door) => door.end = {
+                    x: action.x,
+                    y: action.y
+                });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    walls: wallArrayWithUpdatedObject,
+                    doors: doorArrayWithUpdatedObject
                 }
             };
 
@@ -192,9 +293,20 @@ export const dungeonReducer = (state = {}, action) => {
                 }
             };
         }
+        case 'ADD_DOOR': {
+            let doorArray = state.dungeon.doors.slice();
+            doorArray = [...doorArray, action.newDoor];
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    doors: doorArray
+                }
+            };
+        }
         case 'SELECT_TOOL': {
             let selectedObject = state.selectedObject;
-            if (action.selectedTool !== 'Select') {
+            if (action.selectedTool !== TOOLTYPE.SELECT) {
                 selectedObject = null;
             }
             return {
@@ -204,7 +316,7 @@ export const dungeonReducer = (state = {}, action) => {
             };
         }
         case 'SELECT_OBJECT': {
-            if (state.selectedTool === 'Select') {
+            if (state.selectedTool === TOOLTYPE.SELECT) {
                 return {
                     ...state,
                     selectedObject: action.objectId
@@ -219,13 +331,15 @@ export const dungeonReducer = (state = {}, action) => {
             if (selectedObjectId) {
                 let newSpaceArray = state.dungeon.spaces.filter(space => space.id !== selectedObjectId);
                 let newWallArray = state.dungeon.walls.filter(wall => wall.id !== selectedObjectId);
+                let newDoorArray = state.dungeon.doors.filter(door => door.id !== selectedObjectId);
                 return {
                     ...state,
                     selectedObject: null,
                     dungeon: {
                         ...state.dungeon,
                         spaces: newSpaceArray,
-                        walls: newWallArray
+                        walls: newWallArray,
+                        doors: newDoorArray
                     }
                 }
             }
