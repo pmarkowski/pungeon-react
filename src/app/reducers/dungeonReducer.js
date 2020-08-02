@@ -1,5 +1,5 @@
 import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
-import TOOLTYPE from '../utils/toolTypes'
+import TOOL_TYPE from '../utils/toolType'
 
 export const scroll = (wheelEvent) => ({
     type: 'SCROLL_EVENT',
@@ -306,7 +306,7 @@ export const dungeonReducer = (state = {}, action) => {
         }
         case 'SELECT_TOOL': {
             let selectedObject = state.selectedObject;
-            if (action.selectedTool !== TOOLTYPE.SELECT) {
+            if (action.selectedTool !== TOOL_TYPE.SELECT) {
                 selectedObject = null;
             }
             return {
@@ -316,7 +316,7 @@ export const dungeonReducer = (state = {}, action) => {
             };
         }
         case 'SELECT_OBJECT': {
-            if (state.selectedTool === TOOLTYPE.SELECT) {
+            if (state.selectedTool === TOOL_TYPE.SELECT) {
                 return {
                     ...state,
                     selectedObject: action.objectId

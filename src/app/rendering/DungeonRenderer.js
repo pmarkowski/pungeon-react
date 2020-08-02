@@ -3,7 +3,7 @@ import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReduce
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import { getClosestPointOnLine, lineLength } from '../utils/geometry.js';
-import TOOLTYPE from '../utils/toolTypes.js';
+import TOOL_TYPE from '../utils/toolType.js';
 
 export const render = (app, graphics) => {
     var state = store.getState();
@@ -108,7 +108,7 @@ const drawMouseCursor = (state, graphics) => {
     let mousePoint = state.editor.mouse.dungeonPosition;
     let snappedX, snappedY, width, height;
     
-    if (state.selectedTool === TOOLTYPE.NEW_WALL) {
+    if (state.selectedTool === TOOL_TYPE.NEW_WALL) {
         if (state.mouseDown) {
             let startX = Math.round(state.mouseStartX / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             let startY = Math.round(state.mouseStartY / GRID_TILE_SIZE) * GRID_TILE_SIZE;
@@ -134,7 +134,7 @@ const drawMouseCursor = (state, graphics) => {
             graphics.endFill();
         }
     }
-    else if (state.selectedTool === TOOLTYPE.NEW_DOOR) {
+    else if (state.selectedTool === TOOL_TYPE.NEW_DOOR) {
         if (!state.mouseDown) {
             // try to snap to the nearest line:
             // for each line, get the nearest point on the line
