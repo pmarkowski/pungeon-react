@@ -19,7 +19,7 @@ export const render = (app, graphics) => {
     drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height);
 
     if (app.renderer.plugins.interaction.mouseOverRenderer) {
-        drawMouseCursor(app, state, graphics);
+        drawMouseCursor(state, graphics);
 
         let mousePosition = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
         store.dispatch(setMouseDungeonPosition(mousePosition.x, mousePosition.y));
@@ -104,8 +104,8 @@ const drawDungeonObjects = (container, state) => {
     });
 }
 
-const drawMouseCursor = (app, state, graphics) => {
-    let mousePoint = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
+const drawMouseCursor = (state, graphics) => {
+    let mousePoint = state.editor.mouse.dungeonPosition;
     let snappedX, snappedY, width, height;
     
     if (state.selectedTool === TOOLTYPE.NEW_WALL) {
