@@ -3,7 +3,8 @@ import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReduce
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import { getClosestPointOnLine, lineLength } from '../utils/geometry.js';
-import TOOLTYPE from '../utils/toolTypes.js';
+import TOOL_TYPE from '../utils/toolType.js';
+import DUNGEON_OBJECT_TYPE from '../utils/dungeonObjectTypes';
 
 export const render = (app, graphics) => {
     var state = store.getState();
@@ -31,49 +32,17 @@ export const render = (app, graphics) => {
 export default render;
 
 const drawDungeonObjects = (container, state) => {
-    let stateSpaceMap = state.dungeon.spaces.reduce((map, space) => {
+    let objectIdMap = state.dungeon.objects.reduce((map, space) => {
         map[space.id] = space;
         return map;
     }, {});
-    // Add any spaces that are in state but not in pixi
+
     let containerObjectIds = new Set(container.children.map(child => child.id));
-    let stateSpaceIds = Object.keys(stateSpaceMap);
-    stateSpaceIds.forEach(spaceId => {
+    let stateObjectIds = Object.keys(objectIdMap);
+    stateObjectIds.forEach(spaceId => {
         if (!containerObjectIds.has(spaceId)) {
             let newChildGraphics = new PIXI.Graphics();
             newChildGraphics.id = spaceId;
-            newChildGraphics.interactive = true;
-            newChildGraphics.mouseup = function () {
-                store.dispatch(selectObject(this.id));
-            };
-            container.addChild(newChildGraphics);
-        }
-    });
-    let stateWallMap = state.dungeon.walls.reduce((map, wall) => {
-        map[wall.id] = wall;
-        return map;
-    }, {});
-    let stateWallIds = Object.keys(stateWallMap);
-    stateWallIds.forEach(wallId => {
-        if (!containerObjectIds.has(wallId)) {
-            let newChildGraphics = new PIXI.Graphics();
-            newChildGraphics.id = wallId;
-            newChildGraphics.interactive = true;
-            newChildGraphics.mouseup = function () {
-                store.dispatch(selectObject(this.id));
-            };
-            container.addChild(newChildGraphics);
-        }
-    });
-    let stateDoorMap = state.dungeon.doors.reduce((map, door) => {
-        map[door.id] = door;
-        return map;
-    }, {});
-    let stateDoorIds = Object.keys(stateDoorMap);
-    stateDoorIds.forEach(doorId => {
-        if (!containerObjectIds.has(doorId)) {
-            let newChildGraphics = new PIXI.Graphics();
-            newChildGraphics.id = doorId;
             newChildGraphics.interactive = true;
             newChildGraphics.mouseup = function () {
                 store.dispatch(selectObject(this.id));
@@ -85,17 +54,21 @@ const drawDungeonObjects = (container, state) => {
     // Sync all child graphics with state
     container.children.forEach(graphics => {
         if (graphics.id) {
-            let space = stateSpaceMap[graphics.id];
-            let wall = stateWallMap[graphics.id];
-            let door = stateDoorMap[graphics.id];
-            if (space) {
-                drawSpace(graphics, space, state);
-            }
-            else if (wall) {
-                drawWall(graphics, wall, state);
-            }
-            else if (door) {
-                drawDoor(graphics, door, state);
+            let object = objectIdMap[graphics.id];
+            if (object) {
+                switch (object.type) {
+                    case DUNGEON_OBJECT_TYPE.SPACE:
+                        drawSpace(graphics, object, state);
+                        break;
+                    case DUNGEON_OBJECT_TYPE.WALL:
+                        drawWall(graphics, object, state);
+                        break;
+                    case DUNGEON_OBJECT_TYPE.DOOR:
+                        drawDoor(graphics, object, state);
+                        break;
+                    default:
+                        break;
+                }
             }
             else {
                 container.removeChild(graphics);
@@ -108,7 +81,7 @@ const drawMouseCursor = (state, graphics) => {
     let mousePoint = state.editor.mouse.dungeonPosition;
     let snappedX, snappedY, width, height;
     
-    if (state.selectedTool === TOOLTYPE.NEW_WALL) {
+    if (state.selectedTool === TOOL_TYPE.NEW_WALL) {
         if (state.mouseDown) {
             let startX = Math.round(state.mouseStartX / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             let startY = Math.round(state.mouseStartY / GRID_TILE_SIZE) * GRID_TILE_SIZE;
@@ -134,30 +107,32 @@ const drawMouseCursor = (state, graphics) => {
             graphics.endFill();
         }
     }
-    else if (state.selectedTool === TOOLTYPE.NEW_DOOR) {
+    else if (state.selectedTool === TOOL_TYPE.NEW_DOOR) {
         if (!state.mouseDown) {
             // try to snap to the nearest line:
             // for each line, get the nearest point on the line
             let minDistance = 25;
             let snapPoint = null;
-            state.dungeon.walls.forEach(wall => {
-                // try each point and get the shortest distance
-                let scaledStart = {
-                    x: wall.start.x * GRID_TILE_SIZE,
-                    y: wall.start.y * GRID_TILE_SIZE
-                };
-                let scaledEnd = {
-                    x: wall.end.x * GRID_TILE_SIZE,
-                    y: wall.end.y * GRID_TILE_SIZE
-                }
-                let closestPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
-                // if the shortest distance of one is < snapping threshold, snap to it
-                let distance = lineLength(closestPoint, mousePoint);
-                if (!minDistance || distance < minDistance) {
-                    minDistance = distance;
-                    snapPoint = closestPoint;
-                }
-            });
+            state.dungeon.objects
+                .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
+                .forEach(wall => {
+                    // try each point and get the shortest distance
+                    let scaledStart = {
+                        x: wall.start.x * GRID_TILE_SIZE,
+                        y: wall.start.y * GRID_TILE_SIZE
+                    };
+                    let scaledEnd = {
+                        x: wall.end.x * GRID_TILE_SIZE,
+                        y: wall.end.y * GRID_TILE_SIZE
+                    }
+                    let closestPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
+                    // if the shortest distance of one is < snapping threshold, snap to it
+                    let distance = lineLength(closestPoint, mousePoint);
+                    if (!minDistance || distance < minDistance) {
+                        minDistance = distance;
+                        snapPoint = closestPoint;
+                    }
+                });
             if (snapPoint) {
                 graphics.lineStyle();
                 graphics.beginFill(0xfffd00);
@@ -169,36 +144,38 @@ const drawMouseCursor = (state, graphics) => {
             let minDistance = 25;
             let snapPoint = null;
             let minWallId = null;
-            state.dungeon.walls.forEach(wall => {
-                // try each point and get the shortest distance
-                let scaledStart = {
-                    x: wall.start.x * GRID_TILE_SIZE,
-                    y: wall.start.y * GRID_TILE_SIZE
-                };
-                let scaledEnd = {
-                    x: wall.end.x * GRID_TILE_SIZE,
-                    y: wall.end.y * GRID_TILE_SIZE
-                }
-                let closestPoint = getClosestPointOnLine({
+            state.dungeon.objects
+                .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
+                .forEach(wall => {
+                    // try each point and get the shortest distance
+                    let scaledStart = {
+                        x: wall.start.x * GRID_TILE_SIZE,
+                        y: wall.start.y * GRID_TILE_SIZE
+                    };
+                    let scaledEnd = {
+                        x: wall.end.x * GRID_TILE_SIZE,
+                        y: wall.end.y * GRID_TILE_SIZE
+                    }
+                    let closestPoint = getClosestPointOnLine({
+                            x: state.mouseStartX,
+                            y: state.mouseStartY
+                        }, scaledStart, scaledEnd);
+                    // if the shortest distance of one is < snapping threshold, snap to it
+                    let distance = lineLength(closestPoint, {
                         x: state.mouseStartX,
                         y: state.mouseStartY
-                    }, scaledStart, scaledEnd);
-                // if the shortest distance of one is < snapping threshold, snap to it
-                let distance = lineLength(closestPoint, {
-                    x: state.mouseStartX,
-                    y: state.mouseStartY
+                    });
+                    if (!minDistance || distance < minDistance) {
+                        minDistance = distance;
+                        snapPoint = closestPoint;
+                        minWallId = wall.id;
+                    }
                 });
-                if (!minDistance || distance < minDistance) {
-                    minDistance = distance;
-                    snapPoint = closestPoint;
-                    minWallId = wall.id;
-                }
-            });
             // draw a line from the start point 
             let startX = snapPoint.x;
             let startY = snapPoint.y;
 
-            let doorWall = state.dungeon.walls.find(wall => wall.id === minWallId);
+            let doorWall = state.dungeon.objects.find(wall => wall.id === minWallId);
             let scaledStart = {
                 x: doorWall.start.x * GRID_TILE_SIZE,
                 y: doorWall.start.y * GRID_TILE_SIZE
