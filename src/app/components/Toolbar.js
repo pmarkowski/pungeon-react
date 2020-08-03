@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from 'react-redux'
 import { selectTool } from '../reducers/dungeonReducer'
 import ToolbarButton from "./ToolbarButton"
-import TOOL_TYPE from "../utils/toolType"
+import TOOL_TYPE from "../tools/toolType"
 
 let Toolbar = ({ dispatch, selectedTool }) => {
     const dispatchSelectedTool = (toolId) => dispatch(selectTool(toolId))

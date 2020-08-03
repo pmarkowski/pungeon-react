@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 import dungeonReducer from './reducers/dungeonReducer.js'
-import TOOL_TYPE from './utils/toolType.js';
+import TOOL_TYPE from './tools/toolType.js';
 
 const store = createStore(dungeonReducer,
   {
