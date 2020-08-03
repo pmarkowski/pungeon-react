@@ -2,9 +2,8 @@ import * as PIXI from 'pixi.js';
 import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReducer";
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
-import { getClosestPointOnLine, lineLength } from '../utils/geometry.js';
-import TOOL_TYPE from '../utils/toolType.js';
 import DUNGEON_OBJECT_TYPE from '../utils/dungeonObjectTypes';
+import * as ToolRouter from '../tools/ToolRouter';
 
 export const render = (app, graphics) => {
     var state = store.getState();
@@ -78,154 +77,7 @@ const drawDungeonObjects = (container, state) => {
 }
 
 const drawMouseCursor = (state, graphics) => {
-    let mousePoint = state.editor.mouse.dungeonPosition;
-    let snappedX, snappedY, width, height;
-    
-    if (state.selectedTool === TOOL_TYPE.NEW_WALL) {
-        if (state.mouseDown) {
-            let startX = Math.round(state.mouseStartX / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            let startY = Math.round(state.mouseStartY / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            let endX = Math.round(mousePoint.x / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            let endY = Math.round(mousePoint.y / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            graphics.lineStyle(5, 0xfffd00);
-            graphics.moveTo(startX, startY);
-            graphics.lineTo(endX, endY);
-            graphics.lineStyle();
-            graphics.beginFill(0xfffd00);
-            graphics.drawCircle(startX, startY, 2.5);
-            graphics.drawCircle(endX, endY, 2.5);
-            graphics.endFill();
-        }
-        else {
-            // get nearest center point
-            let hoverX = Math.round(mousePoint.x / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            let hoverY = Math.round(mousePoint.y / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-
-            graphics.lineStyle();
-            graphics.beginFill(0xfffd00);
-            graphics.drawCircle(hoverX, hoverY, 2.5);
-            graphics.endFill();
-        }
-    }
-    else if (state.selectedTool === TOOL_TYPE.NEW_DOOR) {
-        if (!state.mouseDown) {
-            // try to snap to the nearest line:
-            // for each line, get the nearest point on the line
-            let minDistance = 25;
-            let snapPoint = null;
-            state.dungeon.objects
-                .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
-                .forEach(wall => {
-                    // try each point and get the shortest distance
-                    let scaledStart = {
-                        x: wall.start.x * GRID_TILE_SIZE,
-                        y: wall.start.y * GRID_TILE_SIZE
-                    };
-                    let scaledEnd = {
-                        x: wall.end.x * GRID_TILE_SIZE,
-                        y: wall.end.y * GRID_TILE_SIZE
-                    }
-                    let closestPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
-                    // if the shortest distance of one is < snapping threshold, snap to it
-                    let distance = lineLength(closestPoint, mousePoint);
-                    if (!minDistance || distance < minDistance) {
-                        minDistance = distance;
-                        snapPoint = closestPoint;
-                    }
-                });
-            if (snapPoint) {
-                graphics.lineStyle();
-                graphics.beginFill(0xfffd00);
-                graphics.drawCircle(snapPoint.x, snapPoint.y, 2.5);
-                graphics.endFill();
-            }
-        }
-        else {
-            let minDistance = 25;
-            let snapPoint = null;
-            let minWallId = null;
-            state.dungeon.objects
-                .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
-                .forEach(wall => {
-                    // try each point and get the shortest distance
-                    let scaledStart = {
-                        x: wall.start.x * GRID_TILE_SIZE,
-                        y: wall.start.y * GRID_TILE_SIZE
-                    };
-                    let scaledEnd = {
-                        x: wall.end.x * GRID_TILE_SIZE,
-                        y: wall.end.y * GRID_TILE_SIZE
-                    }
-                    let closestPoint = getClosestPointOnLine({
-                            x: state.mouseStartX,
-                            y: state.mouseStartY
-                        }, scaledStart, scaledEnd);
-                    // if the shortest distance of one is < snapping threshold, snap to it
-                    let distance = lineLength(closestPoint, {
-                        x: state.mouseStartX,
-                        y: state.mouseStartY
-                    });
-                    if (!minDistance || distance < minDistance) {
-                        minDistance = distance;
-                        snapPoint = closestPoint;
-                        minWallId = wall.id;
-                    }
-                });
-            // draw a line from the start point 
-            let startX = snapPoint.x;
-            let startY = snapPoint.y;
-
-            let doorWall = state.dungeon.objects.find(wall => wall.id === minWallId);
-            let scaledStart = {
-                x: doorWall.start.x * GRID_TILE_SIZE,
-                y: doorWall.start.y * GRID_TILE_SIZE
-            };
-            let scaledEnd = {
-                x: doorWall.end.x * GRID_TILE_SIZE,
-                y: doorWall.end.y * GRID_TILE_SIZE
-            }
-            let endPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
-
-            let endX = endPoint.x;
-            let endY = endPoint.y;
-
-            graphics.lineStyle(5, 0xfffd00);
-            graphics.moveTo(startX, startY);
-            graphics.lineTo(endX, endY);
-            graphics.lineStyle();
-            graphics.beginFill(0xfffd00);
-            graphics.drawCircle(startX, startY, 2.5);
-            graphics.drawCircle(endX, endY, 2.5);
-            graphics.endFill();
-        }
-    }
-    else {
-        if (state.mouseDown) {
-            let startX = Math.min(state.mouseStartX, mousePoint.x);
-            let startY = Math.min(state.mouseStartY, mousePoint.y);
-            let endX = Math.max(state.mouseStartX, mousePoint.x);
-            let endY = Math.max(state.mouseStartY, mousePoint.y);
-            snappedX = Math.floor(startX / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            snappedY = Math.floor(startY / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            endX = Math.floor(endX / GRID_TILE_SIZE) * GRID_TILE_SIZE + GRID_TILE_SIZE;
-            endY = Math.floor(endY / GRID_TILE_SIZE) * GRID_TILE_SIZE + GRID_TILE_SIZE;
-            width = endX - snappedX;
-            height = endY - snappedY;
-        }
-        else {
-            // snap to nearest grid point
-            // for now for simplicity let's say top left
-            snappedX = Math.floor(mousePoint.x / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            snappedY = Math.floor(mousePoint.y / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            width = GRID_TILE_SIZE;
-            height = GRID_TILE_SIZE;
-        }
-        // draw a hover rect
-        graphics.beginFill(0, 0);
-        graphics.lineStyle(1, 0xfffd00);
-        graphics.drawRect(snappedX, snappedY, width, height);
-        graphics.endFill();
-    }
+    ToolRouter.renderTool(state, graphics);
 }
 
 const drawGrid = (graphics, gridWidth, gridHeight) => {
@@ -311,4 +163,3 @@ const drawDoor = (graphics, door, state) => {
         door.end.x * GRID_TILE_SIZE - half, door.end.y * GRID_TILE_SIZE - half,
     ]);
 }
-

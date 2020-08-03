@@ -1,5 +1,5 @@
 import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
-import TOOL_TYPE from '../utils/toolType'
+import TOOL_TYPE from '../tools/toolType'
 import DUNGEON_OBJECT_TYPE from '../utils/dungeonObjectTypes';
 import { v4 as uuid } from 'uuid';
 
