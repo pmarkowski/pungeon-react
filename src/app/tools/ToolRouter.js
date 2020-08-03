@@ -11,9 +11,9 @@ const toolMap = {
     [TOOL_TYPE.SELECT]: new SelectTool()
 }
 
-export const onMouseUp = (mousePoint, store) => {
+export const onMouseUp = (store) => {
     let state = store.getState();
-    toolMap[state.selectedTool].onMouseUp(mousePoint, store);
+    toolMap[state.selectedTool].onMouseUp(store);
 }
 
 export const renderTool = (state, graphics) => {

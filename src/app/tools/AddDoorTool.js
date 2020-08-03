@@ -4,8 +4,9 @@ import DUNGEON_OBJECT_TYPE from "../utils/dungeonObjectTypes";
 import { lineLength, getClosestPointOnLine } from "../utils/geometry";
 
 export default class AddDoorTool {
-    onMouseUp(mousePoint, store) {
+    onMouseUp(store) {
         let state = store.getState();
+        let mousePoint = state.editor.mouse.dungeonPosition;
         let minDistance = 25;
         let snapPoint = null;
         let minWallId = null;

@@ -10,9 +10,8 @@ export const handleMouseDown = (mouseEvent, store) => {
 export const handleMouseUp = (mouseEvent, store) => {
     let state = store.getState();
     if (state.mouseDown) {
-        let mousePoint = state.editor.mouse.dungeonPosition;
         store.dispatch({ type: 'MOUSE_UP' });
-        ToolRouter.onMouseUp(mousePoint, store);
+        ToolRouter.onMouseUp(store);
     }
 }
 

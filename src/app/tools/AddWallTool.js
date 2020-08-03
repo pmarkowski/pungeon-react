@@ -2,8 +2,9 @@ import { GRID_TILE_SIZE } from "../utils/constants";
 import { addWall } from "../reducers/dungeonReducer";
 
 export default class AddWallTool {
-    onMouseUp(mousePoint, store) {
+    onMouseUp(store) {
         let state = store.getState();
+        let mousePoint = state.editor.mouse.dungeonPosition;
         let startX = Math.round(state.mouseStartX / GRID_TILE_SIZE);
         let startY = Math.round(state.mouseStartY / GRID_TILE_SIZE);
         let endX = Math.round(mousePoint.x / GRID_TILE_SIZE);

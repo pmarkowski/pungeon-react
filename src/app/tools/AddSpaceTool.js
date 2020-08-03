@@ -3,8 +3,9 @@ import { addSpace } from "../reducers/dungeonReducer";
 
 export default class AddSpaceTool {
 
-    onMouseUp(mousePoint, store) {
+    onMouseUp(store) {
         let state = store.getState();
+        let mousePoint = state.editor.mouse.dungeonPosition;
         let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / GRID_TILE_SIZE);
         let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / GRID_TILE_SIZE);
         let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / GRID_TILE_SIZE);
