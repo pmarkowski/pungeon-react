@@ -1,5 +1,61 @@
 import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
 import TOOL_TYPE from '../utils/toolType'
+import DUNGEON_OBJECT_TYPE from '../utils/dungeonObjectTypes';
+import { v4 as uuid } from 'uuid';
+
+export const addDoor = (startX, startY, endX, endY) => {
+    return {
+        type: 'ADD_OBJECT',
+        newObject: {
+            id: uuid(),
+            type: DUNGEON_OBJECT_TYPE.DOOR,
+            start: {
+                x: startX,
+                y: startY
+            },
+            end: {
+                x: endX,
+                y: endY
+            }
+        }
+    };
+}
+
+export const addWall = (startX, startY, endX, endY) => {
+    return {
+        type: 'ADD_OBJECT',
+        newObject: {
+            id: uuid(),
+            type: DUNGEON_OBJECT_TYPE.WALL,
+            start: {
+                x: startX,
+                y: startY
+            },
+            end: {
+                x: endX,
+                y: endY
+            }
+        }
+    };
+}
+
+export const addSpace = (startX, startY, endX, endY) => {
+    return {
+        type: 'ADD_OBJECT',
+        newObject: {
+            id: uuid(),
+            type: DUNGEON_OBJECT_TYPE.SPACE,
+            position: {
+                x: startX,
+                y: startY
+            },
+            size: {
+                width: endX - startX,
+                height: endY - startY
+            }
+        }
+    };
+}
 
 export const scroll = (wheelEvent) => ({
     type: 'SCROLL_EVENT',
