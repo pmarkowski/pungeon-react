@@ -255,31 +255,9 @@ export const dungeonReducer = (state = {}, action) => {
             };
 
         }
-        case 'ADD_SPACE': {
+        case 'ADD_OBJECT': {
             let objectArray = state.dungeon.objects.slice();
-            objectArray = [...objectArray, action.newSpace];
-            return {
-                ...state,
-                dungeon: {
-                    ...state.dungeon,
-                    objects: objectArray
-                }
-            };
-        }
-        case 'ADD_WALL': {
-            let objectArray = state.dungeon.objects.slice();
-            objectArray = [...objectArray, action.newWall];
-            return {
-                ...state,
-                dungeon: {
-                    ...state.dungeon,
-                    objects: objectArray
-                }
-            };
-        }
-        case 'ADD_DOOR': {
-            let objectArray = state.dungeon.objects.slice();
-            objectArray = [...objectArray, action.newDoor];
+            objectArray = [...objectArray, action.newObject];
             return {
                 ...state,
                 dungeon: {

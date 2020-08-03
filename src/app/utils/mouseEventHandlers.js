@@ -25,8 +25,8 @@ export const handleMouseUp = (mouseEvent, store) => {
             let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / GRID_TILE_SIZE);
             let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / GRID_TILE_SIZE);
             store.dispatch({
-                type: 'ADD_SPACE',
-                newSpace: {
+                type: 'ADD_OBJECT',
+                newObject: {
                     id: uuid(),
                     type: DUNGEON_OBJECT_TYPE.SPACE,
                     position: {
@@ -46,8 +46,8 @@ export const handleMouseUp = (mouseEvent, store) => {
             let endX = Math.round(mousePoint.x / GRID_TILE_SIZE);
             let endY = Math.round(mousePoint.y / GRID_TILE_SIZE);
             store.dispatch({
-                type: 'ADD_WALL',
-                newWall: {
+                type: 'ADD_OBJECT',
+                newObject: {
                     id: uuid(),
                     type: DUNGEON_OBJECT_TYPE.WALL,
                     start: {
@@ -104,8 +104,8 @@ export const handleMouseUp = (mouseEvent, store) => {
             }
             let endPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
             store.dispatch({
-                type: 'ADD_DOOR',
-                newDoor: {
+                type: 'ADD_OBJECT',
+                newObject: {
                     id: uuid(),
                     type: DUNGEON_OBJECT_TYPE.DOOR,
                     start: {
