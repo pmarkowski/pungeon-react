@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/pungeon-react/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/pungeon-react/static/js/main.99d60a8f.chunk.js",
-    "main.js.map": "/pungeon-react/static/js/main.99d60a8f.chunk.js.map",
+    "main.js": "/pungeon-react/static/js/main.8c4e0565.chunk.js",
+    "main.js.map": "/pungeon-react/static/js/main.8c4e0565.chunk.js.map",
     "runtime-main.js": "/pungeon-react/static/js/runtime-main.aeef4839.js",
     "runtime-main.js.map": "/pungeon-react/static/js/runtime-main.aeef4839.js.map",
-    "static/js/2.c71b3621.chunk.js": "/pungeon-react/static/js/2.c71b3621.chunk.js",
-    "static/js/2.c71b3621.chunk.js.map": "/pungeon-react/static/js/2.c71b3621.chunk.js.map",
+    "static/js/2.b5d2026b.chunk.js": "/pungeon-react/static/js/2.b5d2026b.chunk.js",
+    "static/js/2.b5d2026b.chunk.js.map": "/pungeon-react/static/js/2.b5d2026b.chunk.js.map",
     "index.html": "/pungeon-react/index.html",
-    "precache-manifest.aa5778684b90e8e397f05ea8b7aabb20.js": "/pungeon-react/precache-manifest.aa5778684b90e8e397f05ea8b7aabb20.js",
+    "precache-manifest.7281152ed7ac8613ab59179e21607648.js": "/pungeon-react/precache-manifest.7281152ed7ac8613ab59179e21607648.js",
     "service-worker.js": "/pungeon-react/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/pungeon-react/static/css/main.5ecd60fb.chunk.css.map",
-    "static/js/2.c71b3621.chunk.js.LICENSE.txt": "/pungeon-react/static/js/2.c71b3621.chunk.js.LICENSE.txt"
+    "static/js/2.b5d2026b.chunk.js.LICENSE.txt": "/pungeon-react/static/js/2.b5d2026b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.aeef4839.js",
-    "static/js/2.c71b3621.chunk.js",
+    "static/js/2.b5d2026b.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.99d60a8f.chunk.js"
+    "static/js/main.8c4e0565.chunk.js"
   ]
 }
