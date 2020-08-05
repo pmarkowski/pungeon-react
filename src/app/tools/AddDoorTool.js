@@ -39,6 +39,11 @@ export default class AddDoorTool {
             });
 
         let doorWall = state.dungeon.objects.find(wall => wall.id === minWallId);
+
+        if (!doorWall) {
+            return;
+        }
+
         let scaledStart = {
             x: doorWall.start.x * GRID_TILE_SIZE,
             y: doorWall.start.y * GRID_TILE_SIZE
@@ -121,6 +126,10 @@ export default class AddDoorTool {
                     }
                 });
             // draw a line from the start point 
+            if (!snapPoint) {
+                return;
+            }
+
             let startX = snapPoint.x;
             let startY = snapPoint.y;
 
