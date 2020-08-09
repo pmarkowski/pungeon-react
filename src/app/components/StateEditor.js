@@ -7,6 +7,25 @@ import SizeEditor from "./SizeEditor"
 let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, scrollPansViewport }) => {
     if (selectedObjectId) {
         return <React.Fragment>
+            {selectedObject.label !== undefined &&
+                <div className="card bg-dark text-light border-secondary mb-3">
+                <div className="card-header border-secondary">
+                    <h5>Label</h5>
+                </div>
+                <div className="card-body">
+                    <div className="form-group">
+                        <label>
+                            Label:
+                            <input
+                                className="form-control bg-secondary text-light"
+                                type="text"
+                                value={selectedObject.label}
+                                onChange={(changeEvent) => dispatch(DungeonActions.setSelectedObjectLabel(changeEvent.target.value))}>
+                            </input>
+                        </label>
+                    </div>
+                </div>
+            </div>}
             {selectedObject.position &&
                 <PositionEditor
                     x={selectedObject.position.x}

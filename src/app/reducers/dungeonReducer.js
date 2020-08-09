@@ -3,59 +3,66 @@ import TOOL_TYPE from '../tools/toolType'
 import DUNGEON_OBJECT_TYPE from '../utils/dungeonObjectTypes';
 import { v4 as uuid } from 'uuid';
 
-export const addDoor = (startX, startY, endX, endY) => {
-    return {
-        type: 'ADD_OBJECT',
-        newObject: {
-            id: uuid(),
-            type: DUNGEON_OBJECT_TYPE.DOOR,
-            start: {
-                x: startX,
-                y: startY
-            },
-            end: {
-                x: endX,
-                y: endY
-            }
-        }
-    };
-}
+export const addLabel = (x, y, labelText) => ({
+    type: 'ADD_OBJECT',
+    newObject: {
+        id: uuid(),
+        type: DUNGEON_OBJECT_TYPE.LABEL,
+        position: {
+            x: x,
+            y: y
+        },
+        label: labelText
+    }
+})
 
-export const addWall = (startX, startY, endX, endY) => {
-    return {
-        type: 'ADD_OBJECT',
-        newObject: {
-            id: uuid(),
-            type: DUNGEON_OBJECT_TYPE.WALL,
-            start: {
-                x: startX,
-                y: startY
-            },
-            end: {
-                x: endX,
-                y: endY
-            }
+export const addDoor = (startX, startY, endX, endY) => ({
+    type: 'ADD_OBJECT',
+    newObject: {
+        id: uuid(),
+        type: DUNGEON_OBJECT_TYPE.DOOR,
+        start: {
+            x: startX,
+            y: startY
+        },
+        end: {
+            x: endX,
+            y: endY
         }
-    };
-}
+    }
+});
 
-export const addSpace = (startX, startY, endX, endY) => {
-    return {
-        type: 'ADD_OBJECT',
-        newObject: {
-            id: uuid(),
-            type: DUNGEON_OBJECT_TYPE.SPACE,
-            position: {
-                x: startX,
-                y: startY
-            },
-            size: {
-                width: endX - startX,
-                height: endY - startY
-            }
+export const addWall = (startX, startY, endX, endY) => ({
+    type: 'ADD_OBJECT',
+    newObject: {
+        id: uuid(),
+        type: DUNGEON_OBJECT_TYPE.WALL,
+        start: {
+            x: startX,
+            y: startY
+        },
+        end: {
+            x: endX,
+            y: endY
         }
-    };
-}
+    }
+});
+
+export const addSpace = (startX, startY, endX, endY) => ({
+    type: 'ADD_OBJECT',
+    newObject: {
+        id: uuid(),
+        type: DUNGEON_OBJECT_TYPE.SPACE,
+        position: {
+            x: startX,
+            y: startY
+        },
+        size: {
+            width: endX - startX,
+            height: endY - startY
+        }
+    }
+});
 
 export const scroll = (wheelEvent) => ({
     type: 'SCROLL_EVENT',
@@ -88,6 +95,11 @@ export const moveSelectedObject = (deltaX, deltaY) => ({
     type: 'MOVE_SELECTED_OBJECT',
     deltaX: deltaX,
     deltaY: deltaY
+})
+
+export const setSelectedObjectLabel = (label) => ({
+    type: 'SET_SELECTED_OBJECT_LABEL',
+    label: label
 })
 
 export const setSelectedObjectPosition = (x, y) => ({
@@ -238,6 +250,19 @@ export const dungeonReducer = (state = {}, action) => {
                     x: object.position.x + action.deltaX,
                     y: object.position.y + action.deltaY
                 });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    objects: arrayWithUpdatedObject
+                }
+            };
+        }
+        case 'SET_SELECTED_OBJECT_LABEL': {
+            let arrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.objects,
+                state.selectedObject,
+                (object) => object.label = action.label);
             return {
                 ...state,
                 dungeon: {
