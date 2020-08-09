@@ -172,21 +172,22 @@ const drawLabel = (graphics, label, state) => {
     graphics.clear();
     if (graphics.children.length === 0) {
         let labelText = new PIXI.Text(label.label);
-        labelText.style.fontFamily = 'Helvetica';
+        labelText.style.fontFamily = 'Serif';
         labelText.style.fontSize = 36;
-        labelText.style.fontWeight = 400;
         graphics.addChild(labelText);
     }
 
     let labelText = graphics.children[0];
 
     if (state.selectedObject === graphics.id) {
-        labelText.style.fill = 0xfffff33;
+        labelText.style.fill = 0xffff33;
     }
     else {
         labelText.style.fill = 0x000000;
     }
 
     labelText.text = label.label;
-    labelText.position.set(label.position.x * GRID_TILE_SIZE, label.position.y * GRID_TILE_SIZE);
+    labelText.position.set(
+        label.position.x * GRID_TILE_SIZE,
+        label.position.y * GRID_TILE_SIZE);
 }
