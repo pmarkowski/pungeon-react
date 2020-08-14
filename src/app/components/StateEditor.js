@@ -3,29 +3,23 @@ import { connect } from 'react-redux'
 import * as DungeonActions from '../reducers/dungeonReducer'
 import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
+import StateEditorCard from "./StateEditorCard"
 
 let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, scrollPansViewport }) => {
     if (selectedObjectId) {
         return <React.Fragment>
             {selectedObject.label !== undefined &&
-                <div className="card bg-dark text-light border-secondary mb-3">
-                <div className="card-header border-secondary">
-                    <h5>Label</h5>
-                </div>
-                <div className="card-body">
-                    <div className="form-group">
-                        <label>
-                            Label:
-                            <input
-                                className="form-control bg-secondary text-light"
-                                type="text"
-                                value={selectedObject.label}
-                                onChange={(changeEvent) => dispatch(DungeonActions.setSelectedObjectLabel(changeEvent.target.value))}>
-                            </input>
-                        </label>
-                    </div>
-                </div>
-            </div>}
+                <StateEditorCard title='Label'>
+                    <label>
+                    Label:
+                        <input
+                            className="form-control bg-secondary text-light"
+                            type="text"
+                            value={selectedObject.label}
+                            onChange={(changeEvent) => dispatch(DungeonActions.setSelectedObjectLabel(changeEvent.target.value))}>
+                        </input>
+                    </label>
+                </StateEditorCard>}
             {selectedObject.position &&
                 <PositionEditor
                     x={selectedObject.position.x}
