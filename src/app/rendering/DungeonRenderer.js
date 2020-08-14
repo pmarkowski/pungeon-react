@@ -65,6 +65,9 @@ const drawDungeonObjects = (container, state) => {
                     case DUNGEON_OBJECT_TYPE.DOOR:
                         drawDoor(graphics, object, state);
                         break;
+                    case DUNGEON_OBJECT_TYPE.LABEL:
+                        drawLabel(graphics, object, state);
+                        break;
                     default:
                         break;
                 }
@@ -162,4 +165,29 @@ const drawDoor = (graphics, door, state) => {
         door.end.x * GRID_TILE_SIZE + half, door.end.y * GRID_TILE_SIZE + half,
         door.end.x * GRID_TILE_SIZE - half, door.end.y * GRID_TILE_SIZE - half,
     ]);
+}
+
+const drawLabel = (graphics, label, state) => {
+    graphics.zIndex = 4;
+    graphics.clear();
+    if (graphics.children.length === 0) {
+        let labelText = new PIXI.Text(label.label);
+        labelText.style.fontFamily = 'Serif';
+        labelText.style.fontSize = 36;
+        graphics.addChild(labelText);
+    }
+
+    let labelText = graphics.children[0];
+
+    if (state.selectedObject === graphics.id) {
+        labelText.style.fill = 0xffff33;
+    }
+    else {
+        labelText.style.fill = 0x000000;
+    }
+
+    labelText.text = label.label;
+    labelText.position.set(
+        label.position.x * GRID_TILE_SIZE,
+        label.position.y * GRID_TILE_SIZE);
 }
