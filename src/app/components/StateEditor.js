@@ -11,7 +11,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
             {selectedObject.label !== undefined &&
                 <StateEditorCard title='Label'>
                     <label>
-                    Label:
+                        Label:
                         <input
                             className="form-control bg-secondary text-light"
                             type="text"
