@@ -1,7 +1,7 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
 import { addSpace } from "../reducers/dungeonReducer";
 
-export default class AddSpaceTool {
+export default class AddSpaceRectangleTool {
 
     onMouseUp(store) {
         let state = store.getState();

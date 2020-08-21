@@ -16,7 +16,7 @@ let Toolbar = ({ dispatch, selectedTool }) => {
                 onClick={dispatchSelectedTool} />
             <ToolbarButton
                 toolName='New Space'
-                toolId={TOOL_TYPE.NEW_SPACE}
+                toolId={TOOL_TYPE.NEW_SPACE_RECTANGLE}
                 selectedTool={selectedTool}
                 onClick={dispatchSelectedTool} />
             <ToolbarButton

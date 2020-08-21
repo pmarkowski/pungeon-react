@@ -1,13 +1,13 @@
-import TOOL_TYPE from "./toolType";
 import AddDoorTool from "./AddDoorTool";
-import AddWallTool from "./AddWallTool";
-import AddSpaceTool from "./AddSpaceTool";
-import SelectTool from "./SelectTool";
 import AddLabelTool from "./AddLabelTool";
+import AddSpaceRectangleTool from "./AddSpaceRectangleTool";
+import AddWallTool from "./AddWallTool";
+import SelectTool from "./SelectTool";
+import TOOL_TYPE from "./toolType";
 
 const toolMap = {
     [TOOL_TYPE.NEW_DOOR]: new AddDoorTool(),
-    [TOOL_TYPE.NEW_SPACE]: new AddSpaceTool(),
+    [TOOL_TYPE.NEW_SPACE_RECTANGLE]: new AddSpaceRectangleTool(),
     [TOOL_TYPE.NEW_WALL]: new AddWallTool(),
     [TOOL_TYPE.SELECT]: new SelectTool(),
     [TOOL_TYPE.NEW_LABEL]: new AddLabelTool()
