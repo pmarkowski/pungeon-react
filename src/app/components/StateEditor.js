@@ -47,54 +47,37 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                     onUpdate={(x,y) => dispatch(DungeonActions.setSelectedObjectEnd(x, y))} />
             }
             {selectedObjectId &&
-                <div className="card bg-dark text-light border-secondary mb-3">
-                    <div className="card-header border-secondary">
-                        <h5>Actions</h5>
-                    </div>
-                    <div className="card-body">
-                        <button
-                            className="btn btn-outline-danger"
-                            onClick={() => dispatch(DungeonActions.deleteSelectedObject())}>
-                                Delete Object
-                        </button>
-                    </div>
-                </div>
+                <StateEditorCard title="Actions">
+                    <button
+                        className="btn btn-outline-danger"
+                        onClick={() => dispatch(DungeonActions.deleteSelectedObject())}>
+                            Delete Object
+                    </button>
+                </StateEditorCard>
             }
         </React.Fragment>
     }
     else {
         return <React.Fragment>
-            <div className="card bg-dark text-light border-secondary mb-3">
-                <div className="card-header border-secondary">
-                    <h5>Instructions</h5>
-                </div>
-                <div className="card-body">
-                    <p><i>Right click</i> to pan the view.</p>
-                    <p><i>Scroll</i> to zoom in and out.</p>
-                    <p><i>Left click and drag</i> to create new spaces with the New Space tool.</p>
-                    <p><i>Left click</i> to select spaces with the Select tool.</p>
-                    <p><i>Arrow keys</i> will move the currently selected space.</p>
-                    <p><i>Delete</i> will delete the currently selected space.</p>
-                </div>
-            </div>
+            <StateEditorCard title="Instructions">
+                <p><i>Right click</i> to pan the view.</p>
+                <p><i>Scroll</i> to zoom in and out.</p>
+                <p><i>Left click and drag</i> to create new spaces with the New Space tool.</p>
+                <p><i>Left click</i> to select spaces with the Select tool.</p>
+                <p><i>Arrow keys</i> will move the currently selected space.</p>
+                <p><i>Delete</i> will delete the currently selected space.</p>
+            </StateEditorCard>
             <SizeEditor
                 title="Dungeon Size"
                 width={dungeonSize.width}
                 height={dungeonSize.height}
                 onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
-            <div className="card bg-dark text-light border-secondary mb-3">
-                <div className="card-header border-secondary">
-                    <h5>Editor Options</h5>
-                </div>
-                <div className="card-body">
-                    <div>
-                        <label>
-                            <input type='checkbox' value={scrollPansViewport} onChange={(event) => dispatch(DungeonActions.setScrollMovesViewport(event.target.checked))}></input>
-                            Scroll to pan
-                        </label>
-                    </div>
-                </div>
-            </div>
+            <StateEditorCard title="Editor Options">
+                <label>
+                    <input type='checkbox' value={scrollPansViewport} onChange={(event) => dispatch(DungeonActions.setScrollMovesViewport(event.target.checked))}></input>
+                    Scroll to pan
+                </label>
+            </StateEditorCard>
         </React.Fragment>
     }
 }
