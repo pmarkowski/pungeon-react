@@ -3,6 +3,27 @@ import TOOL_TYPE from '../tools/toolType'
 import DUNGEON_OBJECT_TYPE from '../utils/dungeonObjectTypes';
 import { v4 as uuid } from 'uuid';
 
+export const clearOngoingSpacePolygonPoint = () => ({
+    type: 'CLEAR_ONGOING_SPACE_POLYGON'
+})
+
+export const addSpacePolygon = (positionArray) => ({
+    type: 'ADD_OBJECT',
+    newObject: {
+        id: uuid(),
+        type: DUNGEON_OBJECT_TYPE.SPACE,
+        points: positionArray,
+    }
+})
+
+export const addOngoingSpacePolygonPoint = (x, y) => ({
+    type: 'ADD_ONGOING_SPACE_POLYGON',
+    position: {
+        x: x,
+        y: y
+    }
+})
+
 export const addLabel = (x, y, labelText) => ({
     type: 'ADD_OBJECT',
     newObject: {
@@ -145,6 +166,25 @@ export const setMouseDungeonPosition = (x, y) => ({
 
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
+        case 'CLEAR_ONGOING_SPACE_POLYGON': {
+            return {
+                ...state,
+                editor: {
+                    ...state.editor,
+                    ongoingSpacePolygon: null
+                }
+            }
+        }
+        case 'ADD_ONGOING_SPACE_POLYGON': {
+            let newPolygonArray = [...(state.editor.ongoingSpacePolygon ?? []), action.position]
+            return {
+                ...state,
+                editor: {
+                    ...state.editor,
+                    ongoingSpacePolygon: newPolygonArray
+                }
+            }
+        }
         case 'MOVE_VIEWPORT': {
             return {
                 ...state,
@@ -384,7 +424,7 @@ export const dungeonReducer = (state = {}, action) => {
                 }
             }
             else {
-                return state;   
+                return state;
             }
         }
         default:
