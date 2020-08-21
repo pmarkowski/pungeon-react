@@ -8,7 +8,7 @@ const store = createStore(dungeonReducer,
     mouseDown: false,
     mouseStartX: 0,
     mouseStartY: 0,
-    selectedTool: TOOL_TYPE.NEW_SPACE,
+    selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
     editor: {
       scale: 1,
       position: {
