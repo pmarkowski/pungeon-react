@@ -35,7 +35,7 @@ export default class AddSpacePolygonTool {
             graphics.endFill();
         }
         else {
-            graphics.lineStyle(5, 0);
+            graphics.lineStyle(5, 0xfffd00);
             let firstPoint = state.editor.ongoingSpacePolygon[0];
             graphics.moveTo(
                 firstPoint.x * GRID_TILE_SIZE,
