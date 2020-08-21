@@ -102,21 +102,7 @@ const drawWall = (graphics, wall, state) => {
 }
 
 const drawSpace = (graphics, space, state) => {
-    graphics.clear();
-    graphics.beginFill(0xd6d5d5);
-    graphics.drawRect(
-        space.position.x * GRID_TILE_SIZE,
-        space.position.y * GRID_TILE_SIZE,
-        space.size.width * GRID_TILE_SIZE,
-        space.size.height * GRID_TILE_SIZE);
-    graphics.endFill();
-
-    if (state.selectedObject === graphics.id) {
-        graphics.tint = 0xffffcc;
-    }
-    else {
-        graphics.tint = 0xffffff;
-    }
+    RenderRouter.renderObject(graphics, space, state.selectedObject === graphics.id)
 }
 
 const drawDoor = (graphics, door, state) => {
