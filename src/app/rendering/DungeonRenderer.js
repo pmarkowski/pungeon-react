@@ -4,6 +4,7 @@ import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import DUNGEON_OBJECT_TYPE from '../utils/dungeonObjectTypes';
 import * as ToolRouter from '../tools/ToolRouter';
+import * as RenderRouter from './RenderRouter'
 
 export const render = (app, graphics) => {
     var state = store.getState();
@@ -143,28 +144,7 @@ const drawSpace = (graphics, space, state) => {
 }
 
 const drawDoor = (graphics, door, state) => {
-    graphics.zIndex = 3;
-    graphics.clear();
-    graphics.beginFill(0x002b56, 1);
-    graphics.lineStyle(20, 0x002b56, 1, 0.5);
-    graphics.moveTo(door.start.x * GRID_TILE_SIZE, door.start.y * GRID_TILE_SIZE);
-    graphics.lineTo(door.end.x * GRID_TILE_SIZE, door.end.y * GRID_TILE_SIZE);
-    graphics.lineStyle();
-    let half = 20 / 2;
-    graphics.endFill();
-
-    if (state.selectedObject === graphics.id) {
-        graphics.tint = 0xffff33;
-    }
-    else {
-        graphics.tint = 0xffffff;
-    }
-    graphics.hitArea = new PIXI.Polygon([
-        door.start.x * GRID_TILE_SIZE - half, door.start.y * GRID_TILE_SIZE - half,
-        door.start.x * GRID_TILE_SIZE + half, door.start.y * GRID_TILE_SIZE + half,
-        door.end.x * GRID_TILE_SIZE + half, door.end.y * GRID_TILE_SIZE + half,
-        door.end.x * GRID_TILE_SIZE - half, door.end.y * GRID_TILE_SIZE - half,
-    ]);
+    RenderRouter.renderObject(graphics, door, state.selectedObject === graphics.id);
 }
 
 const drawLabel = (graphics, label, state) => {
