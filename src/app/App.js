@@ -2,6 +2,7 @@ import React from 'react';
 import DungeonEditor from "./components/DungeonEditor.js";
 import StateEditor from './components/StateEditor';
 import Toolbar from './components/Toolbar';
+import ObjectSelector from './components/ObjectSelector.js';
 
 function App() {
   return (
@@ -12,14 +13,17 @@ function App() {
         </span>
       </nav>
       <div className="px-5">
-        <div className="py-2">
-          <Toolbar />
-        </div>
+            <div className="py-2">
+              <Toolbar />
+            </div>
         <div className="row">
-          <div className="col-md-9">
+          <div className="col-md-2">
+            <ObjectSelector />
+          </div>
+          <div className="col-md-8">
             <DungeonEditor />
           </div>
-          <div className="col-md-3">
+          <div className="col-md-2">
             <StateEditor />
           </div>
         </div>
