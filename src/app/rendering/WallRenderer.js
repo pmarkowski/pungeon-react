@@ -21,11 +21,55 @@ export default class WallRenderer {
         else {
             graphics.tint = 0xffffff;
         }
-        graphics.hitArea = new PIXI.Polygon([
-            wall.start.x * GRID_TILE_SIZE - half, wall.start.y * GRID_TILE_SIZE - half,
-            wall.start.x * GRID_TILE_SIZE + half, wall.start.y * GRID_TILE_SIZE + half,
-            wall.end.x * GRID_TILE_SIZE + half, wall.end.y * GRID_TILE_SIZE + half,
-            wall.end.x * GRID_TILE_SIZE - half, wall.end.y * GRID_TILE_SIZE - half,
-        ]);
+        graphics.hitArea = this.createWallHitArea(wall, half);
+    }
+
+    createWallHitArea(wall, half) {
+        if (wall.start.x === wall.end.x && wall.start.y === wall.end.y) {
+            return new PIXI.Circle(
+                wall.start.x * GRID_TILE_SIZE,
+                wall.start.y * GRID_TILE_SIZE,
+                half);
+        }
+        else {
+            // This might not matter... once the algorithm is working try without this check
+            let startPoint = wall.start.x <= wall.end.x ? wall.start : wall.end;
+            let endPoint = wall.start.x > wall.end.x ? wall.start : wall.end;
+
+            let rise = endPoint.y - startPoint.y;
+            let run = endPoint.x - startPoint.x;
+            let slope = rise / run;
+            let inverseSlope = -1 / slope;
+
+            if (slope === 0 || inverseSlope === 0) {
+                return new PIXI.Rectangle(
+                    startPoint.x * GRID_TILE_SIZE - half,
+                    Math.min(startPoint.y, endPoint.y) * GRID_TILE_SIZE - half,
+                    run * GRID_TILE_SIZE + half * 2,
+                    Math.abs(rise) * GRID_TILE_SIZE + half * 2
+                )
+            }
+
+            // using slope, calculate the offsets required to create a polygon that fits the line
+            let { xOffset, yOffset} = this.getOffsetAlongSlope(slope, half);
+            let { xOffset: polygonXOffset, yOffset: polygonYOffset } = this.getOffsetAlongSlope(inverseSlope, half);
+
+            return new PIXI.Polygon([
+                startPoint.x * GRID_TILE_SIZE - xOffset - polygonXOffset, startPoint.y * GRID_TILE_SIZE - yOffset - polygonYOffset,
+                startPoint.x * GRID_TILE_SIZE - xOffset + polygonXOffset, startPoint.y * GRID_TILE_SIZE - yOffset + polygonYOffset,
+                endPoint.x   * GRID_TILE_SIZE + xOffset + polygonXOffset, endPoint.y   * GRID_TILE_SIZE + yOffset + polygonYOffset,
+                endPoint.x   * GRID_TILE_SIZE + xOffset - polygonXOffset, endPoint.y   * GRID_TILE_SIZE + yOffset - polygonYOffset,
+            ]);
+        }
+    }
+
+    getOffsetAlongSlope(slope, distanceTravelledAlongSlope) {
+        let slopeAngle = Math.atan(slope);
+        let xOffset = Math.cos(slopeAngle) * distanceTravelledAlongSlope;
+        let yOffset = Math.sin(slopeAngle) * distanceTravelledAlongSlope;
+        return {
+            xOffset: xOffset,
+            yOffset: yOffset
+        };
     }
 }
