@@ -32,7 +32,6 @@ export default class WallRenderer {
                 half);
         }
         else {
-            // This might not matter... once the algorithm is working try without this check
             let startPoint = wall.start.x <= wall.end.x ? wall.start : wall.end;
             let endPoint = wall.start.x > wall.end.x ? wall.start : wall.end;
 
@@ -50,7 +49,6 @@ export default class WallRenderer {
                 )
             }
 
-            // using slope, calculate the offsets required to create a polygon that fits the line
             let { xOffset, yOffset} = this.getOffsetAlongSlope(slope, half);
             let { xOffset: polygonXOffset, yOffset: polygonYOffset } = this.getOffsetAlongSlope(inverseSlope, half);
 
