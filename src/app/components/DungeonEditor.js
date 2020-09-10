@@ -8,7 +8,7 @@ import * as MouseEventHandler from '../utils/mouseEventHandlers.js';
 export default class DungeonEditor extends React.Component {
     render() {
         return <div
-            style={{ height: "85vh" }}
+            style={{ height: "100%", width: "100%" }}
             tabIndex={-1}
             ref={(element) => this.canvasDiv = element}>
         </div>

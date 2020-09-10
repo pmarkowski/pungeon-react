@@ -15,11 +15,11 @@ function App() {
         <div className="py-2">
           <Toolbar />
         </div>
-        <div className="row">
-          <div className="col-md-9">
+        <div className="parent" style={{ display: 'flex', height: "100%" }}>
+          <div className="pane" style={{resize: "horizontal", overflow: "hidden", height: "100%"}}>
             <DungeonEditor />
           </div>
-          <div className="col-md-3">
+          <div className="pane" style={{flex: 1}}>
             <StateEditor />
           </div>
         </div>
