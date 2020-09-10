@@ -29,6 +29,19 @@ const store = createStore(dungeonReducer,
       },
       objects: [
           {
+            id: "423894382",
+            type: "token",
+            position: {
+              x: 2,
+              y: 4
+            },
+            size: {
+              width: 1,
+              height: 2
+            },
+            textureUrl: "/assets/stairs.png"
+          },
+          {
             id: "01f998f7-3ad4-43c6-b498-3249ab470b05",
             type: "space",
             position: {

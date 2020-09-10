@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js'
 import { GRID_TILE_SIZE } from '../utils/constants';
 
 export default class AddTokenTool {
