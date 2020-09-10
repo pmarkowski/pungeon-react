@@ -39,6 +39,11 @@ let Toolbar = ({ dispatch, selectedTool }) => {
                 toolId={TOOL_TYPE.NEW_LABEL}
                 selectedTool={selectedTool}
                 onClick={dispatchSelectedTool} />
+            <ToolbarButton
+                toolName='New Token'
+                toolId={TOOL_TYPE.NEW_TOKEN}
+                selectedTool={selectedTool}
+                onClick={dispatchSelectedTool} />
         </div>
     )
 }
