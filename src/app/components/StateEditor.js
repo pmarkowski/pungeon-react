@@ -46,6 +46,19 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                     y={selectedObject.end.y}
                     onUpdate={(x,y) => dispatch(DungeonActions.setSelectedObjectEnd(x, y))} />
             }
+            {selectedObject.angle !== undefined &&
+                <StateEditorCard title="Angle">
+                    <label>
+                        Angle
+                        <input
+                            className="form-control bg-secondary text-light"
+                            type="number"
+                            step="45"
+                            value={selectedObject.angle}
+                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(changeEvent.target.value))}}></input>
+                    </label>
+                </StateEditorCard>
+            }
             {selectedObjectId &&
                 <StateEditorCard title="Actions">
                     <button

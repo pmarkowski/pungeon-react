@@ -9,6 +9,7 @@ export default class TokenRenderer {
         sprite.y = token.position.y * GRID_TILE_SIZE;
         sprite.width = token.size.width * GRID_TILE_SIZE;
         sprite.height = token.size.height * GRID_TILE_SIZE;
+        sprite.angle = token.angle;
 
         // TODO: This does nothing with the current stairs texture, switch
         // to a highlight method that will work more broadly

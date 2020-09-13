@@ -39,7 +39,8 @@ const store = createStore(dungeonReducer,
               width: 1,
               height: 2
             },
-            textureUrl: "/assets/stairs.png"
+            textureUrl: "/assets/stairs.png",
+            angle: 0
           },
           {
             id: "01f998f7-3ad4-43c6-b498-3249ab470b05",

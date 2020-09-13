@@ -22,7 +22,8 @@ export default class AddTokenTool {
             snappedX,
             snappedY,
             this.width,
-            this.height
+            this.height,
+            0
         ))
     }
 
