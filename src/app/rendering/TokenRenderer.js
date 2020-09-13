@@ -2,6 +2,10 @@ import * as PIXI from 'pixi.js'
 import { GRID_TILE_SIZE } from '../utils/constants';
 
 export default class TokenRenderer {
+    createRenderObject() {
+        return new PIXI.Sprite();
+    }
+
     renderObject(sprite, token, objectIsSelected) {
         sprite.zIndex = 4;
         sprite.texture = PIXI.Texture.from(process.env.PUBLIC_URL + token.textureUrl);

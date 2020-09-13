@@ -2,6 +2,10 @@ import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from "../utils/constants";
 
 export default class WallRenderer {
+    createRenderObject() {
+        return new PIXI.Graphics();
+    }
+
     renderObject(graphics, wall, objectIsSelected) {
         graphics.zIndex = 2;
         graphics.clear();

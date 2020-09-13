@@ -2,6 +2,10 @@ import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 
 export default class LabelRenderer {
+    createRenderObject() {
+        return new PIXI.Graphics();
+    }
+
     renderObject(graphics, label, objectIsSelected) {
         graphics.zIndex = 4;
         graphics.clear();

@@ -2,6 +2,10 @@ import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from "../utils/constants";
 
 export default class DoorRenderer {
+    createRenderObject() {
+        return new PIXI.Graphics();
+    }
+
     renderObject(graphics, door, objectIsSelected) {
         graphics.zIndex = 3;
         graphics.clear();

@@ -1,10 +1,8 @@
-import * as PIXI from 'pixi.js';
 import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReducer";
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
 import * as RenderRouter from './RenderRouter'
-import DUNGEON_OBJECT_TYPE from '../utils/dungeonObjectTypes';
 
 export const render = (app, graphics) => {
     var state = store.getState();
@@ -41,7 +39,7 @@ const drawDungeonObjects = (container, state) => {
     let stateObjectIds = Object.keys(objectIdMap);
     stateObjectIds.forEach(objectId => {
         if (!containerObjectIds.has(objectId)) {
-            let newChildGraphics = objectIdMap[objectId].type === DUNGEON_OBJECT_TYPE.TOKEN ? new PIXI.Sprite() : new PIXI.Graphics();
+            let newChildGraphics = RenderRouter.createRenderObject(objectIdMap[objectId]);
             newChildGraphics.id = objectId;
             newChildGraphics.interactive = true;
             newChildGraphics.mouseup = function () {

@@ -1,6 +1,11 @@
+import * as PIXI from 'pixi.js'
 import { GRID_TILE_SIZE } from "../utils/constants";
 
 export default class SpaceRenderer {
+    createRenderObject() {
+        return new PIXI.Graphics();
+    }
+
     renderObject(graphics, space, objectIsSelected) {
         graphics.clear();
         graphics.beginFill(0xd6d5d5);
