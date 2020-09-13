@@ -3,6 +3,7 @@ import { addToken } from '../reducers/dungeonReducer';
 
 export default class AddTokenTool {
     // TODO: Make this configurable based on the currently selected token or something along those lines
+    tokenTextureUrl = '/assets/stairs.png';
     height = 2;
     width = 1;
 
@@ -17,7 +18,7 @@ export default class AddTokenTool {
         snappedY = Math.floor(mousePoint.y / GRID_TILE_SIZE);
 
         store.dispatch(addToken(
-            '/assets/stairs.png',
+            this.tokenTextureUrl,
             snappedX,
             snappedY,
             this.width,
