@@ -11,13 +11,22 @@ export default class TokenRenderer {
         sprite.height = token.size.height * GRID_TILE_SIZE;
         sprite.angle = token.angle;
 
-        // TODO: This does nothing with the current stairs texture, switch
-        // to a highlight method that will work more broadly
         if (objectIsSelected) {
-            sprite.tint = 0xffffcc;
+            if (sprite.children.length === 0) {
+                let objectSelectionGraphics = new PIXI.Graphics();
+                sprite.addChild(objectSelectionGraphics);
+                objectSelectionGraphics.lineStyle(5, 0xfffd00);
+                objectSelectionGraphics.drawRect(
+                    0,
+                    0,
+                    sprite.width,
+                    sprite.height);
+            }
         }
         else {
-            sprite.tint = 0xFFFFFF;
+            if (sprite.children.length > 0) {
+                sprite.removeChildAt(0);
+            }
         }
     }
 }
