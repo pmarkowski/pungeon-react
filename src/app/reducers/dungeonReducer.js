@@ -7,6 +7,23 @@ export const clearOngoingSpacePolygonPoint = () => ({
     type: 'CLEAR_ONGOING_SPACE_POLYGON'
 })
 
+export const addToken = (tokenTextureUrl, x, y, width, height) => ({
+    type: 'ADD_OBJECT',
+    newObject: {
+        id: uuid(),
+        type: DUNGEON_OBJECT_TYPE.TOKEN,
+        textureUrl: tokenTextureUrl,
+        position: {
+            x: x,
+            y: y
+        },
+        size: {
+            width: width,
+            height: height
+        }
+    }
+})
+
 export const addSpacePolygon = (positionArray) => ({
     type: 'ADD_OBJECT',
     newObject: {

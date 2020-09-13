@@ -1,4 +1,5 @@
 import { GRID_TILE_SIZE } from '../utils/constants';
+import { addToken } from '../reducers/dungeonReducer';
 
 export default class AddTokenTool {
     // TODO: Make this configurable based on the currently selected token or something along those lines
@@ -6,7 +7,22 @@ export default class AddTokenTool {
     width = 1;
 
     onMouseUp(store) {
-        // Add the sprite/token object to the dungeon
+        let state = store.getState();
+        let mousePoint = state.editor.mouse.dungeonPosition;
+        let snappedX, snappedY;
+
+        // snap to nearest grid point
+        // for now for simplicity let's say top left
+        snappedX = Math.floor(mousePoint.x / GRID_TILE_SIZE);
+        snappedY = Math.floor(mousePoint.y / GRID_TILE_SIZE);
+
+        store.dispatch(addToken(
+            '/assets/stairs.png',
+            snappedX,
+            snappedY,
+            this.width,
+            this.height
+        ))
     }
 
     renderTool(state, graphics) {
