@@ -136,6 +136,11 @@ export const moveSelectedObject = (deltaX, deltaY) => ({
     deltaY: deltaY
 })
 
+export const setSelectedObjectTextureUrl = (texturePath) => ({
+    type: 'SET_SELECTED_OBJECT_TEXTURE_PATH',
+    texturePath: texturePath
+})
+
 export const setSelectedObjectLabel = (label) => ({
     type: 'SET_SELECTED_OBJECT_LABEL',
     label: label
@@ -313,6 +318,19 @@ export const dungeonReducer = (state = {}, action) => {
                     x: object.position.x + action.deltaX,
                     y: object.position.y + action.deltaY
                 });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    objects: arrayWithUpdatedObject
+                }
+            };
+        }
+        case 'SET_SELECTED_OBJECT_TEXTURE_PATH': {
+            let arrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.objects,
+                state.selectedObject,
+                (object) => object.textureUrl = action.texturePath);
             return {
                 ...state,
                 dungeon: {
