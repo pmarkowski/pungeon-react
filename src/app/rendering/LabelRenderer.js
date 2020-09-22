@@ -1,7 +1,8 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
+import GraphicsRenderer from './GraphicsRenderer';
 
-export default class LabelRenderer {
+export default class LabelRenderer extends GraphicsRenderer {
     renderObject(graphics, label, objectIsSelected) {
         graphics.zIndex = 4;
         graphics.clear();

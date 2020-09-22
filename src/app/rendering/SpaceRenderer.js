@@ -1,6 +1,7 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
+import GraphicsRenderer from './GraphicsRenderer';
 
-export default class SpaceRenderer {
+export default class SpaceRenderer extends GraphicsRenderer {
     renderObject(graphics, space, objectIsSelected) {
         graphics.clear();
         graphics.beginFill(0xd6d5d5);

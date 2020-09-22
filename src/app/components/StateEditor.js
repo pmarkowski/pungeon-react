@@ -20,6 +20,17 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                         </input>
                     </label>
                 </StateEditorCard>}
+            {selectedObject.textureUrl !== undefined &&
+                <StateEditorCard title="Texture Path">
+                    <label>
+                        Path:
+                        <input
+                            className="form-control bg-secondary text-light"
+                            value={selectedObject.textureUrl}
+                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectTextureUrl(changeEvent.target.value))}}></input>
+                    </label>
+                </StateEditorCard>
+            }
             {selectedObject.position &&
                 <PositionEditor
                     x={selectedObject.position.x}
@@ -45,6 +56,30 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                     x={selectedObject.end.x}
                     y={selectedObject.end.y}
                     onUpdate={(x,y) => dispatch(DungeonActions.setSelectedObjectEnd(x, y))} />
+            }
+            {selectedObject.angle !== undefined &&
+                <StateEditorCard title="Angle">
+                    <label>
+                        Angle:
+                        <input
+                            className="form-control bg-secondary text-light"
+                            type="number"
+                            step="45"
+                            min="-360"
+                            max="360"
+                            value={selectedObject.angle}
+                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(changeEvent.target.value))}}></input>
+                        <input
+                            className="form-control bg-secondary text-light"
+                            type="range"
+                            step="45"
+                            min="-360"
+                            max="360"
+                            style={{direction: "rtl"}}
+                            value={selectedObject.angle}
+                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(changeEvent.target.value))}}></input>
+                    </label>
+                </StateEditorCard>
             }
             {selectedObjectId &&
                 <StateEditorCard title="Actions">

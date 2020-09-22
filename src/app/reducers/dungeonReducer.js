@@ -7,6 +7,24 @@ export const clearOngoingSpacePolygonPoint = () => ({
     type: 'CLEAR_ONGOING_SPACE_POLYGON'
 })
 
+export const addToken = (tokenTextureUrl, x, y, width, height, angle) => ({
+    type: 'ADD_OBJECT',
+    newObject: {
+        id: uuid(),
+        type: DUNGEON_OBJECT_TYPE.TOKEN,
+        textureUrl: tokenTextureUrl,
+        position: {
+            x: x,
+            y: y
+        },
+        size: {
+            width: width,
+            height: height
+        },
+        angle: angle
+    }
+})
+
 export const addSpacePolygon = (positionArray) => ({
     type: 'ADD_OBJECT',
     newObject: {
@@ -118,6 +136,11 @@ export const moveSelectedObject = (deltaX, deltaY) => ({
     deltaY: deltaY
 })
 
+export const setSelectedObjectTextureUrl = (texturePath) => ({
+    type: 'SET_SELECTED_OBJECT_TEXTURE_PATH',
+    texturePath: texturePath
+})
+
 export const setSelectedObjectLabel = (label) => ({
     type: 'SET_SELECTED_OBJECT_LABEL',
     label: label
@@ -145,6 +168,11 @@ export const setSelectedObjectEnd = (x, y) => ({
     type: 'SET_SELECTED_OBJECT_END',
     x: x,
     y: y
+})
+
+export const setSelectedObjectAngle = (angle) => ({
+    type: 'SET_SELECTED_OBJECT_ANGLE',
+    angle: angle
 })
 
 export const setDungeonSize = (width, height) => ({
@@ -290,6 +318,32 @@ export const dungeonReducer = (state = {}, action) => {
                     x: object.position.x + action.deltaX,
                     y: object.position.y + action.deltaY
                 });
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    objects: arrayWithUpdatedObject
+                }
+            };
+        }
+        case 'SET_SELECTED_OBJECT_TEXTURE_PATH': {
+            let arrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.objects,
+                state.selectedObject,
+                (object) => object.textureUrl = action.texturePath);
+            return {
+                ...state,
+                dungeon: {
+                    ...state.dungeon,
+                    objects: arrayWithUpdatedObject
+                }
+            };
+        }
+        case 'SET_SELECTED_OBJECT_ANGLE': {
+            let arrayWithUpdatedObject = createArrayWithUpdatedObject(
+                state.dungeon.objects,
+                state.selectedObject,
+                (object) => object.angle = action.angle);
             return {
                 ...state,
                 dungeon: {
