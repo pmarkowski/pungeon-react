@@ -16,16 +16,16 @@ export default class TokenRenderer {
         sprite.angle = token.angle;
 
         if (objectIsSelected) {
+            let objectSelectionGraphics;
             if (sprite.children.length === 0) {
-                let objectSelectionGraphics = new PIXI.Graphics();
+                objectSelectionGraphics = new PIXI.Graphics();
                 sprite.addChild(objectSelectionGraphics);
-                objectSelectionGraphics.lineStyle(5, 0xfffd00);
-                objectSelectionGraphics.drawRect(
-                    0,
-                    0,
-                    sprite.width,
-                    sprite.height);
+            } else {
+                objectSelectionGraphics = sprite.getChildAt(0);
             }
+            objectSelectionGraphics.clear();
+            objectSelectionGraphics.lineStyle(5, 0xfffd00);
+            objectSelectionGraphics.drawShape(sprite.getLocalBounds());
         }
         else {
             if (sprite.children.length > 0) {
