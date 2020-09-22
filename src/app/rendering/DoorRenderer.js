@@ -1,11 +1,8 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from "../utils/constants";
+import GraphicsRenderer from './GraphicsRenderer';
 
-export default class DoorRenderer {
-    createRenderObject() {
-        return new PIXI.Graphics();
-    }
-
+export default class DoorRenderer extends GraphicsRenderer {
     renderObject(graphics, door, objectIsSelected) {
         graphics.zIndex = 3;
         graphics.clear();
