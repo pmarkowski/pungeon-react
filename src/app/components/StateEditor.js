@@ -75,6 +75,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                             step="45"
                             min="-360"
                             max="360"
+                            style={{direction: "rtl"}}
                             value={selectedObject.angle}
                             onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(changeEvent.target.value))}}></input>
                     </label>
