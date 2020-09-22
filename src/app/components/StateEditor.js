@@ -5,7 +5,7 @@ import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 import StateEditorCard from "./StateEditorCard"
 
-let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, scrollPansViewport }) => {
+let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, scrollMovesViewport }) => {
     if (selectedObjectId) {
         return <React.Fragment>
             {selectedObject.label !== undefined &&
@@ -109,7 +109,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                 onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
             <StateEditorCard title="Editor Options">
                 <label>
-                    <input type='checkbox' value={scrollPansViewport} onChange={(event) => dispatch(DungeonActions.setScrollMovesViewport(event.target.checked))}></input>
+                    <input type='checkbox' checked={scrollMovesViewport} onChange={(event) => dispatch(DungeonActions.setScrollMovesViewport(event.target.checked))}></input>
                     Scroll to pan
                 </label>
             </StateEditorCard>
@@ -121,7 +121,7 @@ const mapStateToProps = state => ({
     selectedObjectId: state.selectedObject,
     selectedObject: state.dungeon.objects.find(object => object.id === state.selectedObject),
     dungeonSize: state.dungeon.size,
-    scrollPansViewport: state.scrollPansViewport
+    scrollMovesViewport: state.scrollMovesViewport
 })
 
 StateEditor = connect(mapStateToProps)(StateEditor)
