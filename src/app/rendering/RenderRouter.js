@@ -18,4 +18,4 @@ export const renderObject = (graphics, dungeonObject, objectIsSelected) => {
 }
 
 export const createRenderObject = (dungeonObject) =>
-    rendererMap[dungeonObject.type].createRenderObject()
+    rendererMap[dungeonObject.type].createRenderObject(dungeonObject)

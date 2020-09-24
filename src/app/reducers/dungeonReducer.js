@@ -453,15 +453,10 @@ export const dungeonReducer = (state = {}, action) => {
             };
         }
         case 'SELECT_OBJECT': {
-            if (state.selectedTool === TOOL_TYPE.SELECT) {
-                return {
-                    ...state,
-                    selectedObject: action.objectId
-                };
-            }
-            else {
-                return state;
-            }
+            return {
+                ...state,
+                selectedObject: action.objectId
+            };
         }
         case 'DELETE_OBJECT': {
             let selectedObjectId = state.selectedObject;

@@ -1,9 +1,12 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from "../utils/constants";
+import store from '../store';
+import { selectTool, selectObject } from '../reducers/dungeonReducer';
+import TOOL_TYPE from '../tools/toolType';
 
 /**
- * @param {PIXI.Graphics} graphics 
- * @param {*} space 
+ * @param {PIXI.Graphics} graphics
+ * @param {*} space
  */
 const renderResizeHandle = (graphics, space) => {
     let handlePadding = 10;
@@ -30,7 +33,7 @@ const renderResizeHandle = (graphics, space) => {
 }
 
 export default class SpaceRenderer {
-    createRenderObject() {
+    createRenderObject(spaceObject) {
         let spaceContainer = new PIXI.Container();
 
         let spaceGraphics = new PIXI.Graphics();
@@ -44,13 +47,16 @@ export default class SpaceRenderer {
          * What should be done about this...?
          * Most likely the correct way is
          * to pull the complexity of setting the on click
-         * event downwards into these modules rather than 
+         * event downwards into these modules rather than
          * having the DungeonRenderer set it on these objects
          */
         let resizeHandle = new PIXI.Graphics();
         resizeHandle.interactive = true;
         resizeHandle.cursor = "nwse-resize";
-        resizeHandle.mousedown = () => {/* TODO: begin a resize operation */ };
+        resizeHandle.mousedown = () => {
+            store.dispatch(selectTool(TOOL_TYPE.RESIZE));
+            store.dispatch(selectObject(spaceObject.id))
+        };
 
         spaceContainer.resizeHandle = resizeHandle;
         spaceContainer.addChild(spaceContainer.resizeHandle);

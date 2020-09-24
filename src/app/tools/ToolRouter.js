@@ -6,6 +6,7 @@ import SelectTool from "./SelectTool";
 import TOOL_TYPE from "./toolType";
 import AddSpacePolygonTool from "./AddSpacePolygonTool";
 import AddTokenTool from "./AddTokenTool";
+import ResizeTool from "./ResizeTool";
 
 const toolMap = {
     [TOOL_TYPE.NEW_DOOR]: new AddDoorTool(),
@@ -14,7 +15,8 @@ const toolMap = {
     [TOOL_TYPE.NEW_WALL]: new AddWallTool(),
     [TOOL_TYPE.SELECT]: new SelectTool(),
     [TOOL_TYPE.NEW_LABEL]: new AddLabelTool(),
-    [TOOL_TYPE.NEW_TOKEN]: new AddTokenTool()
+    [TOOL_TYPE.NEW_TOKEN]: new AddTokenTool(),
+    [TOOL_TYPE.RESIZE]: new ResizeTool()
 }
 
 export const onMouseUp = (store) => {
