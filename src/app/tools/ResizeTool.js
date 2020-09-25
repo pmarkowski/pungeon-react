@@ -1,6 +1,7 @@
 import { selectTool, setSelectedObjectPosition, setSelectedObjectSize } from "../reducers/dungeonReducer";
 import TOOL_TYPE from "./toolType";
 import { GRID_TILE_SIZE } from "../utils/constants";
+import { RESIZE_HANDLE_PADDING } from "../rendering/SpaceRenderer";
 
 export default class ResizeTool {
     onMouseUp(store) {
@@ -11,10 +12,13 @@ export default class ResizeTool {
             .find(object => object.id === state.selectedObject);
 
         let mousePoint = state.editor.mouse.dungeonPosition;
-        let startX = Math.floor(Math.min(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x) / GRID_TILE_SIZE);
-        let startY = Math.floor(Math.min(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y) / GRID_TILE_SIZE);
-        let endX = Math.ceil(Math.max(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x) / GRID_TILE_SIZE);
-        let endY = Math.ceil(Math.max(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y) / GRID_TILE_SIZE);
+        // The mouse point gets offset by RESIZE_HANDLE_PADDING in order to
+        // have a smoother resize experience. Otherwise the size tends to snap
+        // somewhere weird when you start dragging.
+        let startX = Math.floor(Math.min(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x - RESIZE_HANDLE_PADDING - 5) / GRID_TILE_SIZE);
+        let startY = Math.floor(Math.min(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y - RESIZE_HANDLE_PADDING - 5) / GRID_TILE_SIZE);
+        let endX = Math.ceil(Math.max(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x - RESIZE_HANDLE_PADDING - 5) / GRID_TILE_SIZE);
+        let endY = Math.ceil(Math.max(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y - RESIZE_HANDLE_PADDING - 5) / GRID_TILE_SIZE);
 
         store.dispatch(setSelectedObjectPosition(startX, startY));
         store.dispatch(setSelectedObjectSize(endX - startX, endY - startY));
@@ -37,10 +41,10 @@ export default class ResizeTool {
 
         let mousePoint = state.editor.mouse.dungeonPosition;
         let snappedX, snappedY, width, height;
-        let startX = Math.min(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x);
-        let startY = Math.min(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y);
-        let endX = Math.max(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x);
-        let endY = Math.max(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y);
+        let startX = Math.min(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x - RESIZE_HANDLE_PADDING - 5);
+        let startY = Math.min(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y - RESIZE_HANDLE_PADDING - 5);
+        let endX = Math.max(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x - RESIZE_HANDLE_PADDING - 5);
+        let endY = Math.max(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y - RESIZE_HANDLE_PADDING - 5);
         snappedX = Math.floor(startX / GRID_TILE_SIZE) * GRID_TILE_SIZE;
         snappedY = Math.floor(startY / GRID_TILE_SIZE) * GRID_TILE_SIZE;
         endX = Math.floor(endX / GRID_TILE_SIZE) * GRID_TILE_SIZE + GRID_TILE_SIZE;

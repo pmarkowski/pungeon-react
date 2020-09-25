@@ -4,32 +4,37 @@ import store from '../store';
 import { selectTool, selectObject } from '../reducers/dungeonReducer';
 import TOOL_TYPE from '../tools/toolType';
 
+export const RESIZE_HANDLE_PADDING = 10;
+
 /**
  * @param {PIXI.Graphics} graphics
  * @param {*} space
+ * @param {Boolean} objectIsSelected
  */
-const renderResizeHandle = (graphics, space) => {
-    let handlePadding = 10;
+const renderResizeHandle = (graphics, space, objectIsSelected) => {
     let handleLength = 15;
     let handleWidth = 5;
     // Want to draw a handle like this: _|
 
     // Start with the right one...
     graphics.clear();
-    graphics.beginFill(0x00ffff);
-    graphics.drawRect(
-        (space.position.x + space.size.width) * GRID_TILE_SIZE + handlePadding,
-        (space.position.y + space.size.height) * GRID_TILE_SIZE - handleLength,
-        handleWidth,
-        handleLength + handlePadding
-    );
-    graphics.drawRect(
-        (space.position.x + space.size.width) * GRID_TILE_SIZE - handleLength,
-        (space.position.y + space.size.height) * GRID_TILE_SIZE + handlePadding,
-        handleLength + handlePadding + handleWidth,
-        handleWidth
-    );
-    graphics.endFill();
+
+    if (objectIsSelected) {
+        graphics.beginFill(0x00ffff);
+        graphics.drawRect(
+            (space.position.x + space.size.width) * GRID_TILE_SIZE + RESIZE_HANDLE_PADDING,
+            (space.position.y + space.size.height) * GRID_TILE_SIZE - handleLength,
+            handleWidth,
+            handleLength + RESIZE_HANDLE_PADDING
+        );
+        graphics.drawRect(
+            (space.position.x + space.size.width) * GRID_TILE_SIZE - handleLength,
+            (space.position.y + space.size.height) * GRID_TILE_SIZE + RESIZE_HANDLE_PADDING,
+            handleLength + RESIZE_HANDLE_PADDING + handleWidth,
+            handleWidth
+        );
+        graphics.endFill();
+    }
 }
 
 export default class SpaceRenderer {
@@ -93,6 +98,6 @@ export default class SpaceRenderer {
             graphics.tint = 0xffffff;
         }
 
-        renderResizeHandle(container.resizeHandle, space);
+        renderResizeHandle(container.resizeHandle, space, objectIsSelected);
     }
 }
