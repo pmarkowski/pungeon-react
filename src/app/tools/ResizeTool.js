@@ -15,13 +15,23 @@ export default class ResizeTool {
         // The mouse point gets offset by RESIZE_HANDLE_PADDING in order to
         // have a smoother resize experience. Otherwise the size tends to snap
         // somewhere weird when you start dragging.
-        let startX = Math.floor(Math.min(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x - RESIZE_HANDLE_PADDING - 5) / GRID_TILE_SIZE);
-        let startY = Math.floor(Math.min(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y - RESIZE_HANDLE_PADDING - 5) / GRID_TILE_SIZE);
-        let endX = Math.ceil(Math.max(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x - RESIZE_HANDLE_PADDING - 5) / GRID_TILE_SIZE);
-        let endY = Math.ceil(Math.max(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y - RESIZE_HANDLE_PADDING - 5) / GRID_TILE_SIZE);
+        // TODO: Consider designing this out. Kind of leaking information about
+        // rendering to the tool implementation... But may be hard to get away
+        // from that.
+        let snappedX, snappedY, width, height;
+        let startX = Math.min(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x - RESIZE_HANDLE_PADDING - 5);
+        let startY = Math.min(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y - RESIZE_HANDLE_PADDING - 5);
+        let endX = Math.max(selectedObject.position.x * GRID_TILE_SIZE, mousePoint.x - RESIZE_HANDLE_PADDING - 5);
+        let endY = Math.max(selectedObject.position.y * GRID_TILE_SIZE, mousePoint.y - RESIZE_HANDLE_PADDING - 5);
+        snappedX = Math.floor(startX / GRID_TILE_SIZE) * GRID_TILE_SIZE;
+        snappedY = Math.floor(startY / GRID_TILE_SIZE) * GRID_TILE_SIZE;
+        endX = Math.floor(endX / GRID_TILE_SIZE) * GRID_TILE_SIZE + GRID_TILE_SIZE;
+        endY = Math.floor(endY / GRID_TILE_SIZE) * GRID_TILE_SIZE + GRID_TILE_SIZE;
+        width = endX - snappedX;
+        height = endY - snappedY;
 
-        store.dispatch(setSelectedObjectPosition(startX, startY));
-        store.dispatch(setSelectedObjectSize(endX - startX, endY - startY));
+        store.dispatch(setSelectedObjectPosition(snappedX / GRID_TILE_SIZE, snappedY / GRID_TILE_SIZE));
+        store.dispatch(setSelectedObjectSize(width / GRID_TILE_SIZE, height / GRID_TILE_SIZE));
 
         // officially resize? Clear tool? Drop back to select?
         store.dispatch(selectTool(TOOL_TYPE.SELECT));
