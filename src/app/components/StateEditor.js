@@ -16,7 +16,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                             className="form-control bg-secondary text-light"
                             type="text"
                             value={selectedObject.label}
-                            onChange={(changeEvent) => dispatch(DungeonActions.setSelectedObjectLabel(changeEvent.target.value))}>
+                            onChange={(changeEvent) => dispatch(DungeonActions.setSelectedObjectLabel(selectedObjectId, changeEvent.target.value))}>
                         </input>
                     </label>
                 </StateEditorCard>}
@@ -27,7 +27,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                         <input
                             className="form-control bg-secondary text-light"
                             value={selectedObject.textureUrl}
-                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectTextureUrl(changeEvent.target.value))}}></input>
+                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectTextureUrl(selectedObjectId, changeEvent.target.value))}}></input>
                     </label>
                 </StateEditorCard>
             }
@@ -35,27 +35,27 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                 <PositionEditor
                     x={selectedObject.position.x}
                     y={selectedObject.position.y}
-                    onUpdate={(x, y) => dispatch(DungeonActions.setSelectedObjectPosition(x, y))} />
+                    onUpdate={(x, y) => dispatch(DungeonActions.setSelectedObjectPosition(selectedObjectId, x, y))} />
             }
             {selectedObject.size &&
                 <SizeEditor
                     width={selectedObject.size.width}
                     height={selectedObject.size.height}
-                    onUpdate={(width, height) => dispatch(DungeonActions.setSelectedObjectSize(width, height))} />
+                    onUpdate={(width, height) => dispatch(DungeonActions.setSelectedObjectSize(selectedObjectId, width, height))} />
             }
             {selectedObject.start &&
                 <PositionEditor
                     title="Start"
                     x={selectedObject.start.x}
                     y={selectedObject.start.y}
-                    onUpdate={(x,y) => dispatch(DungeonActions.setSelectedObjectStart(x, y))} />
+                    onUpdate={(x,y) => dispatch(DungeonActions.setSelectedObjectStart(selectedObjectId, x, y))} />
             }
             {selectedObject.end &&
                 <PositionEditor
                     title="End"
                     x={selectedObject.end.x}
                     y={selectedObject.end.y}
-                    onUpdate={(x,y) => dispatch(DungeonActions.setSelectedObjectEnd(x, y))} />
+                    onUpdate={(x,y) => dispatch(DungeonActions.setSelectedObjectEnd(selectedObjectId, x, y))} />
             }
             {selectedObject.angle !== undefined &&
                 <StateEditorCard title="Angle">
@@ -68,7 +68,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                             min="-360"
                             max="360"
                             value={selectedObject.angle}
-                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(changeEvent.target.value))}}></input>
+                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(selectedObjectId, changeEvent.target.value))}}></input>
                         <input
                             className="form-control bg-secondary text-light"
                             type="range"
@@ -77,7 +77,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                             max="360"
                             style={{direction: "rtl"}}
                             value={selectedObject.angle}
-                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(changeEvent.target.value))}}></input>
+                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(selectedObjectId, changeEvent.target.value))}}></input>
                     </label>
                 </StateEditorCard>
             }
@@ -85,7 +85,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                 <StateEditorCard title="Actions">
                     <button
                         className="btn btn-outline-danger"
-                        onClick={() => dispatch(DungeonActions.deleteSelectedObject())}>
+                        onClick={() => dispatch(DungeonActions.deleteSelectedObject(selectedObjectId))}>
                             Delete Object
                     </button>
                 </StateEditorCard>
@@ -118,10 +118,10 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
 }
 
 const mapStateToProps = state => ({
-    selectedObjectId: state.selectedObject,
-    selectedObject: state.dungeon.objects.find(object => object.id === state.selectedObject),
+    selectedObjectId: state.editor.selectedObject,
+    selectedObject: state.dungeon.objects.find(object => object.id === state.editor.selectedObject),
     dungeonSize: state.dungeon.size,
-    scrollPansViewport: state.scrollPansViewport
+    scrollMovesViewport: state.editor.scrollMovesViewport
 })
 
 StateEditor = connect(mapStateToProps)(StateEditor)

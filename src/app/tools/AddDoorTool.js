@@ -23,13 +23,13 @@ export default class AddDoorTool {
                     y: wall.end.y * GRID_TILE_SIZE
                 }
                 let closestPoint = getClosestPointOnLine({
-                        x: state.mouseStartX,
-                        y: state.mouseStartY
+                        x: state.editor.mouseStartX,
+                        y: state.editor.mouseStartY
                     }, scaledStart, scaledEnd);
                 // if the shortest distance of one is < snapping threshold, snap to it
                 let distance = lineLength(closestPoint, {
-                    x: state.mouseStartX,
-                    y: state.mouseStartY
+                    x: state.editor.mouseStartX,
+                    y: state.editor.mouseStartY
                 });
                 if (!minDistance || distance < minDistance) {
                     minDistance = distance;
@@ -62,7 +62,7 @@ export default class AddDoorTool {
 
     renderTool(state, graphics) {
         let mousePoint = state.editor.mouse.dungeonPosition;
-        if (!state.mouseDown) {
+        if (!state.editor.mouseDown) {
             // try to snap to the nearest line:
             // for each line, get the nearest point on the line
             let minDistance = 25;
@@ -111,13 +111,13 @@ export default class AddDoorTool {
                         y: wall.end.y * GRID_TILE_SIZE
                     }
                     let closestPoint = getClosestPointOnLine({
-                            x: state.mouseStartX,
-                            y: state.mouseStartY
+                            x: state.editor.mouseStartX,
+                            y: state.editor.mouseStartY
                         }, scaledStart, scaledEnd);
                     // if the shortest distance of one is < snapping threshold, snap to it
                     let distance = lineLength(closestPoint, {
-                        x: state.mouseStartX,
-                        y: state.mouseStartY
+                        x: state.editor.mouseStartX,
+                        y: state.editor.mouseStartY
                     });
                     if (!minDistance || distance < minDistance) {
                         minDistance = distance;
@@ -125,7 +125,7 @@ export default class AddDoorTool {
                         minWallId = wall.id;
                     }
                 });
-            // draw a line from the start point 
+            // draw a line from the start point
             if (!snapPoint) {
                 return;
             }

@@ -49,7 +49,7 @@ let Toolbar = ({ dispatch, selectedTool }) => {
 }
 
 const mapStateToProps = state => ({
-    selectedTool: state.selectedTool
+    selectedTool: state.editor.selectedTool
 })
 
 Toolbar = connect(mapStateToProps)(Toolbar)

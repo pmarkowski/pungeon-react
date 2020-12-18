@@ -6,21 +6,21 @@ export default class AddSpaceRectangleTool {
     onMouseUp(store) {
         let state = store.getState();
         let mousePoint = state.editor.mouse.dungeonPosition;
-        let startX = Math.floor(Math.min(state.mouseStartX, mousePoint.x) / GRID_TILE_SIZE);
-        let startY = Math.floor(Math.min(state.mouseStartY, mousePoint.y) / GRID_TILE_SIZE);
-        let endX = Math.ceil(Math.max(state.mouseStartX, mousePoint.x) / GRID_TILE_SIZE);
-        let endY = Math.ceil(Math.max(state.mouseStartY, mousePoint.y) / GRID_TILE_SIZE);
+        let startX = Math.floor(Math.min(state.editor.mouseStartX, mousePoint.x) / GRID_TILE_SIZE);
+        let startY = Math.floor(Math.min(state.editor.mouseStartY, mousePoint.y) / GRID_TILE_SIZE);
+        let endX = Math.ceil(Math.max(state.editor.mouseStartX, mousePoint.x) / GRID_TILE_SIZE);
+        let endY = Math.ceil(Math.max(state.editor.mouseStartY, mousePoint.y) / GRID_TILE_SIZE);
         store.dispatch(addSpace(startX, startY, endX, endY));
     }
 
     renderTool(state, graphics) {
         let mousePoint = state.editor.mouse.dungeonPosition;
         let snappedX, snappedY, width, height;
-        if (state.mouseDown) {
-            let startX = Math.min(state.mouseStartX, mousePoint.x);
-            let startY = Math.min(state.mouseStartY, mousePoint.y);
-            let endX = Math.max(state.mouseStartX, mousePoint.x);
-            let endY = Math.max(state.mouseStartY, mousePoint.y);
+        if (state.editor.mouseDown) {
+            let startX = Math.min(state.editor.mouseStartX, mousePoint.x);
+            let startY = Math.min(state.editor.mouseStartY, mousePoint.y);
+            let endX = Math.max(state.editor.mouseStartX, mousePoint.x);
+            let endY = Math.max(state.editor.mouseStartY, mousePoint.y);
             snappedX = Math.floor(startX / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             snappedY = Math.floor(startY / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             endX = Math.floor(endX / GRID_TILE_SIZE) * GRID_TILE_SIZE + GRID_TILE_SIZE;

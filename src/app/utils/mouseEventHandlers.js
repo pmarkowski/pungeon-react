@@ -9,7 +9,7 @@ export const handleMouseDown = (mouseEvent, store) => {
 
 export const handleMouseUp = (mouseEvent, store) => {
     let state = store.getState();
-    if (state.mouseDown) {
+    if (state.editor.mouseDown) {
         store.dispatch({ type: 'MOUSE_UP' });
         ToolRouter.onMouseUp(store);
     }

@@ -54,7 +54,7 @@ const drawDungeonObjects = (container, state) => {
         if (graphics.id) {
             let object = objectIdMap[graphics.id];
             if (object) {
-                RenderRouter.renderObject(graphics, object, state.selectedObject === graphics.id)
+                RenderRouter.renderObject(graphics, object, state.editor.selectedObject === graphics.id)
             }
             else {
                 container.removeChild(graphics);
