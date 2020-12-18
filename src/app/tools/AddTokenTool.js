@@ -1,5 +1,5 @@
 import { GRID_TILE_SIZE } from '../utils/constants';
-import { addToken } from '../reducers/dungeonReducer';
+import { addToken } from '../reducers/dungeonActions';
 
 export default class AddTokenTool {
     // TODO: Make this configurable based on the currently selected token or something along those lines

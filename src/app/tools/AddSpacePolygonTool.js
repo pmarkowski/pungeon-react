@@ -1,5 +1,5 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
-import { addSpacePolygon } from "../reducers/dungeonReducer";
+import { addSpacePolygon } from "../reducers/dungeonActions";
 import { addOngoingSpacePolygonPoint, clearOngoingSpacePolygonPoint } from '../reducers/editorActions'
 
 export default class AddSpacePolygonTool {

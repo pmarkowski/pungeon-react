@@ -1,5 +1,5 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
-import { addWall } from "../reducers/dungeonReducer";
+import { addWall } from "../reducers/dungeonActions";
 
 export default class AddWallTool {
     onMouseUp(store) {

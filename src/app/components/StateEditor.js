@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
-import * as DungeonActions from '../reducers/dungeonReducer'
+import * as DungeonActions from '../reducers/dungeonActions'
 import * as EditorActions from '../reducers/editorActions'
 import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"

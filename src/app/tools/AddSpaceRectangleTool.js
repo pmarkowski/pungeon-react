@@ -1,5 +1,5 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
-import { addSpace } from "../reducers/dungeonReducer";
+import { addSpace } from "../reducers/dungeonActions";
 
 export default class AddSpaceRectangleTool {
 

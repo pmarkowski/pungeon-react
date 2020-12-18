@@ -1,4 +1,4 @@
-import { addDoor } from "../reducers/dungeonReducer";
+import { addDoor } from "../reducers/dungeonActions";
 import { GRID_TILE_SIZE } from "../utils/constants";
 import DUNGEON_OBJECT_TYPE from "../utils/dungeonObjectTypes";
 import { lineLength, getClosestPointOnLine } from "../utils/geometry";

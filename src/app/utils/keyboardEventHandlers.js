@@ -1,4 +1,4 @@
-import { deleteSelectedObject, moveSelectedObject } from "../reducers/dungeonReducer"
+import { deleteSelectedObject, moveSelectedObject } from "../reducers/dungeonActions"
 
 const handleKeyboardEvent = (keyboardEvent, store) => {
     let state = store.getState();
