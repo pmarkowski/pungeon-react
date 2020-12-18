@@ -1,4 +1,4 @@
-import { moveViewport, scroll } from "../reducers/dungeonReducer";
+import { moveViewport, scroll } from "../reducers/editorActions";
 import * as ToolRouter from '../tools/ToolRouter';
 
 export const handleMouseDown = (mouseEvent, store) => {

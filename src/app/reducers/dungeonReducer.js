@@ -2,10 +2,6 @@ import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObj
 import DUNGEON_OBJECT_TYPE from '../utils/dungeonObjectTypes';
 import { v4 as uuid } from 'uuid';
 
-export const clearOngoingSpacePolygonPoint = () => ({
-    type: 'CLEAR_ONGOING_SPACE_POLYGON'
-})
-
 export const addToken = (tokenTextureUrl, x, y, width, height, angle) => ({
     type: 'ADD_OBJECT',
     newObject: {
@@ -30,14 +26,6 @@ export const addSpacePolygon = (positionArray) => ({
         id: uuid(),
         type: DUNGEON_OBJECT_TYPE.SPACE,
         points: positionArray,
-    }
-})
-
-export const addOngoingSpacePolygonPoint = (x, y) => ({
-    type: 'ADD_ONGOING_SPACE_POLYGON',
-    position: {
-        x: x,
-        y: y
     }
 })
 
@@ -102,29 +90,6 @@ export const addSpace = (startX, startY, endX, endY) => ({
     }
 });
 
-export const scroll = (wheelEvent) => ({
-    type: 'SCROLL_EVENT',
-    scrollX: wheelEvent.deltaX,
-    scrollY: wheelEvent.deltaY,
-    holdingCtrl: wheelEvent.getModifierState("Control")
-})
-
-export const moveViewport = (deltaX, deltaY) => ({
-    type: 'MOVE_VIEWPORT',
-    deltaX: deltaX,
-    deltaY: deltaY
-})
-
-export const selectTool = (toolName) => ({
-    type: 'SELECT_TOOL',
-    selectedTool: toolName
-})
-
-export const selectObject = (objectId) => ({
-    type: 'SELECT_OBJECT',
-    objectId: objectId
-})
-
 export const deleteSelectedObject = (selectedObject) => ({
     type: 'DELETE_OBJECT',
     selectedObject
@@ -187,17 +152,6 @@ export const setDungeonSize = (width, height) => ({
     type: 'SET_DUNGEON_SIZE',
     width: width,
     height: height
-})
-
-export const setScrollMovesViewport = (scrollMovesViewport) => ({
-    type: 'SET_SCROLL_MOVES_VIEWPORT',
-    scrollMovesViewport: scrollMovesViewport
-})
-
-export const setMouseDungeonPosition = (x, y) => ({
-    type: 'SET_MOUSE_DUNGEON_POSITION',
-    x: x,
-    y: y
 })
 
 export const dungeonReducer = (state = {}, action) => {

@@ -1,6 +1,7 @@
 import React from "react"
 import { connect } from 'react-redux'
 import * as DungeonActions from '../reducers/dungeonReducer'
+import * as EditorActions from '../reducers/editorActions'
 import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 import StateEditorCard from "./StateEditorCard"
@@ -109,7 +110,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                 onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
             <StateEditorCard title="Editor Options">
                 <label>
-                    <input type='checkbox' value={scrollPansViewport} onChange={(event) => dispatch(DungeonActions.setScrollMovesViewport(event.target.checked))}></input>
+                    <input type='checkbox' value={scrollPansViewport} onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))}></input>
                     Scroll to pan
                 </label>
             </StateEditorCard>

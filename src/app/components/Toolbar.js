@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
-import { selectTool } from '../reducers/dungeonReducer'
+import { selectTool } from '../reducers/editorActions'
 import ToolbarButton from "./ToolbarButton"
 import TOOL_TYPE from "../tools/toolType"
 

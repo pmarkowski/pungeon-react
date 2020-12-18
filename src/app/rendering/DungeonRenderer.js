@@ -1,4 +1,4 @@
-import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReducer";
+import { selectObject, setMouseDungeonPosition } from "../reducers/editorActions";
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
