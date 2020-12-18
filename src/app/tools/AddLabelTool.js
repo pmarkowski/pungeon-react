@@ -1,5 +1,5 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
-import { addLabel } from "../reducers/dungeonReducer";
+import { addLabel } from "../reducers/dungeonActions";
 
 export default class AddLabelTool {
     onMouseUp(store) {

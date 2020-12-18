@@ -1,4 +1,4 @@
-import { moveViewport, scroll } from "../reducers/dungeonReducer";
+import { moveViewport, scroll } from "../reducers/editorActions";
 import * as ToolRouter from '../tools/ToolRouter';
 
 export const handleMouseDown = (mouseEvent, store) => {
@@ -9,7 +9,7 @@ export const handleMouseDown = (mouseEvent, store) => {
 
 export const handleMouseUp = (mouseEvent, store) => {
     let state = store.getState();
-    if (state.mouseDown) {
+    if (state.editor.mouseDown) {
         store.dispatch({ type: 'MOUSE_UP' });
         ToolRouter.onMouseUp(store);
     }

@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
-import { selectTool } from '../reducers/dungeonReducer'
+import { selectTool } from '../reducers/editorActions'
 import ToolbarButton from "./ToolbarButton"
 import TOOL_TYPE from "../tools/toolType"
 
@@ -49,7 +49,7 @@ let Toolbar = ({ dispatch, selectedTool }) => {
 }
 
 const mapStateToProps = state => ({
-    selectedTool: state.selectedTool
+    selectedTool: state.editor.selectedTool
 })
 
 Toolbar = connect(mapStateToProps)(Toolbar)

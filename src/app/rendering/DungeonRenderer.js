@@ -1,8 +1,9 @@
-import { selectObject, setMouseDungeonPosition } from "../reducers/dungeonReducer";
+import { selectObject, setMouseDungeonPosition } from "../reducers/editorActions";
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
 import * as RenderRouter from './RenderRouter'
+import TOOL_TYPE from "../tools/toolType";
 
 export const render = (app, graphics) => {
     var state = store.getState();
@@ -43,7 +44,9 @@ const drawDungeonObjects = (container, state) => {
             newChildGraphics.id = objectId;
             newChildGraphics.interactive = true;
             newChildGraphics.mouseup = function () {
-                store.dispatch(selectObject(this.id));
+                if (store.getState().editor.selectedTool === TOOL_TYPE.SELECT) {
+                    store.dispatch(selectObject(this.id));
+                }
             };
             container.addChild(newChildGraphics);
         }
@@ -54,7 +57,7 @@ const drawDungeonObjects = (container, state) => {
         if (graphics.id) {
             let object = objectIdMap[graphics.id];
             if (object) {
-                RenderRouter.renderObject(graphics, object, state.selectedObject === graphics.id)
+                RenderRouter.renderObject(graphics, object, state.editor.selectedObject === graphics.id)
             }
             else {
                 container.removeChild(graphics);

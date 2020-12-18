@@ -19,9 +19,9 @@ const toolMap = {
 
 export const onMouseUp = (store) => {
     let state = store.getState();
-    toolMap[state.selectedTool].onMouseUp(store);
+    toolMap[state.editor.selectedTool].onMouseUp(store);
 }
 
 export const renderTool = (state, graphics) => {
-    toolMap[state.selectedTool].renderTool(state, graphics);
+    toolMap[state.editor.selectedTool].renderTool(state, graphics);
 }
