@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/pungeon-react/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/pungeon-react/static/js/main.995ebb04.chunk.js",
-    "main.js.map": "/pungeon-react/static/js/main.995ebb04.chunk.js.map",
+    "main.js": "/pungeon-react/static/js/main.f230decc.chunk.js",
+    "main.js.map": "/pungeon-react/static/js/main.f230decc.chunk.js.map",
     "runtime-main.js": "/pungeon-react/static/js/runtime-main.aeef4839.js",
     "runtime-main.js.map": "/pungeon-react/static/js/runtime-main.aeef4839.js.map",
     "static/js/2.ae543b21.chunk.js": "/pungeon-react/static/js/2.ae543b21.chunk.js",
     "static/js/2.ae543b21.chunk.js.map": "/pungeon-react/static/js/2.ae543b21.chunk.js.map",
     "index.html": "/pungeon-react/index.html",
-    "precache-manifest.7fd77b2f8a4a41fa524af0699395861d.js": "/pungeon-react/precache-manifest.7fd77b2f8a4a41fa524af0699395861d.js",
+    "precache-manifest.e40c7884e0d67cdfbe299f8cd96e6a35.js": "/pungeon-react/precache-manifest.e40c7884e0d67cdfbe299f8cd96e6a35.js",
     "service-worker.js": "/pungeon-react/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/pungeon-react/static/css/main.5ecd60fb.chunk.css.map",
     "static/js/2.ae543b21.chunk.js.LICENSE.txt": "/pungeon-react/static/js/2.ae543b21.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.aeef4839.js",
     "static/js/2.ae543b21.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.995ebb04.chunk.js"
+    "static/js/main.f230decc.chunk.js"
   ]
 }
