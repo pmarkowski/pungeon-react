@@ -2,6 +2,15 @@ import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObj
 
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
+        case 'NEW_DUNGEON': {
+            return {
+                size: {
+                    width: 24,
+                    height: 32
+                },
+                objects: []
+            }
+        }
         case 'SET_DUNGEON_SIZE': {
             return {
                 ...state,
