@@ -103,6 +103,13 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                 <p><i>Arrow keys</i> will move the currently selected space.</p>
                 <p><i>Delete</i> will delete the currently selected space.</p>
             </StateEditorCard>
+            <StateEditorCard title="Actions">
+                <button
+                    className="btn btn-outline-danger"
+                    onClick={() => dispatch(DungeonActions.clearDungeon())}>
+                        New Dungeon
+                </button>
+            </StateEditorCard>
             <SizeEditor
                 title="Dungeon Size"
                 width={dungeonSize.width}

@@ -1,6 +1,10 @@
 import DUNGEON_OBJECT_TYPE from "../utils/dungeonObjectTypes";
 import { v4 as uuid } from 'uuid';
 
+export const clearDungeon = () => ({
+    type: 'NEW_DUNGEON'
+})
+
 export const addToken = (tokenTextureUrl, x, y, width, height, angle) => ({
     type: 'ADD_OBJECT',
     newObject: {
