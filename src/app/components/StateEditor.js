@@ -105,7 +105,12 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
             </StateEditorCard>
             <StateEditorCard title="Actions">
                 <button
-                    className="btn btn-outline-danger"
+                    className="btn btn-primary form-control mb-2"
+                    onClick={() => {dispatch(EditorActions.exportToPngClicked())}}>
+                        Download Dungeon as PNG
+                </button>
+                <button
+                    className="btn btn-outline-danger form-control mb-2"
                     onClick={() => dispatch(DungeonActions.clearDungeon())}>
                         New Dungeon
                 </button>

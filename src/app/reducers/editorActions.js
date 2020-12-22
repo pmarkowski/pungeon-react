@@ -1,3 +1,11 @@
+export const pngExported = () => ({
+    type: 'PNG_EXPORTED'
+})
+
+export const exportToPngClicked = () => ({
+    type: 'EXPORT_TO_PNG_CLICKED'
+})
+
 export const clearOngoingSpacePolygonPoint = () => ({
     type: 'CLEAR_ONGOING_SPACE_POLYGON'
 })
