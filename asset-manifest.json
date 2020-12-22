@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/pungeon-react/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/pungeon-react/static/js/main.de793412.chunk.js",
-    "main.js.map": "/pungeon-react/static/js/main.de793412.chunk.js.map",
+    "main.js": "/pungeon-react/static/js/main.4c428abf.chunk.js",
+    "main.js.map": "/pungeon-react/static/js/main.4c428abf.chunk.js.map",
     "runtime-main.js": "/pungeon-react/static/js/runtime-main.74839472.js",
     "runtime-main.js.map": "/pungeon-react/static/js/runtime-main.74839472.js.map",
     "static/js/2.8a0482f7.chunk.js": "/pungeon-react/static/js/2.8a0482f7.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.74839472.js",
     "static/js/2.8a0482f7.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.de793412.chunk.js"
+    "static/js/main.4c428abf.chunk.js"
   ]
 }
