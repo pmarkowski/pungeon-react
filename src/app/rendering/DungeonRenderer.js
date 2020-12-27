@@ -1,9 +1,11 @@
-import { selectObject, setMouseDungeonPosition } from "../reducers/editorActions";
+import { pngExported, selectObject, setMouseDungeonPosition } from "../reducers/editorActions";
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
 import * as RenderRouter from './RenderRouter'
 import TOOL_TYPE from "../tools/toolType";
+import download from "../utils/download";
+import * as PIXI from 'pixi.js'
 
 export const render = (app, graphics) => {
     var state = store.getState();
@@ -17,6 +19,10 @@ export const render = (app, graphics) => {
 
     drawDungeonObjects(app.stage, state);
     drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height);
+
+    if (state.editor.exportToPngClicked) {
+        exportImage(app);
+    }
 
     if (app.renderer.plugins.interaction.mouseOverRenderer) {
         ToolRouter.renderTool(state, graphics);
@@ -68,12 +74,27 @@ const drawDungeonObjects = (container, state) => {
 
 const drawGrid = (graphics, gridWidth, gridHeight) => {
     graphics.lineStyle(1, 0x444444, 1, 0.5);
-    for (let i = 0; i < gridWidth; i++) {
+    for (let i = 0; i <= gridWidth; i++) {
         graphics.moveTo(i * GRID_TILE_SIZE, 0);
-        graphics.lineTo(i * GRID_TILE_SIZE, (gridHeight - 1) * GRID_TILE_SIZE);
+        graphics.lineTo(i * GRID_TILE_SIZE, gridHeight * GRID_TILE_SIZE);
     }
-    for (let j = 0; j < gridHeight; j++) {
+
+    for (let j = 0; j <= gridHeight; j++) {
         graphics.moveTo(0, j * GRID_TILE_SIZE);
-        graphics.lineTo((gridWidth - 1) * GRID_TILE_SIZE, j * GRID_TILE_SIZE);
+        graphics.lineTo(gridWidth * GRID_TILE_SIZE, j * GRID_TILE_SIZE);
     }
+}
+
+function exportImage(app) {
+    let exportTexture = app.renderer.generateTexture(app.stage,
+        null,
+        1.0 / app.stage.scale.x,
+        new PIXI.Rectangle(
+            app.stage.position.x - 1,
+            app.stage.position.y - 1,
+            app.stage.width,
+            app.stage.height
+        ));
+    download(app.renderer.extract.base64(exportTexture), "dungeon.png");
+    store.dispatch(pngExported());
 }

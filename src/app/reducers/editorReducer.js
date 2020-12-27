@@ -2,6 +2,18 @@ import TOOL_TYPE from "../tools/toolType";
 
 export const editorReducer = (state = {}, action) => {
     switch (action.type) {
+        case 'PNG_EXPORTED': {
+            return {
+                ...state,
+                exportToPngClicked: null
+            }
+        }
+        case 'EXPORT_TO_PNG_CLICKED': {
+            return {
+                ...state,
+                exportToPngClicked: true
+            }
+        }
         case 'CLEAR_ONGOING_SPACE_POLYGON': {
             return {
                 ...state,
