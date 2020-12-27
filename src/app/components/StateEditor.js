@@ -106,7 +106,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
             <StateEditorCard title="Actions">
                 <button
                     className="btn btn-primary form-control mb-2"
-                    onClick={() => {dispatch(EditorActions.exportToPngClicked())}}>
+                    onClick={() => dispatch(EditorActions.exportToPngClicked())}>
                         Download Dungeon as PNG
                 </button>
                 <button
