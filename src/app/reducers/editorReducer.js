@@ -50,18 +50,20 @@ export const editorReducer = (state = {}, action) => {
         }
         case 'SCROLL_EVENT': {
             if (!state.scrollMovesViewport || action.holdingCtrl) {
-                let scaleDelta = 0.1
+                let scaleDelta = 10
                 if (action.scrollY > 0) {
                     scaleDelta *= -1
                 }
-                let newScale = Math.min(Math.max(state.scale + scaleDelta, 0.1), 2)
+                let minimumScale = 10;
+                let maximumScale = 200;
+                let newScale = Math.min(Math.max(state.scale + scaleDelta, minimumScale), maximumScale)
                 if (state.scale !== newScale) {
                     return {
                         ...state,
                         scale: newScale,
                         position: {
-                            x: state.position.x - (state.mouse.dungeonPosition.x * scaleDelta),
-                            y: state.position.y - (state.mouse.dungeonPosition.y * scaleDelta),
+                            x: state.position.x - (state.mouse.dungeonPosition.x * (scaleDelta / 100)),
+                            y: state.position.y - (state.mouse.dungeonPosition.y * (scaleDelta / 100)),
                         }
                     };
                 }
