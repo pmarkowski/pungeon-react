@@ -1,4 +1,4 @@
-const TOOL_TYPE  = {
+const TOOL_TYPE = {
     SELECT: "select",
     NEW_WALL: "new_wall",
     NEW_SPACE_RECTANGLE: "new_space_rectangle",
