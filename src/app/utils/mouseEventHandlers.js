@@ -22,5 +22,8 @@ export const handleMouseMove = (mouseEvent, store) => {
 }
 
 export const handleWheelEvent = (wheelEvent, store) => {
-    store.dispatch(scroll(wheelEvent));
+    store.dispatch(scroll(
+        wheelEvent.deltaX,
+        wheelEvent.deltaY,
+        wheelEvent.getModifierState('Control')));
 }

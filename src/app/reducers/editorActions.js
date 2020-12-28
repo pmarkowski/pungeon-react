@@ -20,11 +20,11 @@ export const addOngoingSpacePolygonPoint = (x, y) => ({
     }
 })
 
-export const scroll = (wheelEvent) => ({
+export const scroll = (deltaX, deltaY, holdingCtrl) => ({
     type: EDITOR_ACTION_TYPE.SCROLL_EVENT,
-    scrollX: wheelEvent.deltaX,
-    scrollY: wheelEvent.deltaY,
-    holdingCtrl: wheelEvent.getModifierState("Control")
+    scrollX: deltaX,
+    scrollY: deltaY,
+    holdingCtrl: holdingCtrl
 })
 
 export const moveViewport = (deltaX, deltaY) => ({
