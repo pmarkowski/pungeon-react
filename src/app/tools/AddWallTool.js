@@ -4,19 +4,19 @@ import { addWall } from "../reducers/dungeonActions";
 export default class AddWallTool {
     onMouseUp(store) {
         let state = store.getState();
-        let mousePoint = state.editor.mouse.dungeonPosition;
-        let startX = Math.round(state.editor.mouseStartX / GRID_TILE_SIZE);
-        let startY = Math.round(state.editor.mouseStartY / GRID_TILE_SIZE);
+        let mousePoint = state.editor.mouse.currentPosition;
+        let startX = Math.round(state.editor.mouse.startPosition.x / GRID_TILE_SIZE);
+        let startY = Math.round(state.editor.mouse.startPosition.y / GRID_TILE_SIZE);
         let endX = Math.round(mousePoint.x / GRID_TILE_SIZE);
         let endY = Math.round(mousePoint.y / GRID_TILE_SIZE);
         store.dispatch(addWall(startX, startY, endX, endY));
     }
 
     renderTool(state, graphics) {
-        let mousePoint = state.editor.mouse.dungeonPosition;
-        if (state.editor.mouseDown) {
-            let startX = Math.round(state.editor.mouseStartX / GRID_TILE_SIZE) * GRID_TILE_SIZE;
-            let startY = Math.round(state.editor.mouseStartY / GRID_TILE_SIZE) * GRID_TILE_SIZE;
+        let mousePoint = state.editor.mouse.currentPosition;
+        if (state.editor.mouse.mouseDown) {
+            let startX = Math.round(state.editor.mouse.startPosition.x / GRID_TILE_SIZE) * GRID_TILE_SIZE;
+            let startY = Math.round(state.editor.mouse.startPosition.y / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             let endX = Math.round(mousePoint.x / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             let endY = Math.round(mousePoint.y / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             graphics.lineStyle(5, 0xfffd00);

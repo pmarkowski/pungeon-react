@@ -1,7 +1,28 @@
 import TOOL_TYPE from "../tools/toolType";
 import EDITOR_ACTION_TYPE from "./editorActionType";
 
-export const editorReducer = (state = {}, action) => {
+export const defaultEditorState = {
+    scrollMovesViewport: false,
+    selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
+    scale: 100,
+    position: {
+        x: 0,
+        y: 0
+    },
+    mouse: {
+        mouseDown: false,
+        startPosition: {
+            x: 0,
+            y: 0
+        },
+        currentPosition: {
+            x: 0,
+            y: 0
+        }
+    }
+};
+
+export const editorReducer = (state = defaultEditorState, action) => {
     switch (action.type) {
         case EDITOR_ACTION_TYPE.PNG_EXPORTED: {
             return {
@@ -37,12 +58,12 @@ export const editorReducer = (state = {}, action) => {
                 }
             }
         }
-        case EDITOR_ACTION_TYPE.SET_MOUSE_DUNGEON_POSITION: {
+        case EDITOR_ACTION_TYPE.SET_CURRENT_MOUSE_POSITION: {
             return {
                 ...state,
                 mouse: {
                     ...state.mouse,
-                    dungeonPosition: {
+                    currentPosition: {
                         x: action.x,
                         y: action.y
                     }
@@ -63,8 +84,8 @@ export const editorReducer = (state = {}, action) => {
                         ...state,
                         scale: newScale,
                         position: {
-                            x: state.position.x - (state.mouse.dungeonPosition.x * (scaleDelta / 100)),
-                            y: state.position.y - (state.mouse.dungeonPosition.y * (scaleDelta / 100)),
+                            x: state.position.x - (state.mouse.currentPosition.x * (scaleDelta / 100)),
+                            y: state.position.y - (state.mouse.currentPosition.y * (scaleDelta / 100)),
                         }
                     };
                 }
@@ -86,15 +107,23 @@ export const editorReducer = (state = {}, action) => {
         case EDITOR_ACTION_TYPE.MOUSE_DOWN: {
             return {
                 ...state,
-                mouseDown: true,
-                mouseStartX: state.mouse.dungeonPosition.x,
-                mouseStartY: state.mouse.dungeonPosition.y
+                mouse: {
+                    ...state.mouse,
+                    mouseDown: true,
+                    startPosition: {
+                      x: state.mouse.currentPosition.x,
+                      y: state.mouse.currentPosition.y
+                    }
+                }
             };
         }
         case EDITOR_ACTION_TYPE.MOUSE_UP: {
             return {
                 ...state,
-                mouseDown: false
+                mouse: {
+                    ...state.mouse,
+                    mouseDown: false
+                }
             };
         }
         case EDITOR_ACTION_TYPE.SET_SCROLL_MOVES_VIEWPORT: {

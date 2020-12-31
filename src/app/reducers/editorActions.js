@@ -1,5 +1,13 @@
 import EDITOR_ACTION_TYPE from "./editorActionType"
 
+export const mouseDown = () => ({
+    type: EDITOR_ACTION_TYPE.MOUSE_DOWN
+})
+
+export const mouseUp = () => ({
+    type: EDITOR_ACTION_TYPE.MOUSE_UP
+})
+
 export const pngExported = () => ({
     type: EDITOR_ACTION_TYPE.PNG_EXPORTED
 })
@@ -48,8 +56,8 @@ export const setScrollMovesViewport = (scrollMovesViewport) => ({
     scrollMovesViewport: scrollMovesViewport
 })
 
-export const setMouseDungeonPosition = (x, y) => ({
-    type: EDITOR_ACTION_TYPE.SET_MOUSE_DUNGEON_POSITION,
+export const setCurrentMousePosition = (x, y) => ({
+    type: EDITOR_ACTION_TYPE.SET_CURRENT_MOUSE_POSITION,
     x: x,
     y: y
 })

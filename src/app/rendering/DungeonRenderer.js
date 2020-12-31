@@ -1,4 +1,4 @@
-import { pngExported, selectObject, setMouseDungeonPosition } from "../reducers/editorActions";
+import { pngExported, selectObject, setCurrentMousePosition } from "../reducers/editorActions";
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
@@ -29,10 +29,10 @@ export const render = (app, graphics) => {
         ToolRouter.renderTool(state, graphics);
 
         let mousePosition = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
-        store.dispatch(setMouseDungeonPosition(mousePosition.x, mousePosition.y));
+        store.dispatch(setCurrentMousePosition(mousePosition.x, mousePosition.y));
     }
     else {
-        store.dispatch(setMouseDungeonPosition(null, null));
+        store.dispatch(setCurrentMousePosition(null, null));
     }
 }
 export default render;
