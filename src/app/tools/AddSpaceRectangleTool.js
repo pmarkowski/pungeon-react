@@ -5,7 +5,7 @@ export default class AddSpaceRectangleTool {
 
     onMouseUp(store) {
         let state = store.getState();
-        let mousePoint = state.editor.mouse.dungeonPosition;
+        let mousePoint = state.editor.mouse.currentPosition;
         let startX = Math.floor(Math.min(state.editor.mouseStartX, mousePoint.x) / GRID_TILE_SIZE);
         let startY = Math.floor(Math.min(state.editor.mouseStartY, mousePoint.y) / GRID_TILE_SIZE);
         let endX = Math.ceil(Math.max(state.editor.mouseStartX, mousePoint.x) / GRID_TILE_SIZE);
@@ -14,7 +14,7 @@ export default class AddSpaceRectangleTool {
     }
 
     renderTool(state, graphics) {
-        let mousePoint = state.editor.mouse.dungeonPosition;
+        let mousePoint = state.editor.mouse.currentPosition;
         let snappedX, snappedY, width, height;
         if (state.editor.mouseDown) {
             let startX = Math.min(state.editor.mouseStartX, mousePoint.x);

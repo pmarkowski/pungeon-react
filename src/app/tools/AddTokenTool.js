@@ -9,7 +9,7 @@ export default class AddTokenTool {
 
     onMouseUp(store) {
         let state = store.getState();
-        let mousePoint = state.editor.mouse.dungeonPosition;
+        let mousePoint = state.editor.mouse.currentPosition;
         let snappedX, snappedY;
 
         // snap to nearest grid point
@@ -29,7 +29,7 @@ export default class AddTokenTool {
 
     renderTool(state, graphics) {
         // preview the sprite in the current location
-        let mousePoint = state.editor.mouse.dungeonPosition;
+        let mousePoint = state.editor.mouse.currentPosition;
         let snappedX, snappedY;
 
         // snap to nearest grid point

@@ -6,7 +6,7 @@ import { lineLength, getClosestPointOnLine } from "../utils/geometry";
 export default class AddDoorTool {
     onMouseUp(store) {
         let state = store.getState();
-        let mousePoint = state.editor.mouse.dungeonPosition;
+        let mousePoint = state.editor.mouse.currentPosition;
         let minDistance = 25;
         let snapPoint = null;
         let minWallId = null;
@@ -61,7 +61,7 @@ export default class AddDoorTool {
     }
 
     renderTool(state, graphics) {
-        let mousePoint = state.editor.mouse.dungeonPosition;
+        let mousePoint = state.editor.mouse.currentPosition;
         if (!state.editor.mouseDown) {
             // try to snap to the nearest line:
             // for each line, get the nearest point on the line

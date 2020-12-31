@@ -69,8 +69,8 @@ test('Moving mouse sets mouse position', () => {
 
     let newState = editorReducer(defaultEditorState, mouseMoveAction);
 
-    expect(newState.mouse.dungeonPosition.x).toBe(6);
-    expect(newState.mouse.dungeonPosition.y).toBe(7);
+    expect(newState.mouse.currentPosition.x).toBe(6);
+    expect(newState.mouse.currentPosition.y).toBe(7);
 })
 
 test('Clicking sets mouseDown to true', () => {
@@ -85,7 +85,7 @@ test('Clicking down sets mouse start position', () => {
     let movedMouseState = {
         ...defaultEditorState,
         mouse: {
-            dungeonPosition: {
+            currentPosition: {
                 x: 6,
                 y: 9
             }

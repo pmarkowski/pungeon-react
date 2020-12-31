@@ -13,7 +13,7 @@ export const defaultEditorState = {
         y: 0
     },
     mouse: {
-        dungeonPosition: {
+        currentPosition: {
             x: 0,
             y: 0
         }
@@ -61,7 +61,7 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 ...state,
                 mouse: {
                     ...state.mouse,
-                    dungeonPosition: {
+                    currentPosition: {
                         x: action.x,
                         y: action.y
                     }
@@ -82,8 +82,8 @@ export const editorReducer = (state = defaultEditorState, action) => {
                         ...state,
                         scale: newScale,
                         position: {
-                            x: state.position.x - (state.mouse.dungeonPosition.x * (scaleDelta / 100)),
-                            y: state.position.y - (state.mouse.dungeonPosition.y * (scaleDelta / 100)),
+                            x: state.position.x - (state.mouse.currentPosition.x * (scaleDelta / 100)),
+                            y: state.position.y - (state.mouse.currentPosition.y * (scaleDelta / 100)),
                         }
                     };
                 }
@@ -106,8 +106,8 @@ export const editorReducer = (state = defaultEditorState, action) => {
             return {
                 ...state,
                 mouseDown: true,
-                mouseStartX: state.mouse.dungeonPosition.x,
-                mouseStartY: state.mouse.dungeonPosition.y
+                mouseStartX: state.mouse.currentPosition.x,
+                mouseStartY: state.mouse.currentPosition.y
             };
         }
         case EDITOR_ACTION_TYPE.MOUSE_UP: {

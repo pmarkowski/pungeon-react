@@ -6,7 +6,7 @@ export default class AddSpacePolygonTool {
 
     onMouseUp(store) {
         let state = store.getState();
-        let mousePoint = state.editor.mouse.dungeonPosition;
+        let mousePoint = state.editor.mouse.currentPosition;
         let x = Math.round(mousePoint.x / GRID_TILE_SIZE);
         let y = Math.round(mousePoint.y / GRID_TILE_SIZE);
 
@@ -24,7 +24,7 @@ export default class AddSpacePolygonTool {
 
     renderTool(state, graphics) {
         // if there's no ongoing polygon, just snap to a corner
-        let mousePoint = state.editor.mouse.dungeonPosition;
+        let mousePoint = state.editor.mouse.currentPosition;
         // get nearest center point
         let hoverX = Math.round(mousePoint.x / GRID_TILE_SIZE) * GRID_TILE_SIZE;
         let hoverY = Math.round(mousePoint.y / GRID_TILE_SIZE) * GRID_TILE_SIZE;
