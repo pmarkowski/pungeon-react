@@ -15,27 +15,29 @@ test('Scrolling up increases scale by 10', () => {
 });
 
 test('Scrolling down does not lower scale below 10', () => {
+    const minScale = 10;
     let minimumScrollState = {
         ...defaultEditorState,
-        scale: 10
+        scale: minScale
     };
     let scrollDownAction = EditorActions.scroll(0, 1, false);
 
     let newState = editorReducer(minimumScrollState, scrollDownAction);
 
-    expect(newState.scale).toBe(10);
+    expect(newState.scale).toBe(minScale);
 })
 
 test('Scrolling up does not increase scale above 200', () => {
+    const maxScale = 200;
     let minimumScrollState = {
         ...defaultEditorState,
-        scale: 200
+        scale: maxScale
     };
     let scrollUpAction = EditorActions.scroll(0, -1, false);
 
     let newState = editorReducer(minimumScrollState, scrollUpAction);
 
-    expect(newState.scale).toBe(200);
+    expect(newState.scale).toBe(maxScale);
 })
 
 test('Selecting a non-select tool clears selected object', () => {
@@ -52,25 +54,28 @@ test('Selecting a non-select tool clears selected object', () => {
 })
 
 test('Selecting select tool does not clear selected object', () => {
+    const selectedObjectId = 'beep-boop';
     let nonSelectToolState = {
         ...defaultEditorState,
         selectedTool: TOOL_TYPE.SELECT,
-        selectedObject: 'beep-boop'
+        selectedObject: selectedObjectId
     };
     let changeToolAction = EditorActions.selectTool(TOOL_TYPE.SELECT);
 
     let newState = editorReducer(nonSelectToolState, changeToolAction);
 
-    expect(newState.selectedObject).toBe('beep-boop');
+    expect(newState.selectedObject).toBe(selectedObjectId);
 })
 
 test('Moving mouse sets mouse position', () => {
-    let mouseMoveAction = EditorActions.setCurrentMousePosition(6, 7);
+    const x = 6;
+    const y = 7;
+    let mouseMoveAction = EditorActions.setCurrentMousePosition(x, y);
 
     let newState = editorReducer(defaultEditorState, mouseMoveAction);
 
-    expect(newState.mouse.currentPosition.x).toBe(6);
-    expect(newState.mouse.currentPosition.y).toBe(7);
+    expect(newState.mouse.currentPosition.x).toBe(x);
+    expect(newState.mouse.currentPosition.y).toBe(y);
 })
 
 test('Clicking sets mouseDown to true', () => {
@@ -82,12 +87,14 @@ test('Clicking sets mouseDown to true', () => {
 })
 
 test('Clicking down sets mouse start position', () => {
+    const x = 6;
+    const y = 9;
     let movedMouseState = {
         ...defaultEditorState,
         mouse: {
             currentPosition: {
-                x: 6,
-                y: 9
+                x: x,
+                y: y
             }
         }
     };
@@ -95,8 +102,8 @@ test('Clicking down sets mouse start position', () => {
 
     let newState = editorReducer(movedMouseState, mouseDownAction);
 
-    expect(newState.mouse.startPosition.x).toBe(6);
-    expect(newState.mouse.startPosition.y).toBe(9);
+    expect(newState.mouse.startPosition.x).toBe(x);
+    expect(newState.mouse.startPosition.y).toBe(y);
 })
 
 test('Releasing sets mouseDown to false', () => {
