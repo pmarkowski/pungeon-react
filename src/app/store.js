@@ -10,7 +10,7 @@ const store = createStore(reducer,
       mouseStartX: 0,
       mouseStartY: 0,
       selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
-      scale: 1,
+      scale: 100,
       position: {
         x: 0,
         y: 0

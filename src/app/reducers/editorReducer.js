@@ -1,33 +1,34 @@
 import TOOL_TYPE from "../tools/toolType";
+import EDITOR_ACTION_TYPE from "./editorActionType";
 
 export const editorReducer = (state = {}, action) => {
     switch (action.type) {
-        case 'PNG_EXPORTED': {
+        case EDITOR_ACTION_TYPE.PNG_EXPORTED: {
             return {
                 ...state,
                 exportToPngClicked: null
             }
         }
-        case 'EXPORT_TO_PNG_CLICKED': {
+        case EDITOR_ACTION_TYPE.EXPORT_TO_PNG_CLICKED: {
             return {
                 ...state,
                 exportToPngClicked: true
             }
         }
-        case 'CLEAR_ONGOING_SPACE_POLYGON': {
+        case EDITOR_ACTION_TYPE.CLEAR_ONGOING_SPACE_POLYGON: {
             return {
                 ...state,
                 ongoingSpacePolygon: null
             }
         }
-        case 'ADD_ONGOING_SPACE_POLYGON': {
+        case EDITOR_ACTION_TYPE.ADD_ONGOING_SPACE_POLYGON: {
             let newPolygonArray = [...(state.ongoingSpacePolygon ?? []), action.position]
             return {
                 ...state,
                 ongoingSpacePolygon: newPolygonArray
             }
         }
-        case 'MOVE_VIEWPORT': {
+        case EDITOR_ACTION_TYPE.MOVE_VIEWPORT: {
             return {
                 ...state,
                 position: {
@@ -36,7 +37,7 @@ export const editorReducer = (state = {}, action) => {
                 }
             }
         }
-        case 'SET_MOUSE_DUNGEON_POSITION': {
+        case EDITOR_ACTION_TYPE.SET_MOUSE_DUNGEON_POSITION: {
             return {
                 ...state,
                 mouse: {
@@ -48,20 +49,22 @@ export const editorReducer = (state = {}, action) => {
                 }
             }
         }
-        case 'SCROLL_EVENT': {
+        case EDITOR_ACTION_TYPE.SCROLL_EVENT: {
             if (!state.scrollMovesViewport || action.holdingCtrl) {
-                let scaleDelta = 0.1
+                let scaleDelta = 10
                 if (action.scrollY > 0) {
                     scaleDelta *= -1
                 }
-                let newScale = Math.min(Math.max(state.scale + scaleDelta, 0.1), 2)
+                let minimumScale = 10;
+                let maximumScale = 200;
+                let newScale = Math.min(Math.max(state.scale + scaleDelta, minimumScale), maximumScale)
                 if (state.scale !== newScale) {
                     return {
                         ...state,
                         scale: newScale,
                         position: {
-                            x: state.position.x - (state.mouse.dungeonPosition.x * scaleDelta),
-                            y: state.position.y - (state.mouse.dungeonPosition.y * scaleDelta),
+                            x: state.position.x - (state.mouse.dungeonPosition.x * (scaleDelta / 100)),
+                            y: state.position.y - (state.mouse.dungeonPosition.y * (scaleDelta / 100)),
                         }
                     };
                 }
@@ -80,7 +83,7 @@ export const editorReducer = (state = {}, action) => {
                 };
             }
         }
-        case 'MOUSE_DOWN': {
+        case EDITOR_ACTION_TYPE.MOUSE_DOWN: {
             return {
                 ...state,
                 mouseDown: true,
@@ -88,19 +91,19 @@ export const editorReducer = (state = {}, action) => {
                 mouseStartY: state.mouse.dungeonPosition.y
             };
         }
-        case 'MOUSE_UP': {
+        case EDITOR_ACTION_TYPE.MOUSE_UP: {
             return {
                 ...state,
                 mouseDown: false
             };
         }
-        case 'SET_SCROLL_MOVES_VIEWPORT': {
+        case EDITOR_ACTION_TYPE.SET_SCROLL_MOVES_VIEWPORT: {
             return {
                 ...state,
                 scrollMovesViewport: action.scrollMovesViewport
             }
         }
-        case 'SELECT_TOOL': {
+        case EDITOR_ACTION_TYPE.SELECT_TOOL: {
             let selectedObject = state.selectedObject;
             if (action.selectedTool !== TOOL_TYPE.SELECT) {
                 selectedObject = null;
@@ -111,13 +114,13 @@ export const editorReducer = (state = {}, action) => {
                 selectedObject: selectedObject
             };
         }
-        case 'SELECT_OBJECT': {
+        case EDITOR_ACTION_TYPE.SELECT_OBJECT: {
             return {
                 ...state,
                 selectedObject: action.objectId
             };
         }
-        case 'DELETE_OBJECT': {
+        case EDITOR_ACTION_TYPE.DELETE_OBJECT: {
             return {
                 ...state,
                 selectedObject: null

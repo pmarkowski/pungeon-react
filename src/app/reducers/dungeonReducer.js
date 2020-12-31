@@ -1,8 +1,9 @@
 import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
+import DUNGEON_ACTION_TYPE from './dungeonActionType'
 
 export const dungeonReducer = (state = {}, action) => {
     switch (action.type) {
-        case 'NEW_DUNGEON': {
+        case DUNGEON_ACTION_TYPE.NEW_DUNGEON: {
             return {
                 size: {
                     width: 24,
@@ -11,7 +12,7 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: []
             }
         }
-        case 'SET_DUNGEON_SIZE': {
+        case DUNGEON_ACTION_TYPE.SET_DUNGEON_SIZE: {
             return {
                 ...state,
                 size: {
@@ -20,7 +21,7 @@ export const dungeonReducer = (state = {}, action) => {
                 }
             }
         }
-        case 'MOVE_SELECTED_OBJECT': {
+        case DUNGEON_ACTION_TYPE.MOVE_SELECTED_OBJECT: {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.objects,
                 action.selectedObject,
@@ -33,7 +34,7 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: arrayWithUpdatedObject
             };
         }
-        case 'SET_SELECTED_OBJECT_TEXTURE_PATH': {
+        case DUNGEON_ACTION_TYPE.SET_SELECTED_OBJECT_TEXTURE_PATH: {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.objects,
                 action.selectedObject,
@@ -43,7 +44,7 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: arrayWithUpdatedObject
             };
         }
-        case 'SET_SELECTED_OBJECT_ANGLE': {
+        case DUNGEON_ACTION_TYPE.SET_SELECTED_OBJECT_ANGLE: {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.objects,
                 action.selectedObject,
@@ -53,7 +54,7 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: arrayWithUpdatedObject
             };
         }
-        case 'SET_SELECTED_OBJECT_LABEL': {
+        case DUNGEON_ACTION_TYPE.SET_SELECTED_OBJECT_LABEL: {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.objects,
                 action.selectedObject,
@@ -63,7 +64,7 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: arrayWithUpdatedObject
             };
         }
-        case 'SET_SELECTED_OBJECT_POSITION': {
+        case DUNGEON_ACTION_TYPE.SET_SELECTED_OBJECT_POSITION: {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.objects,
                 action.selectedObject,
@@ -76,7 +77,7 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: arrayWithUpdatedObject
             };
         }
-        case 'SET_SELECTED_OBJECT_SIZE': {
+        case DUNGEON_ACTION_TYPE.SET_SELECTED_OBJECT_SIZE: {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.objects,
                 action.selectedObject,
@@ -89,7 +90,7 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: arrayWithUpdatedObject
             };
         }
-        case 'SET_SELECTED_OBJECT_START': {
+        case DUNGEON_ACTION_TYPE.SET_SELECTED_OBJECT_START: {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.objects,
                 action.selectedObject,
@@ -102,7 +103,7 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: arrayWithUpdatedObject
             };
         }
-        case 'SET_SELECTED_OBJECT_END': {
+        case DUNGEON_ACTION_TYPE.SET_SELECTED_OBJECT_END: {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.objects,
                 action.selectedObject,
@@ -116,7 +117,7 @@ export const dungeonReducer = (state = {}, action) => {
             };
 
         }
-        case 'ADD_OBJECT': {
+        case DUNGEON_ACTION_TYPE.ADD_OBJECT: {
             let objectArray = state.objects.slice();
             objectArray = [...objectArray, action.newObject];
             return {
@@ -124,7 +125,7 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: objectArray
             };
         }
-        case 'DELETE_OBJECT': {
+        case DUNGEON_ACTION_TYPE.DELETE_OBJECT: {
             let selectedObjectId = action.selectedObject;
             if (selectedObjectId) {
                 let newObjectArray = state.objects

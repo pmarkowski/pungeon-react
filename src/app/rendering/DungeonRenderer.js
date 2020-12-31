@@ -11,8 +11,9 @@ export const render = (app, graphics) => {
     var state = store.getState();
 
     app.stage.position.set(state.editor.position.x, state.editor.position.y);
-    if (app.stage.scale.x !== state.editor.scale) {
-        app.stage.scale.set(state.editor.scale);
+    let fractionalScale = state.editor.scale / 100;
+    if (app.stage.scale.x !== fractionalScale) {
+        app.stage.scale.set(fractionalScale);
     }
 
     graphics.clear();
