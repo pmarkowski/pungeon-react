@@ -82,3 +82,50 @@ test('Selecting select tool does not clear selected object', () => {
 
     expect(newState.selectedObject).toBe('beep-boop');
 })
+
+test('Moving mouse sets mouse position', () => {
+    let mouseMoveAction = EditorActions.setMouseDungeonPosition(6, 7);
+
+    let newState = editorReducer(defaultEditorState, mouseMoveAction);
+
+    expect(newState.mouse.dungeonPosition.x).toBe(6);
+    expect(newState.mouse.dungeonPosition.y).toBe(7);
+})
+
+test('Clicking sets mouseDown to true', () => {
+    let mouseDownAction = EditorActions.mouseDown();
+
+    let newState = editorReducer(defaultEditorState, mouseDownAction);
+
+    expect(newState.mouseDown).toBe(true);
+})
+
+test('Clicking down sets mouse start position', () => {
+    let movedMouseState = {
+        ...defaultEditorState,
+        mouse: {
+            dungeonPosition: {
+                x: 6,
+                y: 9
+            }
+        }
+    };
+    let mouseDownAction = EditorActions.mouseDown();
+
+    let newState = editorReducer(movedMouseState, mouseDownAction);
+
+    expect(newState.mouseStartX).toBe(6);
+    expect(newState.mouseStartY).toBe(9);
+})
+
+test('Releasing sets mouseDown to false', () => {
+    let mouseDownState = {
+        ...defaultEditorState,
+        mouseDown: true
+    };
+    let mouseUpAction = EditorActions.mouseUp();
+
+    let newState = editorReducer(mouseDownState, mouseUpAction);
+
+    expect(newState.mouseDown).toBe(false);
+})

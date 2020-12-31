@@ -1,5 +1,13 @@
 import EDITOR_ACTION_TYPE from "./editorActionType"
 
+export const mouseDown = () => ({
+    type: EDITOR_ACTION_TYPE.MOUSE_DOWN
+})
+
+export const mouseUp = () => ({
+    type: EDITOR_ACTION_TYPE.MOUSE_UP
+})
+
 export const pngExported = () => ({
     type: EDITOR_ACTION_TYPE.PNG_EXPORTED
 })
