@@ -23,13 +23,13 @@ export default class AddDoorTool {
                     y: wall.end.y * GRID_TILE_SIZE
                 }
                 let closestPoint = getClosestPointOnLine({
-                        x: state.editor.mouseStartX,
-                        y: state.editor.mouseStartY
+                        x: state.editor.mouse.startPosition.x,
+                        y: state.editor.mouse.startPosition.y
                     }, scaledStart, scaledEnd);
                 // if the shortest distance of one is < snapping threshold, snap to it
                 let distance = lineLength(closestPoint, {
-                    x: state.editor.mouseStartX,
-                    y: state.editor.mouseStartY
+                    x: state.editor.mouse.startPosition.x,
+                    y: state.editor.mouse.startPosition.y
                 });
                 if (!minDistance || distance < minDistance) {
                     minDistance = distance;
@@ -62,7 +62,7 @@ export default class AddDoorTool {
 
     renderTool(state, graphics) {
         let mousePoint = state.editor.mouse.currentPosition;
-        if (!state.editor.mouseDown) {
+        if (!state.editor.mouse.mouseDown) {
             // try to snap to the nearest line:
             // for each line, get the nearest point on the line
             let minDistance = 25;
@@ -111,13 +111,13 @@ export default class AddDoorTool {
                         y: wall.end.y * GRID_TILE_SIZE
                     }
                     let closestPoint = getClosestPointOnLine({
-                            x: state.editor.mouseStartX,
-                            y: state.editor.mouseStartY
+                            x: state.editor.mouse.startPosition.x,
+                            y: state.editor.mouse.startPosition.y
                         }, scaledStart, scaledEnd);
                     // if the shortest distance of one is < snapping threshold, snap to it
                     let distance = lineLength(closestPoint, {
-                        x: state.editor.mouseStartX,
-                        y: state.editor.mouseStartY
+                        x: state.editor.mouse.startPosition.x,
+                        y: state.editor.mouse.startPosition.y
                     });
                     if (!minDistance || distance < minDistance) {
                         minDistance = distance;

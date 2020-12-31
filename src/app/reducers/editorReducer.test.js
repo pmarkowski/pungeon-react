@@ -95,8 +95,8 @@ test('Clicking down sets mouse start position', () => {
 
     let newState = editorReducer(movedMouseState, mouseDownAction);
 
-    expect(newState.mouseStartX).toBe(6);
-    expect(newState.mouseStartY).toBe(9);
+    expect(newState.mouse.startPosition.x).toBe(6);
+    expect(newState.mouse.startPosition.y).toBe(9);
 })
 
 test('Releasing sets mouseDown to false', () => {
