@@ -3,7 +3,6 @@ import EDITOR_ACTION_TYPE from "./editorActionType";
 
 export const defaultEditorState = {
     scrollMovesViewport: false,
-    mouseDown: false,
     mouseStartX: 0,
     mouseStartY: 0,
     selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
@@ -13,6 +12,7 @@ export const defaultEditorState = {
         y: 0
     },
     mouse: {
+        mouseDown: false,
         currentPosition: {
             x: 0,
             y: 0
@@ -105,7 +105,10 @@ export const editorReducer = (state = defaultEditorState, action) => {
         case EDITOR_ACTION_TYPE.MOUSE_DOWN: {
             return {
                 ...state,
-                mouseDown: true,
+                mouse: {
+                    ...state.mouse,
+                    mouseDown: true
+                },
                 mouseStartX: state.mouse.currentPosition.x,
                 mouseStartY: state.mouse.currentPosition.y
             };
@@ -113,7 +116,10 @@ export const editorReducer = (state = defaultEditorState, action) => {
         case EDITOR_ACTION_TYPE.MOUSE_UP: {
             return {
                 ...state,
-                mouseDown: false
+                mouse: {
+                    ...state.mouse,
+                    mouseDown: false
+                }
             };
         }
         case EDITOR_ACTION_TYPE.SET_SCROLL_MOVES_VIEWPORT: {

@@ -78,7 +78,7 @@ test('Clicking sets mouseDown to true', () => {
 
     let newState = editorReducer(defaultEditorState, mouseDownAction);
 
-    expect(newState.mouseDown).toBe(true);
+    expect(newState.mouse.mouseDown).toBe(true);
 })
 
 test('Clicking down sets mouse start position', () => {
@@ -102,11 +102,14 @@ test('Clicking down sets mouse start position', () => {
 test('Releasing sets mouseDown to false', () => {
     let mouseDownState = {
         ...defaultEditorState,
-        mouseDown: true
+        mouse: {
+            ...defaultEditorState.mouse,
+            mouseDown: true
+        }
     };
     let mouseUpAction = EditorActions.mouseUp();
 
     let newState = editorReducer(mouseDownState, mouseUpAction);
 
-    expect(newState.mouseDown).toBe(false);
+    expect(newState.mouse.mouseDown).toBe(false);
 })

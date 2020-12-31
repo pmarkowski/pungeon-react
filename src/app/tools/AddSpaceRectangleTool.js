@@ -16,7 +16,7 @@ export default class AddSpaceRectangleTool {
     renderTool(state, graphics) {
         let mousePoint = state.editor.mouse.currentPosition;
         let snappedX, snappedY, width, height;
-        if (state.editor.mouseDown) {
+        if (state.editor.mouse.mouseDown) {
             let startX = Math.min(state.editor.mouseStartX, mousePoint.x);
             let startY = Math.min(state.editor.mouseStartY, mousePoint.y);
             let endX = Math.max(state.editor.mouseStartX, mousePoint.x);

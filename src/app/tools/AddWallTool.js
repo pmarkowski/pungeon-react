@@ -14,7 +14,7 @@ export default class AddWallTool {
 
     renderTool(state, graphics) {
         let mousePoint = state.editor.mouse.currentPosition;
-        if (state.editor.mouseDown) {
+        if (state.editor.mouse.mouseDown) {
             let startX = Math.round(state.editor.mouseStartX / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             let startY = Math.round(state.editor.mouseStartY / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             let endX = Math.round(mousePoint.x / GRID_TILE_SIZE) * GRID_TILE_SIZE;
