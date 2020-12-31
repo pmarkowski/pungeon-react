@@ -65,7 +65,7 @@ test('Selecting select tool does not clear selected object', () => {
 })
 
 test('Moving mouse sets mouse position', () => {
-    let mouseMoveAction = EditorActions.setMouseDungeonPosition(6, 7);
+    let mouseMoveAction = EditorActions.setCurrentMousePosition(6, 7);
 
     let newState = editorReducer(defaultEditorState, mouseMoveAction);
 

@@ -56,7 +56,7 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 }
             }
         }
-        case EDITOR_ACTION_TYPE.SET_MOUSE_DUNGEON_POSITION: {
+        case EDITOR_ACTION_TYPE.SET_CURRENT_MOUSE_POSITION: {
             return {
                 ...state,
                 mouse: {
