@@ -56,7 +56,7 @@ export const setScrollMovesViewport = (scrollMovesViewport) => ({
     scrollMovesViewport: scrollMovesViewport
 })
 
-export const setMouseDungeonPosition = (x, y) => ({
+export const setCurrentMousePosition = (x, y) => ({
     type: EDITOR_ACTION_TYPE.SET_MOUSE_DUNGEON_POSITION,
     x: x,
     y: y
