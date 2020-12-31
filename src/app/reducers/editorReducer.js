@@ -1,7 +1,26 @@
 import TOOL_TYPE from "../tools/toolType";
 import EDITOR_ACTION_TYPE from "./editorActionType";
 
-export const editorReducer = (state = {}, action) => {
+export const defaultEditorState = {
+    scrollMovesViewport: false,
+    mouseDown: false,
+    mouseStartX: 0,
+    mouseStartY: 0,
+    selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
+    scale: 100,
+    position: {
+        x: 0,
+        y: 0
+    },
+    mouse: {
+        dungeonPosition: {
+            x: 0,
+            y: 0
+        }
+    }
+};
+
+export const editorReducer = (state = defaultEditorState, action) => {
     switch (action.type) {
         case EDITOR_ACTION_TYPE.PNG_EXPORTED: {
             return {

@@ -1,27 +1,8 @@
 import { createStore } from 'redux';
 import reducer from './reducers/index'
-import TOOL_TYPE from './tools/toolType';
 
 const store = createStore(reducer,
   {
-    editor: {
-      scrollMovesViewport: false,
-      mouseDown: false,
-      mouseStartX: 0,
-      mouseStartY: 0,
-      selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
-      scale: 100,
-      position: {
-        x: 0,
-        y: 0
-      },
-      mouse: {
-        dungeonPosition: {
-          x: 0,
-          y: 0
-        }
-      }
-    },
     dungeon: {
       size: {
         width: 28,

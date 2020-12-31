@@ -1,25 +1,6 @@
 import TOOL_TYPE from "../tools/toolType";
 import * as EditorActions from './editorActions';
-import { editorReducer } from "./editorReducer";
-
-let defaultEditorState = {
-    scrollMovesViewport: false,
-    mouseDown: false,
-    mouseStartX: 0,
-    mouseStartY: 0,
-    selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
-    scale: 100,
-    position: {
-        x: 0,
-        y: 0
-    },
-    mouse: {
-        dungeonPosition: {
-            x: 0,
-            y: 0
-        }
-    }
-};
+import { defaultEditorState, editorReducer } from "./editorReducer";
 
 test('Scrolling down lowers scale by 10', () => {
     let scrollDownAction = EditorActions.scroll(0, 1, false);
