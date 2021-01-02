@@ -46,9 +46,10 @@ export const selectTool = (toolName) => ({
     selectedTool: toolName
 })
 
-export const selectObject = (objectId) => ({
+export const selectObject = (objectId, shouldMultiSelect) => ({
     type: EDITOR_ACTION_TYPE.SELECT_OBJECT,
-    objectId: objectId
+    objectId: objectId,
+    shouldMultiSelect: shouldMultiSelect
 })
 
 export const setScrollMovesViewport = (scrollMovesViewport) => ({

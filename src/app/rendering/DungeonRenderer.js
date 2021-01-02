@@ -50,9 +50,9 @@ const drawDungeonObjects = (container, state) => {
             let newChildGraphics = RenderRouter.createRenderObject(objectIdMap[objectId]);
             newChildGraphics.id = objectId;
             newChildGraphics.interactive = true;
-            newChildGraphics.mouseup = function () {
+            newChildGraphics.mouseup = function (mouseEvent) {
                 if (store.getState().editor.selectedTool === TOOL_TYPE.SELECT) {
-                    store.dispatch(selectObject(this.id));
+                    store.dispatch(selectObject(this.id, mouseEvent.data.originalEvent.getModifierState("Shift")));
                 }
             };
             container.addChild(newChildGraphics);
