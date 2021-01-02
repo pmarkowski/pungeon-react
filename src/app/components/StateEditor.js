@@ -131,8 +131,8 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
 }
 
 const mapStateToProps = state => ({
-    selectedObjectId: state.editor.selectedObject,
-    selectedObject: state.dungeon.objects.find(object => object.id === state.editor.selectedObject),
+    selectedObjectId: state.editor.selectedObjectIds[0],
+    selectedObject: state.dungeon.objects.find(object => object.id === state.editor.selectedObjectIds[0]),
     dungeonSize: state.dungeon.size,
     scrollMovesViewport: state.editor.scrollMovesViewport
 })

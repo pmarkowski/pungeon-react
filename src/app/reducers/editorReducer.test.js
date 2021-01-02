@@ -44,13 +44,13 @@ test('Selecting a non-select tool clears selected object', () => {
     let nonSelectToolState = {
         ...defaultEditorState,
         selectedTool: TOOL_TYPE.SELECT,
-        selectedObject: 'beep-boop'
+        selectedObjectIds: ['beep-boop']
     };
     let changeToolAction = EditorActions.selectTool(TOOL_TYPE.NEW_TOKEN);
 
     let newState = editorReducer(nonSelectToolState, changeToolAction);
 
-    expect(newState.selectedObject).toBeNull();
+    expect(newState.selectedObjectIds.length).toBe(0);
 })
 
 test('Selecting select tool does not clear selected object', () => {
@@ -58,13 +58,13 @@ test('Selecting select tool does not clear selected object', () => {
     let nonSelectToolState = {
         ...defaultEditorState,
         selectedTool: TOOL_TYPE.SELECT,
-        selectedObject: selectedObjectId
+        selectedObjectIds: [selectedObjectId]
     };
     let changeToolAction = EditorActions.selectTool(TOOL_TYPE.SELECT);
 
     let newState = editorReducer(nonSelectToolState, changeToolAction);
 
-    expect(newState.selectedObject).toBe(selectedObjectId);
+    expect(newState.selectedObjectIds).toContain(selectedObjectId);
 })
 
 test('Moving mouse sets mouse position', () => {
