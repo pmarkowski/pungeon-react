@@ -19,7 +19,8 @@ export const defaultEditorState = {
             x: 0,
             y: 0
         }
-    }
+    },
+    selectedObjectIds: []
 };
 
 export const editorReducer = (state = defaultEditorState, action) => {
@@ -134,25 +135,31 @@ export const editorReducer = (state = defaultEditorState, action) => {
         }
         case EDITOR_ACTION_TYPE.SELECT_TOOL: {
             let selectedObject = state.selectedObject;
+            let newSelectedObjectIds = state.selectedObjectIds;
             if (action.selectedTool !== TOOL_TYPE.SELECT) {
                 selectedObject = null;
+                newSelectedObjectIds = [];
             }
             return {
                 ...state,
                 selectedTool: action.selectedTool,
-                selectedObject: selectedObject
+                selectedObject: selectedObject,
+                selectedObjectIds: newSelectedObjectIds
             };
         }
         case EDITOR_ACTION_TYPE.SELECT_OBJECT: {
+            let newSelectedObjectIds = [action.objectId];
             return {
                 ...state,
-                selectedObject: action.objectId
+                selectedObject: action.objectId,
+                selectedObjectIds: newSelectedObjectIds
             };
         }
         case EDITOR_ACTION_TYPE.DELETE_OBJECT: {
             return {
                 ...state,
-                selectedObject: null
+                selectedObject: null,
+                selectedObjectIds: []
             }
         }
         default: {
