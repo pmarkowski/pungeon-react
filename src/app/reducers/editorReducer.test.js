@@ -1,4 +1,5 @@
 import TOOL_TYPE from "../tools/toolType";
+import { deleteObjects } from "./dungeonActions";
 import * as EditorActions from './editorActions';
 import { defaultEditorState, editorReducer } from "./editorReducer";
 
@@ -119,4 +120,20 @@ test('Releasing sets mouseDown to false', () => {
     let newState = editorReducer(mouseDownState, mouseUpAction);
 
     expect(newState.mouse.mouseDown).toBe(false);
+})
+
+test('Deleting an object clears selected objects', () => {
+    let selectedObjectIds = [
+        'object1',
+        'object2'
+    ];
+    let selectedObjectState = {
+        ...defaultEditorState,
+        selectedObjectIds
+    };
+    let deleteAction = deleteObjects(selectedObjectIds);
+
+    let newState = editorReducer(selectedObjectState, deleteAction);
+
+    expect(newState.selectedObjectIds.length).toBe(0);
 })
