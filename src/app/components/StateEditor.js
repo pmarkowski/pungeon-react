@@ -86,7 +86,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                 <StateEditorCard title="Actions">
                     <button
                         className="btn btn-outline-danger"
-                        onClick={() => dispatch(DungeonActions.deleteSelectedObject(selectedObjectId))}>
+                        onClick={() => dispatch(DungeonActions.deleteObjects([selectedObjectId]))}>
                             Delete Object
                     </button>
                 </StateEditorCard>

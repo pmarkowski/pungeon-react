@@ -1,4 +1,5 @@
 import TOOL_TYPE from "../tools/toolType";
+import DUNGEON_ACTION_TYPE from "./dungeonActionType";
 import EDITOR_ACTION_TYPE from "./editorActionType";
 
 export const defaultEditorState = {
@@ -161,7 +162,7 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 selectedObjectIds: newSelectedObjectIds
             };
         }
-        case EDITOR_ACTION_TYPE.DELETE_OBJECT: {
+        case DUNGEON_ACTION_TYPE.DELETE_OBJECTS: {
             return {
                 ...state,
                 selectedObjectIds: []
