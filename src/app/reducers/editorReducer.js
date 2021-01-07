@@ -24,7 +24,12 @@ export const defaultEditorState = {
             y: 0
         }
     },
-    selectedObjectIds: []
+    /** @type {string[]} */
+    selectedObjectIds: [],
+    /** @type {?{x: number, y: number, shouldMultiSelect: boolean}} */
+    selectingAtPoint: null,
+    /** @type {?{x: number, y: number, width: number, height: number, shouldMultiSelect: boolean}} */
+    selectingInBoundingBox: null
 };
 
 export const editorReducer = (state = defaultEditorState, action) => {
@@ -148,6 +153,28 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 selectedObjectIds: newSelectedObjectIds
             };
         }
+        case EDITOR_ACTION_TYPE.SELECT_AT_POINT: {
+            return {
+                ...state,
+                selectingAtPoint: {
+                    x: action.x,
+                    y: action.y,
+                    shouldMultiSelect: action.shouldMultiSelect
+                }
+            }
+        }
+        case EDITOR_ACTION_TYPE.SELECT_IN_BOUNDING_BOX: {
+            return {
+                ...state,
+                selectingInBoundingBox: {
+                    x: action.x,
+                    y: action.y,
+                    width: action.width,
+                    height: action.height,
+                    shouldMultiSelect: action.shouldMultiSelect
+                }
+            }
+        }
         case EDITOR_ACTION_TYPE.SELECT_OBJECT: {
             // If already selected and shouldMultiSelect, then remove it from the array
             let newSelectedObjectIds;
@@ -162,7 +189,9 @@ export const editorReducer = (state = defaultEditorState, action) => {
             }
             return {
                 ...state,
-                selectedObjectIds: newSelectedObjectIds
+                selectedObjectIds: newSelectedObjectIds,
+                selectingAtPoint: null,
+                selectingInBoundingBox: null
             };
         }
         case DUNGEON_ACTION_TYPE.DELETE_OBJECTS: {
