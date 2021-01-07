@@ -46,6 +46,13 @@ export const selectTool = (toolName) => ({
     selectedTool: toolName
 })
 
+export const selectAtPoint = (x, y, shouldMultiSelect) => ({
+    type: EDITOR_ACTION_TYPE.SELECT_AT_POINT,
+    x,
+    y,
+    shouldMultiSelect
+})
+
 export const selectObject = (objectId, shouldMultiSelect) => ({
     type: EDITOR_ACTION_TYPE.SELECT_OBJECT,
     objectId: objectId,

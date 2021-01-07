@@ -3,17 +3,36 @@ import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
 import * as RenderRouter from './RenderRouter'
-import TOOL_TYPE from "../tools/toolType";
 import download from "../utils/download";
 import * as PIXI from 'pixi.js'
 
+/**
+ * @param {PIXI.Application} app
+ * @param {PIXI.Graphics} graphics
+ */
 export const render = (app, graphics) => {
-    var state = store.getState();
+    /**
+     * @type {import("../reducers").State}
+     */
+    let state = store.getState();
 
     app.stage.position.set(state.editor.position.x, state.editor.position.y);
     let fractionalScale = state.editor.scale / 100;
     if (app.stage.scale.x !== fractionalScale) {
         app.stage.scale.set(fractionalScale);
+    }
+
+    if (state.editor.selectingAtPoint) {
+        let mousePoint = new PIXI.Point(
+            state.editor.selectingAtPoint.x,
+            state.editor.selectingAtPoint.y);
+        let globalPosition = app.stage.worldTransform.apply(mousePoint);
+        let selectedObject = app.renderer.plugins.interaction.hitTest(
+            globalPosition);
+
+        if (selectedObject) {
+            store.dispatch(selectObject(selectedObject.id, state.editor.selectingAtPoint.shouldMultiSelect));
+        }
     }
 
     graphics.clear();
@@ -50,11 +69,6 @@ const drawDungeonObjects = (container, state) => {
             let newChildGraphics = RenderRouter.createRenderObject(objectIdMap[objectId]);
             newChildGraphics.id = objectId;
             newChildGraphics.interactive = true;
-            newChildGraphics.mouseup = function (mouseEvent) {
-                if (store.getState().editor.selectedTool === TOOL_TYPE.SELECT) {
-                    store.dispatch(selectObject(this.id, mouseEvent.data.originalEvent.getModifierState("Shift")));
-                }
-            };
             container.addChild(newChildGraphics);
         }
     });
