@@ -2,6 +2,9 @@ import TOOL_TYPE from "../tools/toolType";
 import DUNGEON_ACTION_TYPE from "./dungeonActionType";
 import EDITOR_ACTION_TYPE from "./editorActionType";
 
+/**
+ * @typedef {defaultEditorState} EditorState
+ */
 export const defaultEditorState = {
     scrollMovesViewport: false,
     selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
