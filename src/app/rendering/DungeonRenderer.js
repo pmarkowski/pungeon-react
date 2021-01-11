@@ -1,10 +1,11 @@
-import { pngExported, selectObject, setCurrentMousePosition } from "../reducers/editorActions";
+import { pngExported, selectObject, selectObjects, setCurrentMousePosition } from "../reducers/editorActions";
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
 import * as RenderRouter from './RenderRouter'
 import download from "../utils/download";
 import * as PIXI from 'pixi.js'
+import { doRectanglesIntersect } from "../utils/geometry";
 
 /**
  * @param {PIXI.Application} app
@@ -16,33 +17,17 @@ export const render = (app, graphics) => {
      */
     let state = store.getState();
 
-    app.stage.position.set(state.editor.position.x, state.editor.position.y);
-    let fractionalScale = state.editor.scale / 100;
-    if (app.stage.scale.x !== fractionalScale) {
-        app.stage.scale.set(fractionalScale);
-    }
+    handlePanning(app, state);
+    handleScaling(state, app);
 
-    if (state.editor.selectingAtPoint) {
-        let mousePoint = new PIXI.Point(
-            state.editor.selectingAtPoint.x,
-            state.editor.selectingAtPoint.y);
-        let globalPosition = app.stage.worldTransform.apply(mousePoint);
-        let selectedObject = app.renderer.plugins.interaction.hitTest(
-            globalPosition);
-
-        if (selectedObject) {
-            store.dispatch(selectObject(selectedObject.id, state.editor.selectingAtPoint.shouldMultiSelect));
-        }
-    }
+    handleSelecting(state, app);
 
     graphics.clear();
 
     drawDungeonObjects(app.stage, state);
     drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height);
 
-    if (state.editor.exportToPngClicked) {
-        exportImage(app);
-    }
+    handleExporting(state, app);
 
     if (app.renderer.plugins.interaction.mouseOverRenderer) {
         ToolRouter.renderTool(state, graphics);
@@ -98,6 +83,55 @@ const drawGrid = (graphics, gridWidth, gridHeight) => {
         graphics.moveTo(0, j * GRID_TILE_SIZE);
         graphics.lineTo(gridWidth * GRID_TILE_SIZE, j * GRID_TILE_SIZE);
     }
+}
+
+function handleExporting(state, app) {
+    if (state.editor.exportToPngClicked) {
+        exportImage(app);
+    }
+}
+
+function handleSelecting(state, app) {
+    if (state.editor.selectingAtPoint) {
+        let mousePoint = new PIXI.Point(
+            state.editor.selectingAtPoint.x,
+            state.editor.selectingAtPoint.y);
+        let globalPosition = app.stage.worldTransform.apply(mousePoint);
+        let selectedObject = app.renderer.plugins.interaction.hitTest(
+            globalPosition);
+
+        if (selectedObject) {
+            store.dispatch(selectObject(selectedObject.id, state.editor.selectingAtPoint.shouldMultiSelect));
+        }
+        else {
+            store.dispatch(selectObjects([], false));
+        }
+    }
+    else if (state.editor.selectingInBoundingBox) {
+        let objectIdsToSelect = [];
+        app.stage.children.forEach(child => {
+            if (doRectanglesIntersect(child.getLocalBounds(), state.editor.selectingInBoundingBox)) {
+                objectIdsToSelect.push(child.id);
+            }
+        });
+        if (objectIdsToSelect.length > 0) {
+            store.dispatch(selectObjects(objectIdsToSelect, state.editor.selectingInBoundingBox.shouldMultiSelect));
+        }
+        else {
+            store.dispatch(selectObjects([], false));
+        }
+    }
+}
+
+function handleScaling(state, app) {
+    let fractionalScale = state.editor.scale / 100;
+    if (app.stage.scale.x !== fractionalScale) {
+        app.stage.scale.set(fractionalScale);
+    }
+}
+
+function handlePanning(app, state) {
+    app.stage.position.set(state.editor.position.x, state.editor.position.y);
 }
 
 function exportImage(app) {

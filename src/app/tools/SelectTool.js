@@ -1,4 +1,4 @@
-import { selectAtPoint } from "../reducers/editorActions";
+import { selectAtPoint, selectInBoundingBox } from "../reducers/editorActions";
 
 const DRAG_THRESHOLD = 5;
 
@@ -20,11 +20,21 @@ export default class SelectTool {
     onMouseUp(store) {
         let state = store.getState();
         // Selecting is handled via interaction events on the render objects themselves
+
         const startPosition = state.editor.mouse.startPosition;
         const endPosition = state.editor.mouse.currentPosition;
         const shouldAddToSelection = false; // TODO: derive this from state? have the reducer look at the state to figure this out instead?
 
-        if (!isDragging(startPosition, endPosition)) {
+        if (isDragging(startPosition, endPosition)) {
+            let boundingRectangle = createRectangle(startPosition, endPosition);
+            store.dispatch(selectInBoundingBox(
+                boundingRectangle.x,
+                boundingRectangle.y,
+                boundingRectangle.width,
+                boundingRectangle.height,
+                shouldAddToSelection))
+        }
+        else {
             store.dispatch(selectAtPoint(endPosition.x, endPosition.y, shouldAddToSelection))
         }
     }

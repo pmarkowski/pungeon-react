@@ -53,10 +53,21 @@ export const selectAtPoint = (x, y, shouldMultiSelect) => ({
     shouldMultiSelect
 })
 
-export const selectObject = (objectId, shouldMultiSelect) => ({
-    type: EDITOR_ACTION_TYPE.SELECT_OBJECT,
-    objectId: objectId,
-    shouldMultiSelect: shouldMultiSelect
+export const selectInBoundingBox = (x, y, width, height, shouldMultiSelect) => ({
+    type: EDITOR_ACTION_TYPE.SELECT_IN_BOUNDING_BOX,
+    x,
+    y,
+    width,
+    height,
+    shouldMultiSelect
+})
+
+export const selectObject = (objectId, shouldMultiSelect) => selectObjects([objectId], shouldMultiSelect)
+
+export const selectObjects = (objectIds, shouldMultiSelect) => ({
+    type: EDITOR_ACTION_TYPE.SELECT_OBJECTS,
+    objectIds,
+    shouldMultiSelect
 })
 
 export const setScrollMovesViewport = (scrollMovesViewport) => ({

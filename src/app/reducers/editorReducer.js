@@ -175,17 +175,17 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 }
             }
         }
-        case EDITOR_ACTION_TYPE.SELECT_OBJECT: {
+        case EDITOR_ACTION_TYPE.SELECT_OBJECTS: {
             // If already selected and shouldMultiSelect, then remove it from the array
             let newSelectedObjectIds;
             if (action.shouldMultiSelect && state.selectedObjectIds.includes(action.objectId)) {
                 newSelectedObjectIds = state.selectedObjectIds.filter(objectId => objectId !== action.objectId);
             }
             else if (action.shouldMultiSelect) {
-                newSelectedObjectIds = [...state.selectedObjectIds, action.objectId];
+                newSelectedObjectIds = [...state.selectedObjectIds, ...action.objectIds];
             }
             else {
-                newSelectedObjectIds = [action.objectId];
+                newSelectedObjectIds = action.objectIds;
             }
             return {
                 ...state,
