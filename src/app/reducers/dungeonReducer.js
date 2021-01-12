@@ -125,11 +125,11 @@ export const dungeonReducer = (state = {}, action) => {
                 objects: objectArray
             };
         }
-        case DUNGEON_ACTION_TYPE.DELETE_OBJECT: {
-            let selectedObjectId = action.selectedObject;
-            if (selectedObjectId) {
+        case DUNGEON_ACTION_TYPE.DELETE_OBJECTS: {
+            let objectIds = action.objectIds;
+            if (objectIds) {
                 let newObjectArray = state.objects
-                    .filter(object => object.id !== selectedObjectId);
+                    .filter(object => !objectIds.includes(object.id));
                 return {
                     ...state,
                     objects: newObjectArray

@@ -94,9 +94,9 @@ export const addSpace = (startX, startY, endX, endY) => ({
     }
 });
 
-export const deleteSelectedObject = (selectedObject) => ({
-    type: DUNGEON_ACTION_TYPE.DELETE_OBJECT,
-    selectedObject
+export const deleteObjects = (objectIds) => ({
+    type: DUNGEON_ACTION_TYPE.DELETE_OBJECTS,
+    objectIds
 })
 
 export const moveSelectedObject = (selectedObject, deltaX, deltaY) => ({

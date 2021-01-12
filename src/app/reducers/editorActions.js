@@ -1,5 +1,15 @@
 import EDITOR_ACTION_TYPE from "./editorActionType"
 
+export const keyPressed = (key) => ({
+    type: EDITOR_ACTION_TYPE.KEY_PRESSED,
+    key
+})
+
+export const keyReleased = (key) => ({
+    type: EDITOR_ACTION_TYPE.KEY_RELEASED,
+    key
+})
+
 export const mouseDown = () => ({
     type: EDITOR_ACTION_TYPE.MOUSE_DOWN
 })
@@ -46,9 +56,32 @@ export const selectTool = (toolName) => ({
     selectedTool: toolName
 })
 
-export const selectObject = (objectId) => ({
+export const selectAtPoint = (x, y, shouldMultiSelect) => ({
+    type: EDITOR_ACTION_TYPE.SELECT_AT_POINT,
+    x,
+    y,
+    shouldMultiSelect
+})
+
+export const selectInBoundingBox = (x, y, width, height, shouldMultiSelect) => ({
+    type: EDITOR_ACTION_TYPE.SELECT_IN_BOUNDING_BOX,
+    x,
+    y,
+    width,
+    height,
+    shouldMultiSelect
+})
+
+export const selectObject = (objectId, shouldMultiSelect) => ({
     type: EDITOR_ACTION_TYPE.SELECT_OBJECT,
-    objectId: objectId
+    objectId,
+    shouldMultiSelect
+})
+
+export const selectObjects = (objectIds, shouldMultiSelect) => ({
+    type: EDITOR_ACTION_TYPE.SELECT_OBJECTS,
+    objectIds,
+    shouldMultiSelect
 })
 
 export const setScrollMovesViewport = (scrollMovesViewport) => ({
