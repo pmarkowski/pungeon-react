@@ -51,7 +51,7 @@ test('Selecting a non-select tool clears selected object', () => {
 
     let newState = editorReducer(nonSelectToolState, changeToolAction);
 
-    expect(newState.selectedObjectIds.length).toBe(0);
+    expect(newState.selectedObjectIds).toHaveLength(0);
 })
 
 test('Selecting select tool does not clear selected object', () => {
@@ -135,5 +135,136 @@ test('Deleting an object clears selected objects', () => {
 
     let newState = editorReducer(selectedObjectState, deleteAction);
 
-    expect(newState.selectedObjectIds.length).toBe(0);
+    expect(newState.selectedObjectIds).toHaveLength(0);
+})
+
+test('Selecting a single object sets selectedObjectIds', () => {
+    let selectObjectAction = EditorActions.selectObject('object1', false);
+
+    let newState = editorReducer(defaultEditorState, selectObjectAction);
+
+    expect(newState.selectedObjectIds).toHaveLength(1);
+    expect(newState.selectedObjectIds).toContain('object1');
+})
+
+test('Selecting a single object overwrites current selection', () => {
+    let selectedObjectState = {
+        ...defaultEditorState,
+        selectedObjectIds: [
+            'selection'
+        ]
+    };
+    let selectObjectAction = EditorActions.selectObject('object1', false);
+
+    let newState = editorReducer(selectedObjectState, selectObjectAction);
+
+    expect(newState.selectedObjectIds).toHaveLength(1);
+    expect(newState.selectedObjectIds).toContain('object1');
+})
+
+test('Selecting a single object while multiselecting appends to empty selection', () => {
+    let selectObjectAction = EditorActions.selectObject('object1', true);
+
+    let newState = editorReducer(defaultEditorState, selectObjectAction);
+
+    expect(newState.selectedObjectIds).toHaveLength(1);
+    expect(newState.selectedObjectIds).toContain('object1');
+})
+
+test('Selecting a single object while multiselecting appends to current selection', () => {
+    let selectedObjectState = {
+        ...defaultEditorState,
+        selectedObjectIds: [
+            'selection'
+        ]
+    };
+    let selectObjectAction = EditorActions.selectObject('object1', true);
+
+    let newState = editorReducer(selectedObjectState, selectObjectAction);
+
+    expect(newState.selectedObjectIds).toHaveLength(2);
+    expect(newState.selectedObjectIds).toContain('selection', 'object1');
+})
+
+test('Selecting an already selected object while multiselecting deselects it', () => {
+    let selectedObjectState = {
+        ...defaultEditorState,
+        selectedObjectIds: [
+            'object1',
+            'object2'
+        ]
+    };
+    let selectObjectAction = EditorActions.selectObject('object1', true);
+
+    let newState = editorReducer(selectedObjectState, selectObjectAction);
+
+    expect(newState.selectedObjectIds).toHaveLength(1);
+    expect(newState.selectedObjectIds).not.toContain('object1');
+    expect(newState.selectedObjectIds).toContain('object2');
+})
+
+test('Selecting multiple objects replaces current selection', () => {
+    let selectedObjectState = {
+        ...defaultEditorState,
+        selectedObjectIds: [
+            'object1',
+            'object2'
+        ]
+    };
+
+    let newSelectedObjects = [
+        'object3',
+        'object4'
+    ]
+    let selectObjectAction = EditorActions.selectObjects(newSelectedObjects, false);
+
+    let newState = editorReducer(selectedObjectState, selectObjectAction);
+
+    expect(newState.selectedObjectIds).toHaveLength(2);
+    expect(newState.selectedObjectIds).toBe(newSelectedObjects);
+})
+
+test('Selecting multiple objects while multiselecting appends selection to current selection', () => {
+    let selectedObjectState = {
+        ...defaultEditorState,
+        selectedObjectIds: [
+            'object1',
+            'object2'
+        ]
+    };
+
+    let newSelectedObjects = [
+        'object3',
+        'object4'
+    ]
+    let selectObjectAction = EditorActions.selectObjects(newSelectedObjects, true);
+
+    let newState = editorReducer(selectedObjectState, selectObjectAction);
+
+    expect(newState.selectedObjectIds).toHaveLength(4);
+    expect(newState.selectedObjectIds).toContain(
+        ...selectedObjectState.selectedObjectIds,
+        ...newSelectedObjects);
+})
+
+test('Selecting the same objects while multiselecting keeps them selected', () => {
+    let selectedObjectState = {
+        ...defaultEditorState,
+        selectedObjectIds: [
+            'object1',
+            'object2'
+        ]
+    };
+
+    let newSelectedObjects = [
+        'object1',
+        'object2'
+    ]
+    let selectObjectAction = EditorActions.selectObjects(newSelectedObjects, true);
+
+    let newState = editorReducer(selectedObjectState, selectObjectAction);
+
+    expect(newState.selectedObjectIds).toHaveLength(2);
+    expect(newState.selectedObjectIds).toContain(
+        ...selectedObjectState.selectedObjectIds);
 })

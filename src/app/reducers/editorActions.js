@@ -62,7 +62,11 @@ export const selectInBoundingBox = (x, y, width, height, shouldMultiSelect) => (
     shouldMultiSelect
 })
 
-export const selectObject = (objectId, shouldMultiSelect) => selectObjects([objectId], shouldMultiSelect)
+export const selectObject = (objectId, shouldMultiSelect) => ({
+    type: EDITOR_ACTION_TYPE.SELECT_OBJECT,
+    objectId,
+    shouldMultiSelect
+})
 
 export const selectObjects = (objectIds, shouldMultiSelect) => ({
     type: EDITOR_ACTION_TYPE.SELECT_OBJECTS,
