@@ -1,3 +1,4 @@
+import { DungeonObjectOperations } from '../dungeonObjects/DungeonObject';
 import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
 import DUNGEON_ACTION_TYPE from './dungeonActionType'
 
@@ -25,9 +26,8 @@ export const dungeonReducer = (state = {}, action) => {
             let arrayWithUpdatedObject = createArrayWithUpdatedObject(
                 state.objects,
                 action.selectedObject,
-                (object) => object.position = {
-                    x: object.position.x + action.deltaX,
-                    y: object.position.y + action.deltaY
+                (object) => {
+                    DungeonObjectOperations.translate(object, action.deltaX, action.deltaY);
                 });
             return {
                 ...state,

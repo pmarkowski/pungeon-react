@@ -5,7 +5,7 @@ import { editorReducer } from './editorReducer'
 /**
  * @typedef {{
  *  editor: import('./editorReducer').EditorState,
- *  dungeon: Object
+ *  dungeon: { objects: import('../dungeonObjects/DungeonObject').DungeonObject[] }
  * }} State
  */
 
