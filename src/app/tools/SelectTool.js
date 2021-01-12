@@ -18,12 +18,12 @@ const createRectangle = (startPosition, endPosition) => {
 
 export default class SelectTool {
     onMouseUp(store) {
+        /** @type {import("../reducers").State} */
         let state = store.getState();
-        // Selecting is handled via interaction events on the render objects themselves
 
         const startPosition = state.editor.mouse.startPosition;
         const endPosition = state.editor.mouse.currentPosition;
-        const shouldAddToSelection = false; // TODO: derive this from state? have the reducer look at the state to figure this out instead?
+        const shouldAddToSelection = state.editor.keyboard.heldKeys["Shift"];
 
         if (isDragging(startPosition, endPosition)) {
             let boundingRectangle = createRectangle(startPosition, endPosition);
