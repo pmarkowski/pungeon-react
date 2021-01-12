@@ -7,14 +7,12 @@ const isDragging = (startPosition, endPosition) => {
         Math.abs(endPosition.y - startPosition.y) > DRAG_THRESHOLD;
 }
 
-const createRectangle = (startPosition, endPosition) => {
-    return {
-        x: Math.min(startPosition.x, endPosition.x),
-        y: Math.min(startPosition.y, endPosition.y),
-        width: Math.abs(endPosition.x - startPosition.x),
-        height: Math.abs(endPosition.y - startPosition.y)
-    }
-}
+const createRectangle = (startPosition, endPosition) => ({
+    x: Math.min(startPosition.x, endPosition.x),
+    y: Math.min(startPosition.y, endPosition.y),
+    width: Math.abs(endPosition.x - startPosition.x),
+    height: Math.abs(endPosition.y - startPosition.y)
+})
 
 export default class SelectTool {
     onMouseUp(store) {
