@@ -1,5 +1,15 @@
 import EDITOR_ACTION_TYPE from "./editorActionType"
 
+export const keyPressed = (key) => ({
+    type: EDITOR_ACTION_TYPE.KEY_PRESSED,
+    key
+})
+
+export const keyReleased = (key) => ({
+    type: EDITOR_ACTION_TYPE.KEY_RELEASED,
+    key
+})
+
 export const mouseDown = () => ({
     type: EDITOR_ACTION_TYPE.MOUSE_DOWN
 })
@@ -68,6 +78,7 @@ export const selectObject = (objectId, shouldMultiSelect) => ({
     shouldMultiSelect
 })
 
+// TODO: rename all shouldMultiSelect to concatenateSelections or something like that instead?
 export const selectObjects = (objectIds, shouldMultiSelect) => ({
     type: EDITOR_ACTION_TYPE.SELECT_OBJECTS,
     objectIds,

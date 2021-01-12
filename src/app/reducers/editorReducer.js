@@ -24,6 +24,9 @@ export const defaultEditorState = {
             y: 0
         }
     },
+    keyboard: {
+        heldKeys: {}
+    },
     /** @type {string[]} */
     selectedObjectIds: [],
     /** @type {?{x: number, y: number, shouldMultiSelect: boolean}} */
@@ -34,6 +37,30 @@ export const defaultEditorState = {
 
 export const editorReducer = (state = defaultEditorState, action) => {
     switch (action.type) {
+        case EDITOR_ACTION_TYPE.KEY_PRESSED: {
+            let newHeldKeys = {...state.keyboard.heldKeys};
+            newHeldKeys[action.key] = true;
+            console.log(newHeldKeys);
+            return {
+                ...state,
+                keyboard: {
+                    ...state.keyboard,
+                    heldKeys: newHeldKeys
+                }
+            }
+        }
+        case EDITOR_ACTION_TYPE.KEY_RELEASED: {
+            let newHeldKeys = {...state.keyboard.heldKeys};
+            delete newHeldKeys[action.key];
+            console.log(newHeldKeys);
+            return {
+                ...state,
+                keyboard: {
+                    ...state.keyboard,
+                    heldKeys: newHeldKeys
+                }
+            }
+        }
         case EDITOR_ACTION_TYPE.PNG_EXPORTED: {
             return {
                 ...state,

@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import React from 'react';
 import { render as renderDungeon } from '../rendering/DungeonRenderer';
 import store from '../store.js';
-import handleKeyboardEvent from '../utils/keyboardEventHandlers.js';
+import { handleKeyPressed, handleKeyReleased } from '../utils/keyboardEventHandlers.js';
 import * as MouseEventHandler from '../utils/mouseEventHandlers.js';
 
 export default class DungeonEditor extends React.Component {
@@ -56,7 +56,10 @@ export default class DungeonEditor extends React.Component {
             MouseEventHandler.handleMouseMove(pointerEvent, store);
         });
         this.canvasDiv.addEventListener('keydown', (event) => {
-            handleKeyboardEvent(event, store);
+            handleKeyPressed(event, store);
         });
+        this.canvasDiv.addEventListener('keyup', (event) => {
+            handleKeyReleased(event, store);
+        })
     }
 }

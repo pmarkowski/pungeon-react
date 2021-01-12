@@ -1,6 +1,14 @@
 import { deleteObjects, moveSelectedObject } from "../reducers/dungeonActions"
+import { keyPressed, keyReleased } from "../reducers/editorActions";
 
-const handleKeyboardEvent = (keyboardEvent, store) => {
+/**
+ * @param {KeyboardEvent} keyboardEvent
+ * @param {import("redux").Store} store
+ */
+export const handleKeyPressed = (keyboardEvent, store) => {
+    if (!keyboardEvent.repeat) {
+        store.dispatch(keyPressed(keyboardEvent.key));
+    }
     let state = store.getState();
     switch (keyboardEvent.key) {
         case 'Delete':
@@ -18,4 +26,10 @@ const handleKeyboardEvent = (keyboardEvent, store) => {
     }
 }
 
-export default handleKeyboardEvent
+/**
+ * @param {KeyboardEvent} keyboardEvent
+ * @param {import("redux").Store} store
+ */
+export const handleKeyReleased = (keyboardEvent, store) => {
+    store.dispatch(keyReleased(keyboardEvent.key));
+}
