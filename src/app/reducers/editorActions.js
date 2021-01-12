@@ -78,7 +78,6 @@ export const selectObject = (objectId, shouldMultiSelect) => ({
     shouldMultiSelect
 })
 
-// TODO: rename all shouldMultiSelect to concatenateSelections or something like that instead?
 export const selectObjects = (objectIds, shouldMultiSelect) => ({
     type: EDITOR_ACTION_TYPE.SELECT_OBJECTS,
     objectIds,
