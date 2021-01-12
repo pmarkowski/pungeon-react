@@ -40,7 +40,6 @@ export const editorReducer = (state = defaultEditorState, action) => {
         case EDITOR_ACTION_TYPE.KEY_PRESSED: {
             let newHeldKeys = {...state.keyboard.heldKeys};
             newHeldKeys[action.key] = true;
-            console.log(newHeldKeys);
             return {
                 ...state,
                 keyboard: {
@@ -52,7 +51,6 @@ export const editorReducer = (state = defaultEditorState, action) => {
         case EDITOR_ACTION_TYPE.KEY_RELEASED: {
             let newHeldKeys = {...state.keyboard.heldKeys};
             delete newHeldKeys[action.key];
-            console.log(newHeldKeys);
             return {
                 ...state,
                 keyboard: {
