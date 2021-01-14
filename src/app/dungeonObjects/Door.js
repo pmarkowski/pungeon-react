@@ -2,15 +2,14 @@
  * @typedef {{
  *  start: {x: number, y: number},
  *  end: {x: number, y: number}
- * } & import("./DungeonObject").BaseDungeonObject} Wall
+ * } & import("./DungeonObject").BaseDungeonObject} Door
  */
 
 /**
- *
- * @param {Wall} object
- * @param {number} x
- * @param {number} y
- */
+  * @param {Door} object
+  * @param {number} x
+  * @param {number} y
+  */
 const translate = (object, x, y) => {
     object.start.x += x;
     object.start.y += y;
@@ -19,14 +18,13 @@ const translate = (object, x, y) => {
 }
 
 /**
- *
  * @param {PIXI.Graphics} graphics
- * @param {Wall} object
+ * @param {Door} object
  * @param {boolean} objectIsSelected
  */
 const renderObject = (graphics, object, objectIsSelected) => { }
 
-export const WallOperations = {
+export const DoorOperations = {
     translate,
     renderObject
 }
