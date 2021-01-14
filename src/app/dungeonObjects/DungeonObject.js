@@ -1,4 +1,4 @@
-import DUNGEON_OBJECT_TYPE from "../utils/dungeonObjectTypes"
+import DUNGEON_OBJECT_TYPE from "./dungeonObjectTypes"
 import { DoorOperations } from "./Door";
 import { LabelOperations } from "./Label";
 import { SpaceOperations } from "./Space"

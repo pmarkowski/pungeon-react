@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import DUNGEON_OBJECT_TYPE from "../utils/dungeonObjectTypes";
+import DUNGEON_OBJECT_TYPE from "../dungeonObjects/dungeonObjectTypes";
 import DUNGEON_ACTION_TYPE from "./dungeonActionType";
 
 export const clearDungeon = () => ({

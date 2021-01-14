@@ -1,4 +1,4 @@
-import DUNGEON_OBJECT_TYPE from "../utils/dungeonObjectTypes";
+import DUNGEON_OBJECT_TYPE from "../dungeonObjects/dungeonObjectTypes";
 import DoorRenderer from "./DoorRenderer";
 import LabelRenderer from "./LabelRenderer";
 import WallRenderer from "./WallRenderer";
