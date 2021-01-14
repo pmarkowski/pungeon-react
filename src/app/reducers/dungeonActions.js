@@ -99,9 +99,9 @@ export const deleteObjects = (objectIds) => ({
     objectIds
 })
 
-export const moveSelectedObject = (selectedObject, deltaX, deltaY) => ({
+export const moveObjects = (selectedObjectIds, deltaX, deltaY) => ({
     type: DUNGEON_ACTION_TYPE.MOVE_SELECTED_OBJECT,
-    selectedObject,
+    selectedObjectIds,
     deltaX: deltaX,
     deltaY: deltaY
 })
