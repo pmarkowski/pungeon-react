@@ -1,7 +1,8 @@
-import { addDoor } from "../reducers/dungeonActions";
+import { addObject } from "../reducers/dungeonActions";
 import { GRID_TILE_SIZE } from "../utils/constants";
 import DUNGEON_OBJECT_TYPE from "../dungeonObjects/dungeonObjectTypes";
 import { lineLength, getClosestPointOnLine } from "../utils/geometry";
+import { createDoor } from "../dungeonObjects/DoorOperations";
 
 export default class AddDoorTool {
     onMouseUp(store) {
@@ -53,11 +54,11 @@ export default class AddDoorTool {
             y: doorWall.end.y * GRID_TILE_SIZE
         }
         let endPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
-        store.dispatch(addDoor(
+        store.dispatch(addObject(createDoor(
             snapPoint.x / GRID_TILE_SIZE,
             snapPoint.y / GRID_TILE_SIZE,
             endPoint.x / GRID_TILE_SIZE,
-            endPoint.y / GRID_TILE_SIZE));
+            endPoint.y / GRID_TILE_SIZE)));
     }
 
     renderTool(state, graphics) {

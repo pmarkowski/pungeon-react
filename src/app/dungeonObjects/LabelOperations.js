@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
+import { createDungeonObject } from './BaseDungeonObjectOperations';
+import DUNGEON_OBJECT_TYPE from './dungeonObjectTypes';
 import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
 /**
@@ -9,7 +11,24 @@ import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
  * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Label
  */
 
+
+/**
+ * @returns {Label}
+ */
+export const createLabel = (x, y, label) => {
+    return {
+        ...createDungeonObject(DUNGEON_OBJECT_TYPE.LABEL),
+        label,
+        position: {
+            x,
+            y
+        }
+    }
+}
+
 export class LabelOperations extends GraphicsDungeonObjectOperations {
+    get dungeonObjectType(){ return DUNGEON_OBJECT_TYPE.LABEL; }
+
     translate(object, x, y) {
         object.position.x += x;
         object.position.y += y;

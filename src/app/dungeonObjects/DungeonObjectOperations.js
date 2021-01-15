@@ -1,4 +1,3 @@
-import DUNGEON_OBJECT_TYPE from "./dungeonObjectTypes";
 import { DoorOperations } from "./DoorOperations";
 import { LabelOperations } from "./LabelOperations";
 import { WallOperations } from "./WallOperations";
@@ -13,20 +12,20 @@ import { TokenOperations } from "./TokenOperations";
  * | import("./TokenOperations").Token} DungeonObject
  */
 
-const objectOperationsMap = {
-    [DUNGEON_OBJECT_TYPE.DOOR]: new DoorOperations(),
-    [DUNGEON_OBJECT_TYPE.LABEL]: new LabelOperations(),
-    [DUNGEON_OBJECT_TYPE.WALL]: new WallOperations(),
-    [DUNGEON_OBJECT_TYPE.SPACE]: new SpaceOperations(),
-    [DUNGEON_OBJECT_TYPE.TOKEN]: new TokenOperations()
-}
+const objectOperations = [
+    new DoorOperations(),
+    new LabelOperations(),
+    new WallOperations(),
+    new SpaceOperations(),
+    new TokenOperations()
+]
 
-export const renderObject = (graphics, dungeonObject, objectIsSelected) => {
-    objectOperationsMap[dungeonObject.type].renderObject(graphics, dungeonObject, objectIsSelected);
-}
+export const renderObject = (graphics, dungeonObject, objectIsSelected) =>
+    objectOperations.filter(operation => operation.dungeonObjectType === dungeonObject.type).map(operation => operation.renderObject(graphics, dungeonObject, objectIsSelected))
 
-export const createRenderObject = (dungeonObject) =>
-    objectOperationsMap[dungeonObject.type].createRenderObject()
+export const createRenderObject = (dungeonObject) => {
+    return objectOperations.filter(operation => operation.dungeonObjectType === dungeonObject.type).map(operation => operation.createRenderObject())[0]
+}
 
 export const translate = (dungeonObject, x, y) =>
-    objectOperationsMap[dungeonObject.type].translate(dungeonObject, x, y)
+    objectOperations.filter(operation => operation.dungeonObjectType === dungeonObject.type).map(operation => operation.translate(dungeonObject, x, y))

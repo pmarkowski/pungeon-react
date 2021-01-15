@@ -1,6 +1,7 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
-import { addSpacePolygon } from "../reducers/dungeonActions";
+import { addObject } from "../reducers/dungeonActions";
 import { addOngoingSpacePolygonPoint, clearOngoingSpacePolygonPoint } from '../reducers/editorActions'
+import { createSpace } from "../dungeonObjects/SpaceOperations";
 
 export default class AddSpacePolygonTool {
 
@@ -15,7 +16,7 @@ export default class AddSpacePolygonTool {
             // close it out
             let pointArray = state.editor.ongoingSpacePolygon;
             store.dispatch(clearOngoingSpacePolygonPoint());
-            store.dispatch(addSpacePolygon(pointArray));
+            store.dispatch(addObject(createSpace({points: pointArray})));
         }
         else {
             store.dispatch(addOngoingSpacePolygonPoint(x, y));
