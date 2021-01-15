@@ -1,7 +1,16 @@
 import * as PIXI from 'pixi.js'
 import { GRID_TILE_SIZE } from '../utils/constants';
 
-export default class TokenOperations {
+/**
+ * @typedef {{
+ *  textureUrl: string,
+ *  position: {x: number, y: number},
+ *  size: {width: number, height: number}
+ *  angle: number
+ * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Token
+ */
+
+export class TokenOperations {
     translate(object, x, y) {
         object.position.x += x;
         object.position.y += y;

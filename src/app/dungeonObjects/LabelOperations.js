@@ -2,7 +2,14 @@ import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
-export default class LabelOperations extends GraphicsDungeonObjectOperations {
+/**
+ * @typedef {{
+ *  position: {x: number, y: number},
+ *  label: string
+ * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Label
+ */
+
+export class LabelOperations extends GraphicsDungeonObjectOperations {
     translate(object, x, y) {
         object.position.x += x;
         object.position.y += y;

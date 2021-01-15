@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
  * @typedef {{ type: string, id: string }} BaseDungeonObject
  */
 
-class BaseDungeonObjectOperations {
+export class BaseDungeonObjectOperations {
     /**
      * @param {BaseDungeonObject} object
      * @param {number} x

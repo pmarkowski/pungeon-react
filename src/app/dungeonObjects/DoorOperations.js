@@ -2,7 +2,14 @@ import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from "../utils/constants";
 import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
-export default class DoorOperations extends GraphicsDungeonObjectOperations {
+/**
+ * @typedef {{
+ *  start: {x: number, y: number},
+ *  end: {x: number, y: number}
+ * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Door
+ */
+
+export class DoorOperations extends GraphicsDungeonObjectOperations {
     translate(object, x, y) {
         object.start.x += x;
         object.start.y += y;

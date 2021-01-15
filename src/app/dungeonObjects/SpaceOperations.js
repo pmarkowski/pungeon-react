@@ -1,7 +1,18 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
 import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
-export default class SpaceOperations extends GraphicsDungeonObjectOperations {
+/**
+ * @typedef {{
+ *  position: {x: number, y: number},
+ *  size: {width: number, height: number }
+ * } & import("./BaseDungeonObjectOperations").BaseDungeonObject} RectangularSpace
+ * @typedef {{
+ *  points: {x: number, y: number}[]
+ * } & import("./BaseDungeonObjectOperations").BaseDungeonObject} PolygonalSpace
+ * @typedef {RectangularSpace | PolygonalSpace} Space
+ */
+
+export class SpaceOperations extends GraphicsDungeonObjectOperations {
     translate(object, x, y) {
         if (object.position) {
             object.position.x += x;
