@@ -1,6 +1,6 @@
 import { addDoor } from "../reducers/dungeonActions";
 import { GRID_TILE_SIZE } from "../utils/constants";
-import DUNGEON_OBJECT_TYPE from "../utils/dungeonObjectTypes";
+import DUNGEON_OBJECT_TYPE from "../dungeonObjects/dungeonObjectTypes";
 import { lineLength, getClosestPointOnLine } from "../utils/geometry";
 
 export default class AddDoorTool {

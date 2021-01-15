@@ -2,7 +2,7 @@ import { pngExported, selectObject, selectObjects, setCurrentMousePosition } fro
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
-import * as RenderRouter from './RenderRouter'
+import * as RenderRouter from '../dungeonObjects/RenderRouter'
 import download from "../utils/download";
 import * as PIXI from 'pixi.js'
 import { doRectanglesIntersect } from "../utils/geometry";
