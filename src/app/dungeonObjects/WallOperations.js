@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from "../utils/constants";
 import { createDungeonObject } from './BaseDungeonObjectOperations';
-import DUNGEON_OBJECT_TYPE from './dungeonObjectTypes';
 import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
 /**
@@ -11,12 +10,14 @@ import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
  * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Wall
  */
 
+ export const WALL_TYPE = "wall"
+
 /**
  * @returns {Wall}
  */
 export const createWall = (startX, startY, endX, endY) => {
     return {
-        ...createDungeonObject(DUNGEON_OBJECT_TYPE.WALL),
+        ...createDungeonObject(WALL_TYPE),
         start: {
             x: startX,
             y: startY
@@ -29,7 +30,7 @@ export const createWall = (startX, startY, endX, endY) => {
 }
 
 export class WallOperations extends GraphicsDungeonObjectOperations {
-    get dungeonObjectType(){ return DUNGEON_OBJECT_TYPE.WALL; }
+    get dungeonObjectType(){ return WALL_TYPE; }
 
     translate(object, x, y) {
         object.start.x += x;

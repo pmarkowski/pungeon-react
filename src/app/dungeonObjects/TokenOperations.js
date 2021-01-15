@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { GRID_TILE_SIZE } from '../utils/constants';
 import { BaseDungeonObjectOperations, createDungeonObject } from './BaseDungeonObjectOperations';
-import DUNGEON_OBJECT_TYPE from './dungeonObjectTypes';
 
 /**
  * @typedef {{
@@ -12,12 +11,14 @@ import DUNGEON_OBJECT_TYPE from './dungeonObjectTypes';
  * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Token
  */
 
+export const TOKEN_TYPE = "token"
+
 /**
  * @returns {Token}
  */
 export const createToken = (textureUrl, x, y, width, height, angle) => {
     return {
-        ...createDungeonObject(DUNGEON_OBJECT_TYPE.TOKEN),
+        ...createDungeonObject(TOKEN_TYPE),
         textureUrl,
         position: {
             x,
@@ -32,7 +33,7 @@ export const createToken = (textureUrl, x, y, width, height, angle) => {
 }
 
 export class TokenOperations extends BaseDungeonObjectOperations {
-    get dungeonObjectType(){ return DUNGEON_OBJECT_TYPE.TOKEN; }
+    get dungeonObjectType(){ return TOKEN_TYPE; }
 
     translate(object, x, y) {
         object.position.x += x;

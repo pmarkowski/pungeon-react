@@ -1,6 +1,5 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
 import { createDungeonObject } from "./BaseDungeonObjectOperations";
-import DUNGEON_OBJECT_TYPE from "./dungeonObjectTypes";
 import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
 /**
@@ -14,19 +13,21 @@ import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
  * @typedef {RectangularSpace | PolygonalSpace} Space
  */
 
+export const SPACE_TYPE = "space"
+
 /**
  * @returns {Space}
  */
 export const createSpace = ({points, startX, startY, endX, endY}) => {
     if (points) {
         return {
-            ...createDungeonObject(DUNGEON_OBJECT_TYPE.SPACE),
+            ...createDungeonObject(SPACE_TYPE),
             points
         }
     }
     else {
         return {
-            ...createDungeonObject(DUNGEON_OBJECT_TYPE.SPACE),
+            ...createDungeonObject(SPACE_TYPE),
             position: {
                 x: startX,
                 y: startY
@@ -40,7 +41,7 @@ export const createSpace = ({points, startX, startY, endX, endY}) => {
 }
 
 export class SpaceOperations extends GraphicsDungeonObjectOperations {
-    get dungeonObjectType() { return DUNGEON_OBJECT_TYPE.SPACE; }
+    get dungeonObjectType() { return SPACE_TYPE; }
 
     translate(object, x, y) {
         if (object.position) {
