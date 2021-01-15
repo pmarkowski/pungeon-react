@@ -16,7 +16,6 @@ const translate = (object, x, y) => {
 }
 
 /**
- *
  * @param {PIXI.Graphics} graphics
  * @param {Label} object
  * @param {boolean} objectIsSelected

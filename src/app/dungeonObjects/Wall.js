@@ -6,7 +6,6 @@
  */
 
 /**
- *
  * @param {Wall} object
  * @param {number} x
  * @param {number} y
@@ -19,7 +18,6 @@ const translate = (object, x, y) => {
 }
 
 /**
- *
  * @param {PIXI.Graphics} graphics
  * @param {Wall} object
  * @param {boolean} objectIsSelected

@@ -3,7 +3,6 @@ export const createArrayWithUpdatedObject = (array, id, update) => {
 }
 
 /**
- *
  * @param {import("../dungeonObjects/DungeonObject").BaseDungeonObject[]} array
  * @param {string[]} ids
  * @param {function(object: import("../dungeonObjects/DungeonObject").BaseDungeonObject) : void} update
