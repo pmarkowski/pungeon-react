@@ -2,6 +2,19 @@ import { GRID_TILE_SIZE } from "../utils/constants";
 import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
 export default class SpaceOperations extends GraphicsDungeonObjectOperations {
+    translate(object, x, y) {
+        if (object.position) {
+            object.position.x += x;
+            object.position.y += y;
+        }
+        else {
+            object.points.forEach(point => {
+                point.x += x;
+                point.y += y;
+            });
+        }
+    }
+
     renderObject(graphics, space, objectIsSelected) {
         graphics.clear();
         graphics.beginFill(0xd6d5d5);

@@ -19,3 +19,6 @@ export const renderObject = (graphics, dungeonObject, objectIsSelected) => {
 
 export const createRenderObject = (dungeonObject) =>
     objectOperationsMap[dungeonObject.type].createRenderObject()
+
+export const translate = (dungeonObject, x, y) =>
+    objectOperationsMap[dungeonObject.type].translate(dungeonObject, x, y)

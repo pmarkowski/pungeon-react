@@ -2,6 +2,11 @@ import * as PIXI from 'pixi.js'
 import { GRID_TILE_SIZE } from '../utils/constants';
 
 export default class TokenOperations {
+    translate(object, x, y) {
+        object.position.x += x;
+        object.position.y += y;
+    }
+
     createRenderObject() {
         return new PIXI.Sprite();
     }

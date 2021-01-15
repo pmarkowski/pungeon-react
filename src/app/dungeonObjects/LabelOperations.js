@@ -2,7 +2,12 @@ import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
-export default class LabelRenderer extends GraphicsDungeonObjectOperations {
+export default class LabelOperations extends GraphicsDungeonObjectOperations {
+    translate(object, x, y) {
+        object.position.x += x;
+        object.position.y += y;
+    }
+
     renderObject(graphics, label, objectIsSelected) {
         graphics.zIndex = 4;
         graphics.clear();

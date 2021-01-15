@@ -3,6 +3,13 @@ import { GRID_TILE_SIZE } from "../utils/constants";
 import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
 export default class DoorOperations extends GraphicsDungeonObjectOperations {
+    translate(object, x, y) {
+        object.start.x += x;
+        object.start.y += y;
+        object.end.x += x;
+        object.end.y += y;
+    }
+
     renderObject(graphics, door, objectIsSelected) {
         graphics.zIndex = 3;
         graphics.clear();
