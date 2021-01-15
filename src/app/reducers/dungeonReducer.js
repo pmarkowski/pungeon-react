@@ -1,4 +1,5 @@
-import { createArrayWithUpdatedObject } from '../utils/createArrayWithUpdatedObject'
+import { translate } from '../dungeonObjects/DungeonObjectOperations';
+import { createArrayWithUpdatedObject, createArrayWithUpdatedObjects } from '../utils/createArrayWithUpdatedObject'
 import DUNGEON_ACTION_TYPE from './dungeonActionType'
 
 export const dungeonReducer = (state = {}, action) => {
@@ -22,13 +23,10 @@ export const dungeonReducer = (state = {}, action) => {
             }
         }
         case DUNGEON_ACTION_TYPE.MOVE_SELECTED_OBJECT: {
-            let arrayWithUpdatedObject = createArrayWithUpdatedObject(
+            let arrayWithUpdatedObject = createArrayWithUpdatedObjects(
                 state.objects,
-                action.selectedObject,
-                (object) => object.position = {
-                    x: object.position.x + action.deltaX,
-                    y: object.position.y + action.deltaY
-                });
+                action.selectedObjectIds,
+                (object) => translate(object, action.deltaX, action.deltaY));
             return {
                 ...state,
                 objects: arrayWithUpdatedObject
