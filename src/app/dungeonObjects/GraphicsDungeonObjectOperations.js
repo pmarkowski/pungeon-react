@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 
-export default class GraphicsRenderer {
+export default class GraphicsDungeonObjectOperations {
     createRenderObject() {
         return new PIXI.Graphics();
     }

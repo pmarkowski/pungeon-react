@@ -1,7 +1,7 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
-import GraphicsRenderer from './GraphicsRenderer';
+import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
 
-export default class SpaceRenderer extends GraphicsRenderer {
+export default class SpaceOperations extends GraphicsDungeonObjectOperations {
     renderObject(graphics, space, objectIsSelected) {
         graphics.clear();
         graphics.beginFill(0xd6d5d5);

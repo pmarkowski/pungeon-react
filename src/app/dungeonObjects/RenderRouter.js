@@ -1,21 +1,21 @@
 import DUNGEON_OBJECT_TYPE from "./dungeonObjectTypes";
-import DoorRenderer from "./DoorRenderer";
-import LabelRenderer from "./LabelRenderer";
-import WallRenderer from "./WallRenderer";
-import SpaceRenderer from "./SpaceRenderer";
-import TokenRenderer from "./TokenRenderer";
+import DoorOperations from "./DoorOperations";
+import LabelOperations from "./LabelOperations";
+import WallOperations from "./WallOperations";
+import SpaceOperations from "./SpaceOperations";
+import TokenOperations from "./TokenOperations";
 
-const rendererMap = {
-    [DUNGEON_OBJECT_TYPE.DOOR]: new DoorRenderer(),
-    [DUNGEON_OBJECT_TYPE.LABEL]: new LabelRenderer(),
-    [DUNGEON_OBJECT_TYPE.WALL]: new WallRenderer(),
-    [DUNGEON_OBJECT_TYPE.SPACE]: new SpaceRenderer(),
-    [DUNGEON_OBJECT_TYPE.TOKEN]: new TokenRenderer()
+const objectOperationsMap = {
+    [DUNGEON_OBJECT_TYPE.DOOR]: new DoorOperations(),
+    [DUNGEON_OBJECT_TYPE.LABEL]: new LabelOperations(),
+    [DUNGEON_OBJECT_TYPE.WALL]: new WallOperations(),
+    [DUNGEON_OBJECT_TYPE.SPACE]: new SpaceOperations(),
+    [DUNGEON_OBJECT_TYPE.TOKEN]: new TokenOperations()
 }
 
 export const renderObject = (graphics, dungeonObject, objectIsSelected) => {
-    rendererMap[dungeonObject.type].renderObject(graphics, dungeonObject, objectIsSelected);
+    objectOperationsMap[dungeonObject.type].renderObject(graphics, dungeonObject, objectIsSelected);
 }
 
 export const createRenderObject = (dungeonObject) =>
-    rendererMap[dungeonObject.type].createRenderObject()
+    objectOperationsMap[dungeonObject.type].createRenderObject()
