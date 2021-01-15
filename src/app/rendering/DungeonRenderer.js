@@ -2,7 +2,7 @@ import { pngExported, selectObject, selectObjects, setCurrentMousePosition } fro
 import store from '../store.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
-import * as RenderRouter from '../dungeonObjects/RenderRouter'
+import * as DungeonObjectOperations from '../dungeonObjects/DungeonObjectOperations'
 import download from "../utils/download";
 import * as PIXI from 'pixi.js'
 import { doRectanglesIntersect } from "../utils/geometry";
@@ -51,7 +51,7 @@ const drawDungeonObjects = (container, state) => {
     let stateObjectIds = Object.keys(objectIdMap);
     stateObjectIds.forEach(objectId => {
         if (!containerObjectIds.has(objectId)) {
-            let newChildGraphics = RenderRouter.createRenderObject(objectIdMap[objectId]);
+            let newChildGraphics = DungeonObjectOperations.createRenderObject(objectIdMap[objectId]);
             newChildGraphics.id = objectId;
             newChildGraphics.interactive = true;
             container.addChild(newChildGraphics);
@@ -63,7 +63,7 @@ const drawDungeonObjects = (container, state) => {
         if (graphics.id) {
             let object = objectIdMap[graphics.id];
             if (object) {
-                RenderRouter.renderObject(graphics, object, state.editor.selectedObjectIds.includes(graphics.id))
+                DungeonObjectOperations.renderObject(graphics, object, state.editor.selectedObjectIds.includes(graphics.id))
             }
             else {
                 container.removeChild(graphics);
