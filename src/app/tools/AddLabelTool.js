@@ -1,5 +1,6 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
-import { addLabel } from "../reducers/dungeonActions";
+import { addObject } from "../reducers/dungeonActions";
+import { createLabel } from "../dungeonObjects/LabelOperations";
 
 export default class AddLabelTool {
     onMouseUp(store) {
@@ -7,7 +8,7 @@ export default class AddLabelTool {
         let mousePoint = state.editor.mouse.currentPosition;
         let dungeonSpaceX = mousePoint.x / GRID_TILE_SIZE;
         let dungeonSpaceY = mousePoint.y / GRID_TILE_SIZE;
-        store.dispatch(addLabel(dungeonSpaceX, dungeonSpaceY, "Text Label"))
+        store.dispatch(addObject(createLabel(dungeonSpaceX, dungeonSpaceY, "Text Label")));
     }
 
     renderTool(state, graphics) {

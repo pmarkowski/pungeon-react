@@ -1,7 +1,45 @@
 import * as PIXI from 'pixi.js'
 import { GRID_TILE_SIZE } from '../utils/constants';
+import { BaseDungeonObjectOperations, createDungeonObject } from './BaseDungeonObjectOperations';
 
-export default class TokenRenderer {
+/**
+ * @typedef {{
+ *  textureUrl: string,
+ *  position: {x: number, y: number},
+ *  size: {width: number, height: number}
+ *  angle: number
+ * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Token
+ */
+
+export const TOKEN_TYPE = "token"
+
+/**
+ * @returns {Token}
+ */
+export const createToken = (textureUrl, x, y, width, height, angle) => {
+    return {
+        ...createDungeonObject(TOKEN_TYPE),
+        textureUrl,
+        position: {
+            x,
+            y
+        },
+        size: {
+            width,
+            height
+        },
+        angle
+    };
+}
+
+export class TokenOperations extends BaseDungeonObjectOperations {
+    get dungeonObjectType(){ return TOKEN_TYPE; }
+
+    translate(object, x, y) {
+        object.position.x += x;
+        object.position.y += y;
+    }
+
     createRenderObject() {
         return new PIXI.Sprite();
     }

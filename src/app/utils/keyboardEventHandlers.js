@@ -1,4 +1,4 @@
-import { deleteObjects, moveSelectedObject } from "../reducers/dungeonActions"
+import { deleteObjects, moveObjects } from "../reducers/dungeonActions"
 import { keyPressed, keyReleased } from "../reducers/editorActions";
 
 /**
@@ -14,13 +14,13 @@ export const handleKeyPressed = (keyboardEvent, store) => {
         case 'Delete':
             return store.dispatch(deleteObjects(state.editor.selectedObjectIds));
         case 'ArrowLeft':
-            return store.dispatch(moveSelectedObject(state.editor.selectedObjectIds[0], -1, 0));
+            return store.dispatch(moveObjects(state.editor.selectedObjectIds, -1, 0));
         case 'ArrowRight':
-            return store.dispatch(moveSelectedObject(state.editor.selectedObjectIds[0], 1, 0));
+            return store.dispatch(moveObjects(state.editor.selectedObjectIds, 1, 0));
         case 'ArrowDown':
-            return store.dispatch(moveSelectedObject(state.editor.selectedObjectIds[0], 0, 1));
+            return store.dispatch(moveObjects(state.editor.selectedObjectIds, 0, 1));
         case 'ArrowUp':
-            return store.dispatch(moveSelectedObject(state.editor.selectedObjectIds[0], 0, -1));
+            return store.dispatch(moveObjects(state.editor.selectedObjectIds, 0, -1));
         default:
             return;
     }

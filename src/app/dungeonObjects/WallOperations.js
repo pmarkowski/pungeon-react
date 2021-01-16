@@ -1,8 +1,43 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from "../utils/constants";
-import GraphicsRenderer from './GraphicsRenderer';
+import { createDungeonObject, BaseDungeonObjectOperations } from './BaseDungeonObjectOperations';
 
-export default class WallRenderer extends GraphicsRenderer {
+/**
+ * @typedef {{
+ *  start: {x: number, y: number},
+ *  end: {x: number, y: number}
+ * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Wall
+ */
+
+ export const WALL_TYPE = "wall"
+
+/**
+ * @returns {Wall}
+ */
+export const createWall = (startX, startY, endX, endY) => {
+    return {
+        ...createDungeonObject(WALL_TYPE),
+        start: {
+            x: startX,
+            y: startY
+        },
+        end: {
+            x: endX,
+            y: endY
+        }
+    }
+}
+
+export class WallOperations extends BaseDungeonObjectOperations {
+    get dungeonObjectType(){ return WALL_TYPE; }
+
+    translate(object, x, y) {
+        object.start.x += x;
+        object.start.y += y;
+        object.end.x += x;
+        object.end.y += y;
+    }
+
     renderObject(graphics, wall, objectIsSelected) {
         graphics.zIndex = 2;
         graphics.clear();

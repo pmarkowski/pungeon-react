@@ -1,8 +1,38 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
-import GraphicsRenderer from './GraphicsRenderer';
+import { createDungeonObject, BaseDungeonObjectOperations } from './BaseDungeonObjectOperations';
 
-export default class LabelRenderer extends GraphicsRenderer {
+/**
+ * @typedef {{
+ *  position: {x: number, y: number},
+ *  label: string
+ * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Label
+ */
+
+export const LABEL_TYPE = "label"
+
+/**
+ * @returns {Label}
+ */
+export const createLabel = (x, y, label) => {
+    return {
+        ...createDungeonObject(LABEL_TYPE),
+        label,
+        position: {
+            x,
+            y
+        }
+    }
+}
+
+export class LabelOperations extends BaseDungeonObjectOperations {
+    get dungeonObjectType(){ return LABEL_TYPE; }
+
+    translate(object, x, y) {
+        object.position.x += x;
+        object.position.y += y;
+    }
+
     renderObject(graphics, label, objectIsSelected) {
         graphics.zIndex = 4;
         graphics.clear();

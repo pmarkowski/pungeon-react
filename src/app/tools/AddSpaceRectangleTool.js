@@ -1,5 +1,6 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
-import { addSpace } from "../reducers/dungeonActions";
+import { addObject } from "../reducers/dungeonActions";
+import { createSpace } from "../dungeonObjects/SpaceOperations";
 
 export default class AddSpaceRectangleTool {
 
@@ -10,7 +11,7 @@ export default class AddSpaceRectangleTool {
         let startY = Math.floor(Math.min(state.editor.mouse.startPosition.y, mousePoint.y) / GRID_TILE_SIZE);
         let endX = Math.ceil(Math.max(state.editor.mouse.startPosition.x, mousePoint.x) / GRID_TILE_SIZE);
         let endY = Math.ceil(Math.max(state.editor.mouse.startPosition.y, mousePoint.y) / GRID_TILE_SIZE);
-        store.dispatch(addSpace(startX, startY, endX, endY));
+        store.dispatch(addObject(createSpace({ startX, startY, endX, endY})));
     }
 
     renderTool(state, graphics) {

@@ -1,8 +1,43 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from "../utils/constants";
-import GraphicsRenderer from './GraphicsRenderer';
+import { createDungeonObject, BaseDungeonObjectOperations } from './BaseDungeonObjectOperations';
 
-export default class DoorRenderer extends GraphicsRenderer {
+/**
+ * @typedef {{
+ *  start: {x: number, y: number},
+ *  end: {x: number, y: number}
+ * } & import('./BaseDungeonObjectOperations').BaseDungeonObject} Door
+ */
+
+export const DOOR_TYPE = "door"
+
+/**
+ * @returns {Door}
+ */
+export const createDoor = (startX, startY, endX, endY) => {
+    return {
+        ...createDungeonObject(DOOR_TYPE),
+        start: {
+            x: startX,
+            y: startY
+        },
+        end: {
+            x: endX,
+            y: endY
+        }
+    }
+}
+
+export class DoorOperations extends BaseDungeonObjectOperations {
+    get dungeonObjectType(){ return DOOR_TYPE; }
+
+    translate(object, x, y) {
+        object.start.x += x;
+        object.start.y += y;
+        object.end.x += x;
+        object.end.y += y;
+    }
+
     renderObject(graphics, door, objectIsSelected) {
         graphics.zIndex = 3;
         graphics.clear();

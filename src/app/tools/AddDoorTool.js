@@ -1,7 +1,8 @@
-import { addDoor } from "../reducers/dungeonActions";
+import { addObject } from "../reducers/dungeonActions";
 import { GRID_TILE_SIZE } from "../utils/constants";
-import DUNGEON_OBJECT_TYPE from "../utils/dungeonObjectTypes";
 import { lineLength, getClosestPointOnLine } from "../utils/geometry";
+import { createDoor } from "../dungeonObjects/DoorOperations";
+import { WALL_TYPE } from "../dungeonObjects/WallOperations";
 
 export default class AddDoorTool {
     onMouseUp(store) {
@@ -11,7 +12,7 @@ export default class AddDoorTool {
         let snapPoint = null;
         let minWallId = null;
         state.dungeon.objects
-            .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
+            .filter(object => object.type === WALL_TYPE)
             .forEach(wall =>{
                 // try each point and get the shortest distance
                 let scaledStart = {
@@ -53,11 +54,11 @@ export default class AddDoorTool {
             y: doorWall.end.y * GRID_TILE_SIZE
         }
         let endPoint = getClosestPointOnLine(mousePoint, scaledStart, scaledEnd);
-        store.dispatch(addDoor(
+        store.dispatch(addObject(createDoor(
             snapPoint.x / GRID_TILE_SIZE,
             snapPoint.y / GRID_TILE_SIZE,
             endPoint.x / GRID_TILE_SIZE,
-            endPoint.y / GRID_TILE_SIZE));
+            endPoint.y / GRID_TILE_SIZE)));
     }
 
     renderTool(state, graphics) {
@@ -68,7 +69,7 @@ export default class AddDoorTool {
             let minDistance = 25;
             let snapPoint = null;
             state.dungeon.objects
-                .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
+                .filter(object => object.type === WALL_TYPE)
                 .forEach(wall => {
                     // try each point and get the shortest distance
                     let scaledStart = {
@@ -99,7 +100,7 @@ export default class AddDoorTool {
             let snapPoint = null;
             let minWallId = null;
             state.dungeon.objects
-                .filter(object => object.type === DUNGEON_OBJECT_TYPE.WALL)
+                .filter(object => object.type === WALL_TYPE)
                 .forEach(wall => {
                     // try each point and get the shortest distance
                     let scaledStart = {

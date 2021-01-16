@@ -1,5 +1,6 @@
 import { GRID_TILE_SIZE } from '../utils/constants';
-import { addToken } from '../reducers/dungeonActions';
+import { addObject } from '../reducers/dungeonActions';
+import { createToken } from '../dungeonObjects/TokenOperations';
 
 export default class AddTokenTool {
     // TODO: Make this configurable based on the currently selected token or something along those lines
@@ -17,14 +18,14 @@ export default class AddTokenTool {
         snappedX = Math.floor(mousePoint.x / GRID_TILE_SIZE);
         snappedY = Math.floor(mousePoint.y / GRID_TILE_SIZE);
 
-        store.dispatch(addToken(
+        store.dispatch(addObject(createToken(
             this.tokenTextureUrl,
             snappedX,
             snappedY,
             this.width,
             this.height,
             0
-        ))
+        )));
     }
 
     renderTool(state, graphics) {
