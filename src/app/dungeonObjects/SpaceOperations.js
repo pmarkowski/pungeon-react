@@ -1,6 +1,5 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
-import { createDungeonObject } from "./BaseDungeonObjectOperations";
-import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
+import { createDungeonObject, BaseDungeonObjectOperations } from './BaseDungeonObjectOperations';
 
 /**
  * @typedef {{
@@ -40,7 +39,7 @@ export const createSpace = ({points, startX, startY, endX, endY}) => {
     }
 }
 
-export class SpaceOperations extends GraphicsDungeonObjectOperations {
+export class SpaceOperations extends BaseDungeonObjectOperations {
     get dungeonObjectType() { return SPACE_TYPE; }
 
     translate(object, x, y) {

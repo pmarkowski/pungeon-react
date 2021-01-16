@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from "../utils/constants";
-import { createDungeonObject } from './BaseDungeonObjectOperations';
-import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
+import { createDungeonObject, BaseDungeonObjectOperations } from './BaseDungeonObjectOperations';
 
 /**
  * @typedef {{
@@ -29,7 +28,7 @@ export const createDoor = (startX, startY, endX, endY) => {
     }
 }
 
-export class DoorOperations extends GraphicsDungeonObjectOperations {
+export class DoorOperations extends BaseDungeonObjectOperations {
     get dungeonObjectType(){ return DOOR_TYPE; }
 
     translate(object, x, y) {

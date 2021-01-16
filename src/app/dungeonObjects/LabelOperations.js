@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { GRID_TILE_SIZE } from '../utils/constants';
-import { createDungeonObject } from './BaseDungeonObjectOperations';
-import GraphicsDungeonObjectOperations from './GraphicsDungeonObjectOperations';
+import { createDungeonObject, BaseDungeonObjectOperations } from './BaseDungeonObjectOperations';
 
 /**
  * @typedef {{
@@ -26,7 +25,7 @@ export const createLabel = (x, y, label) => {
     }
 }
 
-export class LabelOperations extends GraphicsDungeonObjectOperations {
+export class LabelOperations extends BaseDungeonObjectOperations {
     get dungeonObjectType(){ return LABEL_TYPE; }
 
     translate(object, x, y) {
