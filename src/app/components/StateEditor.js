@@ -121,10 +121,16 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                 height={dungeonSize.height}
                 onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
             <StateEditorCard title="Editor Options">
-                <label>
-                    <input type='checkbox' value={scrollPansViewport} onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))}></input>
-                    Scroll to pan
-                </label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input
+                            class="form-check-input"
+                            type='checkbox'
+                            value={scrollPansViewport}
+                            onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))} />
+                        Scroll to pan
+                    </label>
+                </div>
             </StateEditorCard>
         </React.Fragment>
     }
