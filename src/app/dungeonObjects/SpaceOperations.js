@@ -56,6 +56,7 @@ export class SpaceOperations extends BaseDungeonObjectOperations {
     }
 
     renderObject(graphics, space, objectIsSelected) {
+        super.renderObject(graphics, space, objectIsSelected);
         graphics.clear();
         graphics.beginFill(0xd6d5d5);
         if (space.position && space.size) {

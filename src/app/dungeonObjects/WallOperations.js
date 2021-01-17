@@ -39,8 +39,9 @@ export class WallOperations extends BaseDungeonObjectOperations {
     }
 
     renderObject(graphics, wall, objectIsSelected) {
-        graphics.zIndex = 2;
+        super.renderObject(graphics, wall, objectIsSelected);
         graphics.clear();
+        graphics.zIndex = 2;
         graphics.beginFill(0x0266e6, 1);
         graphics.lineStyle(10, 0x0266e6, 1, 0.5);
         graphics.moveTo(wall.start.x * GRID_TILE_SIZE, wall.start.y * GRID_TILE_SIZE);
