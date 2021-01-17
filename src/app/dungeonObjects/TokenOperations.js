@@ -45,6 +45,7 @@ export class TokenOperations extends BaseDungeonObjectOperations {
     }
 
     renderObject(sprite, token, objectIsSelected) {
+        super.renderObject(sprite, token, objectIsSelected);
         sprite.zIndex = 4;
         sprite.texture = PIXI.Texture.from(process.env.PUBLIC_URL + token.textureUrl);
         sprite.x = token.position.x * GRID_TILE_SIZE;

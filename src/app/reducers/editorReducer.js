@@ -8,6 +8,7 @@ import EDITOR_ACTION_TYPE from "./editorActionType";
 export const defaultEditorState = {
     scrollMovesViewport: false,
     selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
+    activeOperationType: null,
     scale: 100,
     position: {
         x: 0,
@@ -35,6 +36,9 @@ export const defaultEditorState = {
     selectingInBoundingBox: null
 };
 
+/**
+ * @returns {EditorState}
+ */
 export const editorReducer = (state = defaultEditorState, action) => {
     switch (action.type) {
         case EDITOR_ACTION_TYPE.KEY_PRESSED: {
@@ -237,6 +241,18 @@ export const editorReducer = (state = defaultEditorState, action) => {
             return {
                 ...state,
                 selectedObjectIds: []
+            }
+        }
+        case EDITOR_ACTION_TYPE.START_OPERATION: {
+            return {
+                ...state,
+                activeOperationType: action.operationType
+            }
+        }
+        case EDITOR_ACTION_TYPE.END_OPERATION: {
+            return {
+                ...state,
+                activeOperationType: null
             }
         }
         default: {

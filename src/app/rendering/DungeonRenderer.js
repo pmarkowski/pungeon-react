@@ -22,8 +22,6 @@ export const render = (app, graphics) => {
 
     handleSelecting(state, app);
 
-    graphics.clear();
-
     drawDungeonObjects(app.stage, state);
     drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height);
 
@@ -73,6 +71,7 @@ const drawDungeonObjects = (container, state) => {
 }
 
 const drawGrid = (graphics, gridWidth, gridHeight) => {
+    graphics.clear();
     graphics.lineStyle(1, 0x444444, 1, 0.5);
     for (let i = 0; i <= gridWidth; i++) {
         graphics.moveTo(i * GRID_TILE_SIZE, 0);
@@ -83,6 +82,7 @@ const drawGrid = (graphics, gridWidth, gridHeight) => {
         graphics.moveTo(0, j * GRID_TILE_SIZE);
         graphics.lineTo(gridWidth * GRID_TILE_SIZE, j * GRID_TILE_SIZE);
     }
+    graphics.lineStyle();
 }
 
 function handleExporting(state, app) {

@@ -34,6 +34,7 @@ export class LabelOperations extends BaseDungeonObjectOperations {
     }
 
     renderObject(graphics, label, objectIsSelected) {
+        super.renderObject(graphics, label, objectIsSelected);
         graphics.zIndex = 4;
         graphics.clear();
         if (graphics.children.length === 0) {

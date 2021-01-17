@@ -56,6 +56,15 @@ export const selectTool = (toolName) => ({
     selectedTool: toolName
 })
 
+export const startOperation = (operationType) => ({
+    type: EDITOR_ACTION_TYPE.START_OPERATION,
+    operationType
+})
+
+export const endOperation = () => ({
+    type: EDITOR_ACTION_TYPE.END_OPERATION
+})
+
 export const selectAtPoint = (x, y, shouldMultiSelect) => ({
     type: EDITOR_ACTION_TYPE.SELECT_AT_POINT,
     x,

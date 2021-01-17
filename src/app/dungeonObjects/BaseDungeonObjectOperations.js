@@ -1,5 +1,8 @@
 import * as PIXI from 'pixi.js';
 import { v4 as uuid } from 'uuid';
+import { startOperation } from '../reducers/editorActions';
+import store from '../store';
+import OPERATION_TYPE from '../tools/operationType';
 
 /**
  * @typedef {{ type: string, id: string }} BaseDungeonObject
@@ -28,9 +31,21 @@ export class BaseDungeonObjectOperations {
     }
 
     /**
-     * @param {PIXI.DisplayObject} graphics
+     * @param {PIXI.DisplayObject} displayObject
      * @param {BaseDungeonObject} object
      * @param {boolean} objectIsSelected
      */
-    renderObject(displayObject, object, isObjectSelected) {}
+    renderObject(displayObject, object, isObjectSelected) {
+        if (isObjectSelected) {
+            displayObject.cursor = "move"
+            displayObject.mousedown = () => {
+                store.dispatch(startOperation(OPERATION_TYPE.MOVE));
+            };
+        }
+        else {
+            displayObject.cursor = "default"
+            // clear drag movement operation handler
+            displayObject.mousedown = undefined;
+        }
+    }
 }
