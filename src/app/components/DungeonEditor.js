@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import React from 'react';
 import { render as renderDungeon } from '../rendering/DungeonRenderer';
+import { GridRenderer } from '../rendering/GridRenderer';
 import store from '../store.js';
 import { handleKeyPressed, handleKeyReleased } from '../utils/keyboardEventHandlers.js';
 import * as MouseEventHandler from '../utils/mouseEventHandlers.js';
@@ -31,10 +32,13 @@ export default class DungeonEditor extends React.Component {
         app.stage.sortableChildren = true;
         app.stage.addChild(graphics);
 
+        let gridRenderer = new GridRenderer();
+        app.stage.addChild(gridRenderer.createRenderObject());
+
         this.setupInteractions()
 
         app.ticker.add(() => {
-            renderDungeon(app, graphics);
+            renderDungeon(app, graphics, gridRenderer);
         });
     }
 
