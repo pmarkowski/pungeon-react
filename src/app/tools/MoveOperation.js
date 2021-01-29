@@ -39,14 +39,14 @@ class MoveOperation {
         /** @type {import("../reducers").State} */
         let state = store.getState();
         // On letting go of the mouse, compare mouse coordinates from where you began
-        let translation = getTranslation(
+        let {deltaX, deltaY} = getTranslation(
             state.editor.mouse.currentPosition,
             state.editor.mouse.startPosition);
 
         store.dispatch(moveObjects(
             state.editor.selectedObjectIds,
-            translation.deltaX,
-            translation.deltaY));
+            deltaX,
+            deltaY));
 
         // Clear the current Operation
         store.dispatch(endOperation());
@@ -63,7 +63,7 @@ class MoveOperation {
             this.initializeGraphics(graphics, state);
         }
 
-        let translation = getTranslation(
+        let {deltaX, deltaY} = getTranslation(
             state.editor.mouse.currentPosition,
             state.editor.mouse.startPosition
         );
@@ -71,7 +71,7 @@ class MoveOperation {
             .filter(dungeonObject => state.editor.selectedObjectIds.includes(dungeonObject.id))
             .forEach(dungeonObject => {
                 let objectCopy = JSON.parse(JSON.stringify(dungeonObject));
-                translate(objectCopy, translation.deltaX, translation.deltaY);
+                translate(objectCopy, deltaX, deltaY);
                 let renderObjectCopy = this.graphics.children.filter(child => child.id === objectCopy.id)[0];
                 renderObject(renderObjectCopy, objectCopy, false);
             });
