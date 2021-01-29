@@ -1,4 +1,4 @@
-import { renderObject, translate } from "../dungeonObjects/DungeonObjectOperations";
+import { createRenderObject, renderObject, translate } from "../dungeonObjects/DungeonObjectOperations";
 import { moveObjects } from "../reducers/dungeonActions";
 import { endOperation } from "../reducers/editorActions";
 import { GRID_TILE_SIZE } from "../utils/constants";
@@ -9,6 +9,32 @@ const getTranslation = (endPosition, startPosition) => ({
 })
 
 class MoveOperation {
+    /**
+     * @private
+     */
+    initializeGraphics(graphics, state) {
+        this.graphics = graphics;
+        this.graphics.zIndex = 9;
+        this.graphics.alpha = 0.5;
+        state.dungeon.objects
+            .filter(dungeonObject => state.editor.selectedObjectIds.includes(dungeonObject.id))
+            .forEach(dungeonObject => {
+                let dungeonRenderObject = createRenderObject(dungeonObject);
+                dungeonRenderObject.id = dungeonObject.id;
+                this.graphics.addChild(dungeonRenderObject);
+            });
+    }
+
+    /**
+     * @private
+     */
+    resetGraphics() {
+        this.graphics.removeChildren(0, this.graphics.children.length);
+        this.graphics.zIndex = Number.MAX_SAFE_INTEGER;
+        this.graphics.alpha = 1;
+        this.graphics = null;
+    }
+
     onMouseUp(store) {
         /** @type {import("../reducers").State} */
         let state = store.getState();
@@ -24,6 +50,8 @@ class MoveOperation {
 
         // Clear the current Operation
         store.dispatch(endOperation());
+
+        this.resetGraphics();
     }
 
     /**
@@ -31,6 +59,10 @@ class MoveOperation {
      * @param {PIXI.Graphics} graphics
      */
     renderOperation(state, graphics) {
+        if (!this.graphics) {
+            this.initializeGraphics(graphics, state);
+        }
+
         let translation = getTranslation(
             state.editor.mouse.currentPosition,
             state.editor.mouse.startPosition
@@ -40,7 +72,8 @@ class MoveOperation {
             .forEach(dungeonObject => {
                 let objectCopy = JSON.parse(JSON.stringify(dungeonObject));
                 translate(objectCopy, translation.deltaX, translation.deltaY);
-                renderObject(graphics, objectCopy, false);
+                let renderObjectCopy = this.graphics.children.filter(child => child.id === objectCopy.id)[0];
+                renderObject(renderObjectCopy, objectCopy, false);
             });
     }
 }
