@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/pungeon-react/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/pungeon-react/static/js/main.1006c28f.chunk.js",
-    "main.js.map": "/pungeon-react/static/js/main.1006c28f.chunk.js.map",
+    "main.js": "/pungeon-react/static/js/main.c316fc3a.chunk.js",
+    "main.js.map": "/pungeon-react/static/js/main.c316fc3a.chunk.js.map",
     "runtime-main.js": "/pungeon-react/static/js/runtime-main.74839472.js",
     "runtime-main.js.map": "/pungeon-react/static/js/runtime-main.74839472.js.map",
-    "static/js/2.6d2e0ed8.chunk.js": "/pungeon-react/static/js/2.6d2e0ed8.chunk.js",
-    "static/js/2.6d2e0ed8.chunk.js.map": "/pungeon-react/static/js/2.6d2e0ed8.chunk.js.map",
+    "static/js/2.22dee14e.chunk.js": "/pungeon-react/static/js/2.22dee14e.chunk.js",
+    "static/js/2.22dee14e.chunk.js.map": "/pungeon-react/static/js/2.22dee14e.chunk.js.map",
     "index.html": "/pungeon-react/index.html",
     "static/css/main.6dea0f05.chunk.css.map": "/pungeon-react/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.6d2e0ed8.chunk.js.LICENSE.txt": "/pungeon-react/static/js/2.6d2e0ed8.chunk.js.LICENSE.txt"
+    "static/js/2.22dee14e.chunk.js.LICENSE.txt": "/pungeon-react/static/js/2.22dee14e.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.74839472.js",
-    "static/js/2.6d2e0ed8.chunk.js",
+    "static/js/2.22dee14e.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.1006c28f.chunk.js"
+    "static/js/main.c316fc3a.chunk.js"
   ]
 }
