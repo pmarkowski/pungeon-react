@@ -110,7 +110,7 @@ function handleSelecting(state, app) {
     else if (state.editor.selectingInBoundingBox) {
         let objectIdsToSelect = [];
         app.stage.children.forEach(child => {
-            if (doRectanglesIntersect(child.getLocalBounds(), state.editor.selectingInBoundingBox)) {
+            if (doRectanglesIntersect(child.getLocalBounds(), state.editor.selectingInBoundingBox) && child.id) {
                 objectIdsToSelect.push(child.id);
             }
         });
