@@ -38,17 +38,20 @@ export class WallOperations extends BaseDungeonObjectOperations {
         object.end.y += y;
     }
 
+    /**
+     *
+     * @param {PIXI.Graphics} graphics
+     * @param {Wall} wall
+     * @param {boolean} objectIsSelected
+     */
     renderObject(graphics, wall, objectIsSelected) {
         super.renderObject(graphics, wall, objectIsSelected);
         graphics.clear();
-        graphics.zIndex = 2;
-        graphics.beginFill(0x0266e6, 1);
         graphics.lineStyle(10, 0x0266e6, 1, 0.5);
+        graphics.line.cap = PIXI.LINE_CAP.ROUND;
         graphics.moveTo(wall.start.x * GRID_TILE_SIZE, wall.start.y * GRID_TILE_SIZE);
         graphics.lineTo(wall.end.x * GRID_TILE_SIZE, wall.end.y * GRID_TILE_SIZE);
         graphics.lineStyle();
-        graphics.drawCircle(wall.start.x * GRID_TILE_SIZE, wall.start.y * GRID_TILE_SIZE, 5);
-        graphics.drawCircle(wall.end.x * GRID_TILE_SIZE, wall.end.y * GRID_TILE_SIZE, 5);
         let half = 10 / 2;
         graphics.endFill();
 

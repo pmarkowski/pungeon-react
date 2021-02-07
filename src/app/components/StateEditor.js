@@ -6,7 +6,7 @@ import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 import StateEditorCard from "./StateEditorCard"
 
-let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, scrollPansViewport }) => {
+let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, dungeonSize, scrollPansViewport }) => {
     if (selectedObjectId) {
         return <React.Fragment>
             {selectedObject.label !== undefined &&
@@ -115,6 +115,15 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonSize, sc
                         New Dungeon
                 </button>
             </StateEditorCard>
+            <StateEditorCard title="Dungeon Properties">
+                <label>
+                    Dungeon Name:
+                    <input
+                        className="form-control bg-secondary text-light"
+                        value={dungeonName}
+                        onChange={(changeEvent) => dispatch(DungeonActions.setDungeonName(changeEvent.target.value)) } />
+                </label>
+            </StateEditorCard>
             <SizeEditor
                 title="Dungeon Size"
                 width={dungeonSize.width}
@@ -142,6 +151,7 @@ const mapStateToProps = state => {
     return {
         selectedObjectId: selectedObjectId,
         selectedObject: selectedObject,
+        dungeonName: state.dungeon.name,
         dungeonSize: state.dungeon.size,
         scrollMovesViewport: state.editor.scrollMovesViewport
     }

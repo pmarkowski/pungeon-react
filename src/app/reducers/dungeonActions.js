@@ -4,6 +4,11 @@ export const clearDungeon = () => ({
     type: DUNGEON_ACTION_TYPE.NEW_DUNGEON
 })
 
+export const setDungeonName = (dungeonName) => ({
+    type: DUNGEON_ACTION_TYPE.SET_DUNGEON_NAME,
+    name: dungeonName
+})
+
 /**
  * @param {import('../dungeonObjects/DungeonObjectOperations').DungeonObject} object
  */

@@ -1,8 +1,9 @@
-import { addObject } from "../reducers/dungeonActions";
-import { GRID_TILE_SIZE } from "../utils/constants";
-import { lineLength, getClosestPointOnLine } from "../utils/geometry";
+import * as PIXI from 'pixi.js';
 import { createDoor } from "../dungeonObjects/DoorOperations";
 import { WALL_TYPE } from "../dungeonObjects/WallOperations";
+import { addObject } from "../reducers/dungeonActions";
+import { GRID_TILE_SIZE } from "../utils/constants";
+import { getClosestPointOnLine, lineLength } from "../utils/geometry";
 
 export default class AddDoorTool {
     onMouseUp(store) {
@@ -149,13 +150,10 @@ export default class AddDoorTool {
             let endY = endPoint.y;
 
             graphics.lineStyle(5, 0xfffd00);
+            graphics.line.cap = PIXI.LINE_CAP.ROUND;
             graphics.moveTo(startX, startY);
             graphics.lineTo(endX, endY);
             graphics.lineStyle();
-            graphics.beginFill(0xfffd00);
-            graphics.drawCircle(startX, startY, 2.5);
-            graphics.drawCircle(endX, endY, 2.5);
-            graphics.endFill();
         }
     }
 }
