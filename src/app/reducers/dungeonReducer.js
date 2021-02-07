@@ -8,6 +8,7 @@ import DUNGEON_ACTION_TYPE from './dungeonActionType'
  * @typedef {defaultDungeonState} DungeonState
  */
 const defaultDungeonState = {
+    name: "Dungeon",
     size: {
         width: 28,
         height: 32
@@ -42,11 +43,18 @@ export const dungeonReducer = (state = defaultDungeonState, action) => {
     switch (action.type) {
         case DUNGEON_ACTION_TYPE.NEW_DUNGEON: {
             return {
+                name: "Untitled Dungeon",
                 size: {
                     width: 24,
                     height: 32
                 },
                 objects: []
+            }
+        }
+        case DUNGEON_ACTION_TYPE.SET_DUNGEON_NAME: {
+            return {
+                ...state,
+                name: action.name
             }
         }
         case DUNGEON_ACTION_TYPE.SET_DUNGEON_SIZE: {

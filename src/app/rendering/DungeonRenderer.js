@@ -87,7 +87,7 @@ const drawGrid = (graphics, gridWidth, gridHeight) => {
 
 function handleExporting(state, app) {
     if (state.editor.exportToPngClicked) {
-        exportImage(app);
+        exportImage(app, state);
     }
 }
 
@@ -134,7 +134,7 @@ function handlePanning(app, state) {
     app.stage.position.set(state.editor.position.x, state.editor.position.y);
 }
 
-function exportImage(app) {
+function exportImage(app, state) {
     let exportTexture = app.renderer.generateTexture(app.stage,
         null,
         1.0 / app.stage.scale.x,
@@ -144,6 +144,8 @@ function exportImage(app) {
             app.stage.width,
             app.stage.height
         ));
-    download(app.renderer.extract.base64(exportTexture), "dungeon.png");
+    let normalizedDungeonName = state.dungeon.name.toLowerCase().replace(/\s/g, '_');
+    let filename = `${normalizedDungeonName}_${state.dungeon.size.width}x${state.dungeon.size.height}.png`;
+    download(app.renderer.extract.base64(exportTexture), filename);
     store.dispatch(pngExported());
 }
