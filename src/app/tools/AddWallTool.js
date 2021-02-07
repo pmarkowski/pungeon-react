@@ -1,6 +1,7 @@
-import { GRID_TILE_SIZE } from "../utils/constants";
-import { addObject } from "../reducers/dungeonActions";
+import * as PIXI from 'pixi.js';
 import { createWall } from "../dungeonObjects/WallOperations";
+import { addObject } from "../reducers/dungeonActions";
+import { GRID_TILE_SIZE } from "../utils/constants";
 
 export default class AddWallTool {
     onMouseUp(store) {
@@ -21,12 +22,10 @@ export default class AddWallTool {
             let endX = Math.round(mousePoint.x / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             let endY = Math.round(mousePoint.y / GRID_TILE_SIZE) * GRID_TILE_SIZE;
             graphics.lineStyle(5, 0xfffd00);
+            graphics.line.cap = PIXI.LINE_CAP.ROUND;
             graphics.moveTo(startX, startY);
             graphics.lineTo(endX, endY);
             graphics.lineStyle();
-            graphics.beginFill(0xfffd00);
-            graphics.drawCircle(startX, startY, 2.5);
-            graphics.drawCircle(endX, endY, 2.5);
             graphics.endFill();
         }
         else {
