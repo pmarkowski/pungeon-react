@@ -1,8 +1,5 @@
 import * as PIXI from 'pixi.js';
 import { v4 as uuid } from 'uuid';
-import { startOperation } from '../reducers/editorActions';
-import store from '../store';
-import OPERATION_TYPE from '../tools/operationType';
 
 /**
  * @typedef {{ type: string, id: string }} BaseDungeonObject

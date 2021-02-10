@@ -1,10 +1,9 @@
-import { pngExported, selectObject, selectObjects, setCurrentMousePosition } from "../reducers/editorActions";
+import { pngExported, setCurrentMousePosition } from "../reducers/editorActions";
 import store from '../store.js';
 import * as ToolRouter from '../tools/ToolRouter';
 import * as DungeonObjectOperations from '../dungeonObjects/DungeonObjectOperations'
 import download from "../utils/download";
 import * as PIXI from 'pixi.js'
-import { doRectanglesIntersect } from "../utils/geometry";
 
 /**
  * @param {PIXI.Application} app
@@ -19,8 +18,6 @@ export const render = (app, graphics, gridRenderer) => {
 
     handlePanning(app, state);
     handleScaling(state, app);
-
-    handleSelecting(state, app);
 
     drawDungeonObjects(app.stage, state);
     gridRenderer.renderGrid(state.dungeon.size.width, state.dungeon.size.height);
@@ -75,9 +72,6 @@ function handleExporting(state, app) {
     if (state.editor.exportToPngClicked) {
         exportImage(app, state);
     }
-}
-
-function handleSelecting(state, app) {
 }
 
 function handleScaling(state, app) {

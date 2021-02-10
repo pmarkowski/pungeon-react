@@ -1,9 +1,11 @@
 import * as PIXI from 'pixi.js';
 import { createRenderObject, renderObject, translate } from '../dungeonObjects/DungeonObjectOperations';
 import { moveObjects } from '../reducers/dungeonActions';
-import { selectInBoundingBox, selectObject, selectObjects } from "../reducers/editorActions";
-import { DRAG_THRESHOLD, GRID_TILE_SIZE } from "../utils/constants";
+import { selectObject, selectObjects } from "../reducers/editorActions";
+import { GRID_TILE_SIZE } from "../utils/constants";
 import { doRectanglesIntersect } from '../utils/geometry';
+
+export const DRAG_THRESHOLD = 5;
 
 const isDragging = (startPosition, endPosition) => {
     return Math.abs(endPosition.x - startPosition.x) > DRAG_THRESHOLD ||
@@ -107,24 +109,17 @@ export default class SelectTool {
         if (this.state === "SELECT_BOUNDING_BOX" && isDragging(startPosition, endPosition)) {
             let boundingRectangle = createRectangle(startPosition, endPosition);
 
-            let boundingBoxSelectionAction = selectInBoundingBox(
-                boundingRectangle.x,
-                boundingRectangle.y,
-                boundingRectangle.width,
-                boundingRectangle.height,
-                shouldAddToSelection);
-
             let objectIdsToSelect = [];
             app.stage.children.forEach(child => {
-                if (doRectanglesIntersect(child.getLocalBounds(), boundingBoxSelectionAction) && child.id) {
+                if (doRectanglesIntersect(child.getLocalBounds(), boundingRectangle) && child.id) {
                     objectIdsToSelect.push(child.id);
                 }
             });
             if (objectIdsToSelect.length > 0) {
-                store.dispatch(selectObjects(objectIdsToSelect, boundingBoxSelectionAction.shouldMultiSelect));
+                store.dispatch(selectObjects(objectIdsToSelect, shouldAddToSelection));
             }
             else {
-                store.dispatch(selectObjects([], boundingBoxSelectionAction.shouldMultiSelect));
+                store.dispatch(selectObjects([], shouldAddToSelection));
             }
             delete this.state;
         }
