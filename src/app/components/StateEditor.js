@@ -130,10 +130,10 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                 height={dungeonSize.height}
                 onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
             <StateEditorCard title="Editor Options">
-                <div class="form-check">
-                    <label class="form-check-label">
+                <div className="form-check">
+                    <label className="form-check-label">
                         <input
-                            class="form-check-input"
+                            className="form-check-input"
                             type='checkbox'
                             value={scrollPansViewport}
                             onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))} />
