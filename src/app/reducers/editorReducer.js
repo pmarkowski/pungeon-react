@@ -8,7 +8,6 @@ import EDITOR_ACTION_TYPE from "./editorActionType";
 export const defaultEditorState = {
     scrollMovesViewport: false,
     selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
-    activeOperationType: null,
     scale: 100,
     position: {
         x: 0,
@@ -182,28 +181,6 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 selectedObjectIds: newSelectedObjectIds
             };
         }
-        case EDITOR_ACTION_TYPE.SELECT_AT_POINT: {
-            return {
-                ...state,
-                selectingAtPoint: {
-                    x: action.x,
-                    y: action.y,
-                    shouldMultiSelect: action.shouldMultiSelect
-                }
-            }
-        }
-        case EDITOR_ACTION_TYPE.SELECT_IN_BOUNDING_BOX: {
-            return {
-                ...state,
-                selectingInBoundingBox: {
-                    x: action.x,
-                    y: action.y,
-                    width: action.width,
-                    height: action.height,
-                    shouldMultiSelect: action.shouldMultiSelect
-                }
-            }
-        }
         case EDITOR_ACTION_TYPE.SELECT_OBJECT: {
             let newSelectedObjectIds;
             if (action.shouldMultiSelect && state.selectedObjectIds.includes(action.objectId)) {
@@ -247,18 +224,6 @@ export const editorReducer = (state = defaultEditorState, action) => {
             return {
                 ...state,
                 selectedObjectIds: [action.newObject.id]
-            }
-        }
-        case EDITOR_ACTION_TYPE.START_OPERATION: {
-            return {
-                ...state,
-                activeOperationType: action.operationType
-            }
-        }
-        case EDITOR_ACTION_TYPE.END_OPERATION: {
-            return {
-                ...state,
-                activeOperationType: null
             }
         }
         default: {
