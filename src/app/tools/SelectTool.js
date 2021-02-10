@@ -5,7 +5,7 @@ import { selectObject, selectObjects } from "../reducers/editorActions";
 import { GRID_TILE_SIZE } from "../utils/constants";
 import { doRectanglesIntersect } from '../utils/geometry';
 
-export const DRAG_THRESHOLD = 5;
+const DRAG_THRESHOLD = 5;
 
 const isDragging = (startPosition, endPosition) => {
     return Math.abs(endPosition.x - startPosition.x) > DRAG_THRESHOLD ||
