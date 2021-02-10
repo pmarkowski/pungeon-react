@@ -46,6 +46,7 @@ export class WallOperations extends BaseDungeonObjectOperations {
      */
     renderObject(graphics, wall, objectIsSelected) {
         super.renderObject(graphics, wall, objectIsSelected);
+        graphics.zIndex = 2;
         graphics.clear();
         graphics.lineStyle(10, 0x0266e6, 1, 0.5);
         graphics.line.cap = PIXI.LINE_CAP.ROUND;
