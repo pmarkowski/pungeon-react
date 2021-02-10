@@ -104,7 +104,7 @@ function handleSelecting(state, app) {
             store.dispatch(selectObjects(objectIdsToSelect, state.editor.selectingInBoundingBox.shouldMultiSelect));
         }
         else {
-            store.dispatch(selectObjects([], false));
+            store.dispatch(selectObjects([], state.editor.selectingInBoundingBox.shouldMultiSelect));
         }
     }
 }
