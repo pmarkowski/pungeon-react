@@ -1,11 +1,11 @@
 import AddDoorTool from "./AddDoorTool";
 import AddLabelTool from "./AddLabelTool";
+import AddSpacePolygonTool from "./AddSpacePolygonTool";
 import AddSpaceRectangleTool from "./AddSpaceRectangleTool";
+import AddTokenTool from "./AddTokenTool";
 import AddWallTool from "./AddWallTool";
 import SelectTool from "./SelectTool";
 import TOOL_TYPE from "./toolType";
-import AddSpacePolygonTool from "./AddSpacePolygonTool";
-import AddTokenTool from "./AddTokenTool";
 
 const toolMap = {
     [TOOL_TYPE.NEW_DOOR]: new AddDoorTool(),

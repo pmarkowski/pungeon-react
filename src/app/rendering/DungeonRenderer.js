@@ -1,9 +1,9 @@
+import * as PIXI from 'pixi.js';
+import * as DungeonObjectOperations from '../dungeonObjects/DungeonObjectOperations';
 import { pngExported, setCurrentMousePosition } from "../reducers/editorActions";
 import store from '../store.js';
 import * as ToolRouter from '../tools/ToolRouter';
-import * as DungeonObjectOperations from '../dungeonObjects/DungeonObjectOperations'
 import download from "../utils/download";
-import * as PIXI from 'pixi.js'
 
 /**
  * @param {PIXI.Application} app
