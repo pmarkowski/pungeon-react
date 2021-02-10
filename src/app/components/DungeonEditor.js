@@ -35,14 +35,14 @@ export default class DungeonEditor extends React.Component {
         let gridRenderer = new GridRenderer();
         app.stage.addChild(gridRenderer.createRenderObject());
 
-        this.setupInteractions()
+        this.setupInteractions(app)
 
         app.ticker.add(() => {
             renderDungeon(app, graphics, gridRenderer);
         });
     }
 
-    setupInteractions() {
+    setupInteractions(app) {
         this.canvasDiv.addEventListener("wheel", (wheelEvent) => {
             MouseEventHandler.handleWheelEvent(wheelEvent, store);
             wheelEvent.preventDefault();
@@ -51,10 +51,10 @@ export default class DungeonEditor extends React.Component {
             event.preventDefault();
         });
         this.canvasDiv.addEventListener('pointerdown', (event) => {
-            MouseEventHandler.handleMouseDown(event, store);
+            MouseEventHandler.handleMouseDown(event, store, app);
         });
         this.canvasDiv.addEventListener('pointerup', (event) => {
-            MouseEventHandler.handleMouseUp(event, store);
+            MouseEventHandler.handleMouseUp(event, store, app);
         });
         this.canvasDiv.addEventListener('pointermove', (pointerEvent) => {
             MouseEventHandler.handleMouseMove(pointerEvent, store);

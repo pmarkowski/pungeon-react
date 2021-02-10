@@ -78,35 +78,6 @@ function handleExporting(state, app) {
 }
 
 function handleSelecting(state, app) {
-    if (state.editor.selectingAtPoint) {
-        let mousePoint = new PIXI.Point(
-            state.editor.selectingAtPoint.x,
-            state.editor.selectingAtPoint.y);
-        let globalPosition = app.stage.worldTransform.apply(mousePoint);
-        let selectedObject = app.renderer.plugins.interaction.hitTest(
-            globalPosition);
-
-        if (selectedObject) {
-            store.dispatch(selectObject(selectedObject.id, state.editor.selectingAtPoint.shouldMultiSelect));
-        }
-        else {
-            store.dispatch(selectObjects([], state.editor.selectingAtPoint.shouldMultiSelect));
-        }
-    }
-    else if (state.editor.selectingInBoundingBox) {
-        let objectIdsToSelect = [];
-        app.stage.children.forEach(child => {
-            if (doRectanglesIntersect(child.getLocalBounds(), state.editor.selectingInBoundingBox) && child.id) {
-                objectIdsToSelect.push(child.id);
-            }
-        });
-        if (objectIdsToSelect.length > 0) {
-            store.dispatch(selectObjects(objectIdsToSelect, state.editor.selectingInBoundingBox.shouldMultiSelect));
-        }
-        else {
-            store.dispatch(selectObjects([], state.editor.selectingInBoundingBox.shouldMultiSelect));
-        }
-    }
 }
 
 function handleScaling(state, app) {
