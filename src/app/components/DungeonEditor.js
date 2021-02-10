@@ -32,10 +32,10 @@ export default class DungeonEditor extends React.Component {
         app.stage.sortableChildren = true;
         app.stage.addChild(graphics);
 
+        this.setupInteractions(app)
+
         let gridRenderer = new GridRenderer();
         app.stage.addChild(gridRenderer.createRenderObject());
-
-        this.setupInteractions(app)
 
         app.ticker.add(() => {
             renderDungeon(app, graphics, gridRenderer);
