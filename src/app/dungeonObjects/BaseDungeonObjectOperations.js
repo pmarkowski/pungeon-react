@@ -32,14 +32,5 @@ export class BaseDungeonObjectOperations {
      * @param {BaseDungeonObject} object
      * @param {boolean} objectIsSelected
      */
-    renderObject(displayObject, object, isObjectSelected) {
-        // Is this necessary in any way? Can this behaviour be moved to the tool itself?
-        // and just have it set the dungeon objects to have the move cursor when the tool becomes "active"
-        // if (isObjectSelected) {
-        //     displayObject.cursor = "move"
-        // }
-        // else {
-        //     displayObject.cursor = "default"
-        // }
-    }
+    renderObject(displayObject, object, isObjectSelected) {}
 }
