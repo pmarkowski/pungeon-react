@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { GlowFilter } from '@pixi/filter-glow'
 import * as DungeonObjectOperations from '../dungeonObjects/DungeonObjectOperations';
 import { pngExported, setCurrentMousePosition } from "../reducers/editorActions";
 import store from '../store.js';
