@@ -45,7 +45,6 @@ export class WallOperations extends BaseDungeonObjectOperations {
      * @param {boolean} objectIsSelected
      */
     renderObject(graphics, wall, objectIsSelected) {
-        super.renderObject(graphics, wall, objectIsSelected);
         graphics.zIndex = 2;
         graphics.clear();
         graphics.lineStyle(10, 0x0266e6, 1, 0.5);

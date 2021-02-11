@@ -39,7 +39,6 @@ export class DoorOperations extends BaseDungeonObjectOperations {
     }
 
     renderObject(graphics, door, objectIsSelected) {
-        super.renderObject(graphics, door, objectIsSelected);
         graphics.zIndex = 3;
         graphics.clear();
         graphics.beginFill(0x002b56, 1);
