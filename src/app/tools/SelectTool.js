@@ -26,19 +26,22 @@ const createRectangle = (startPosition, endPosition) => ({
 
 let startedMove = false;
 
+/**
+ * Possible states to be in. Values correspond to powers of 2,
+ * since in some cases it is possible to be in multiple states.
+ */
 const STATES = {
-    SELECT_BOUNDING_BOX: 1,
-    DRAGGING_TO_MOVE: 2,
-    SELECTING_OBJECT: 4,
-    DESELECTING: 8
+    SELECTING_IN_BOUNDING_BOX: 1,
+    POSSIBLY_DRAGGING_TO_MOVE: 2,
+    POSSIBLY_SELECTING_LAST_HIT_OBJECT: 4,
+    POSSIBLY_DESELECTING_LAST_HIT_OBJECT: 8
 };
 
 export default class SelectTool {
     /**
      * @private
      */
-    // TODO: Rename to something like initializeMoveGraphics...? This is the only time it's used
-    initializeGraphics(graphics, state) {
+    initializeGraphicsForMoving(graphics, state) {
         this.graphics = graphics;
         this.graphics.zIndex = 9;
         this.graphics.alpha = 0.5;
@@ -54,7 +57,7 @@ export default class SelectTool {
     /**
      * @private
      */
-    resetGraphics() {
+    resetGraphicsAfterMoving() {
         this.graphics.removeChildren(0, this.graphics.children.length);
         this.graphics.zIndex = Number.MAX_SAFE_INTEGER;
         this.graphics.alpha = 1;
@@ -73,31 +76,32 @@ export default class SelectTool {
         let mousePoint = new PIXI.Point(
             currentPosition.x,
             currentPosition.y);
-        let globalPosition = app.stage.worldTransform.apply(mousePoint);
+        let mousePointInGlobalCoordinates = app.stage.worldTransform.apply(mousePoint);
+
         let hitObject = app.renderer.plugins.interaction.hitTest(
-            globalPosition);
+            mousePointInGlobalCoordinates);
+        let hitObjectIsAlreadySelected = hitObject && state.editor.selectedObjectIds.includes(hitObject.id);
 
         if (!hitObject && !shouldAddToSelection) {
             store.dispatch(selectObjects([], false));
-            this.state = STATES.SELECT_BOUNDING_BOX;
+            this.currentStates = STATES.SELECTING_IN_BOUNDING_BOX;
         }
         else if (!hitObject && shouldAddToSelection) {
-            this.state = STATES.SELECT_BOUNDING_BOX;
+            this.currentStates = STATES.SELECTING_IN_BOUNDING_BOX;
         }
-        else if (hitObject && shouldAddToSelection && state.editor.selectedObjectIds.includes(hitObject.id)) {
-            // We are either deselecting this object or starting a Drag-To-Move operation
-            this.state = STATES.DRAGGING_TO_MOVE | STATES.DESELECTING;
+        else if (hitObject && shouldAddToSelection && hitObjectIsAlreadySelected) {
+            this.currentStates = STATES.POSSIBLY_DRAGGING_TO_MOVE | STATES.POSSIBLY_DESELECTING_LAST_HIT_OBJECT;
             this.lastHitId = hitObject.id;
         }
-        else if (hitObject && shouldAddToSelection && !state.editor.selectedObjectIds.includes(hitObject.id)) {
+        else if (hitObject && shouldAddToSelection && !hitObjectIsAlreadySelected) {
             store.dispatch(selectObject(hitObject.id, shouldAddToSelection));
-            this.state = STATES.DRAGGING_TO_MOVE;
+            this.currentStates = STATES.POSSIBLY_DRAGGING_TO_MOVE;
         }
-        else if (hitObject && !shouldAddToSelection) { // this could also be dragging to move though and possibly shouldn't deselect...
-            if (!state.editor.selectedObjectIds.includes(hitObject.id)) {
+        else if (hitObject && !shouldAddToSelection) {
+            if (!hitObjectIsAlreadySelected) {
                 store.dispatch(selectObject(hitObject.id, shouldAddToSelection));
             }
-            this.state = STATES.DRAGGING_TO_MOVE | STATES.SELECTING_OBJECT;
+            this.currentStates = STATES.POSSIBLY_DRAGGING_TO_MOVE | STATES.POSSIBLY_SELECTING_LAST_HIT_OBJECT;
             this.lastHitId = hitObject.id
         }
     }
@@ -111,7 +115,7 @@ export default class SelectTool {
         const shouldAddToSelection = state.editor.keyboard.heldKeys["Shift"];
         const isDragging = pastDragThreshold(startPosition, endPosition);
 
-        if (this.state === STATES.SELECT_BOUNDING_BOX && isDragging) {
+        if (this.currentStates === STATES.SELECTING_IN_BOUNDING_BOX && isDragging) {
             let boundingRectangle = createRectangle(startPosition, endPosition);
 
             let objectIdsToSelect = [];
@@ -120,26 +124,16 @@ export default class SelectTool {
                     objectIdsToSelect.push(child.id);
                 }
             });
-            if (objectIdsToSelect.length > 0) {
-                store.dispatch(selectObjects(objectIdsToSelect, shouldAddToSelection));
-            }
-            else {
-                store.dispatch(selectObjects([], shouldAddToSelection));
-            }
-            delete this.state;
+            store.dispatch(selectObjects(objectIdsToSelect, shouldAddToSelection));
+
         }
-        else if ((this.state & STATES.DESELECTING) && !isDragging) {
+        else if ((this.currentStates & STATES.POSSIBLY_DESELECTING_LAST_HIT_OBJECT) && !isDragging) {
             store.dispatch(selectObject(this.lastHitId, true));
-            delete this.state;
-            delete this.lastHitId;
         }
-        else if ((this.state & STATES.SELECTING_OBJECT) && !isDragging) {
+        else if ((this.currentStates & STATES.POSSIBLY_SELECTING_LAST_HIT_OBJECT) && !isDragging) {
             store.dispatch(selectObject(this.lastHitId, false));
-            delete this.state;
-            delete this.lastHitId;
         }
-        else if ((this.state & STATES.DRAGGING_TO_MOVE) && isDragging) {
-            // On letting go of the mouse, compare mouse coordinates from where you began
+        else if ((this.currentStates & STATES.POSSIBLY_DRAGGING_TO_MOVE) && isDragging) {
             let {deltaX, deltaY} = getTranslation(
                 state.editor.mouse.currentPosition,
                 state.editor.mouse.startPosition);
@@ -151,11 +145,10 @@ export default class SelectTool {
                     deltaY));
             }
 
-            delete this.state;
-            this.resetGraphics();
+            this.resetGraphicsAfterMoving();
         }
 
-        delete this.state;
+        delete this.currentStates;
         delete this.lastHitId;
     }
 
@@ -168,15 +161,15 @@ export default class SelectTool {
         const endPosition = state.editor.mouse.currentPosition;
         const isDragging = pastDragThreshold(startPosition, endPosition);
 
-        if (this.state === STATES.SELECT_BOUNDING_BOX && isDragging) {
+        if (this.currentStates === STATES.SELECTING_IN_BOUNDING_BOX && isDragging) {
             let boundingRectangle = createRectangle(startPosition, endPosition);
             graphics.lineStyle(1, 0xfffd00)
                 .drawRect(boundingRectangle.x, boundingRectangle.y, boundingRectangle.width, boundingRectangle.height)
                 .lineStyle();
         }
-        else if ((this.state & STATES.DRAGGING_TO_MOVE) && isDragging) {
+        else if ((this.currentStates & STATES.POSSIBLY_DRAGGING_TO_MOVE) && isDragging) {
             if (!this.graphics) {
-                this.initializeGraphics(graphics, state);
+                this.initializeGraphicsForMoving(graphics, state);
             }
 
             let {deltaX, deltaY} = getTranslation(
