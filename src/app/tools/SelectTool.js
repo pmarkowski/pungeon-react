@@ -26,12 +26,11 @@ const createRectangle = (startPosition, endPosition) => ({
 
 let startedMove = false;
 
-// TODO: Should this be a Flags style enum?
 const STATES = {
-    SELECT_BOUNDING_BOX: "SELECT_BOUNDING_BOX",
-    DRAGGING_TO_MOVE: "DRAGGING_TO_MOVE",
-    SELECTING_OBJECT: "SELECTING_OBJECT",
-    DESELECTING: "DESELECTING"
+    SELECT_BOUNDING_BOX: 1,
+    DRAGGING_TO_MOVE: 2,
+    SELECTING_OBJECT: 4,
+    DESELECTING: 8
 };
 
 export default class SelectTool {
@@ -87,7 +86,7 @@ export default class SelectTool {
         }
         else if (hitObject && shouldAddToSelection && state.editor.selectedObjectIds.includes(hitObject.id)) {
             // We are either deselecting this object or starting a Drag-To-Move operation
-            this.state = `${STATES.DRAGGING_TO_MOVE}|${STATES.DESELECTING}`;
+            this.state = STATES.DRAGGING_TO_MOVE | STATES.DESELECTING;
             this.lastHitId = hitObject.id;
         }
         else if (hitObject && shouldAddToSelection && !state.editor.selectedObjectIds.includes(hitObject.id)) {
@@ -98,7 +97,7 @@ export default class SelectTool {
             if (!state.editor.selectedObjectIds.includes(hitObject.id)) {
                 store.dispatch(selectObject(hitObject.id, shouldAddToSelection));
             }
-            this.state = `${STATES.DRAGGING_TO_MOVE}|${STATES.SELECTING_OBJECT}`
+            this.state = STATES.DRAGGING_TO_MOVE | STATES.SELECTING_OBJECT;
             this.lastHitId = hitObject.id
         }
     }
@@ -129,17 +128,17 @@ export default class SelectTool {
             }
             delete this.state;
         }
-        else if (this.state?.includes(STATES.DESELECTING) && !isDragging) {
+        else if ((this.state & STATES.DESELECTING) && !isDragging) {
             store.dispatch(selectObject(this.lastHitId, true));
             delete this.state;
             delete this.lastHitId;
         }
-        else if (this.state?.includes(STATES.SELECTING_OBJECT) && !isDragging) {
+        else if ((this.state & STATES.SELECTING_OBJECT) && !isDragging) {
             store.dispatch(selectObject(this.lastHitId, false));
             delete this.state;
             delete this.lastHitId;
         }
-        else if (this.state?.includes(STATES.DRAGGING_TO_MOVE) && isDragging) {
+        else if ((this.state & STATES.DRAGGING_TO_MOVE) && isDragging) {
             // On letting go of the mouse, compare mouse coordinates from where you began
             let {deltaX, deltaY} = getTranslation(
                 state.editor.mouse.currentPosition,
@@ -175,7 +174,7 @@ export default class SelectTool {
                 .drawRect(boundingRectangle.x, boundingRectangle.y, boundingRectangle.width, boundingRectangle.height)
                 .lineStyle();
         }
-        else if (this.state?.includes(STATES.DRAGGING_TO_MOVE) && isDragging) {
+        else if ((this.state & STATES.DRAGGING_TO_MOVE) && isDragging) {
             if (!this.graphics) {
                 this.initializeGraphics(graphics, state);
             }
