@@ -1,17 +1,17 @@
-import { pngExported, selectObject, selectObjects, setCurrentMousePosition } from "../reducers/editorActions";
+import * as PIXI from 'pixi.js';
+import * as DungeonObjectOperations from '../dungeonObjects/DungeonObjectOperations';
+import { pngExported, setCurrentMousePosition } from "../reducers/editorActions";
 import store from '../store.js';
-import { GRID_TILE_SIZE } from '../utils/constants';
 import * as ToolRouter from '../tools/ToolRouter';
-import * as DungeonObjectOperations from '../dungeonObjects/DungeonObjectOperations'
+import TOOL_TYPE from '../tools/toolType';
 import download from "../utils/download";
-import * as PIXI from 'pixi.js'
-import { doRectanglesIntersect } from "../utils/geometry";
 
 /**
  * @param {PIXI.Application} app
  * @param {PIXI.Graphics} graphics
+ * @param {GridRenderer} gridRenderer
  */
-export const render = (app, graphics) => {
+export const render = (app, graphics, gridRenderer) => {
     /**
      * @type {import("../reducers").State}
      */
@@ -20,16 +20,13 @@ export const render = (app, graphics) => {
     handlePanning(app, state);
     handleScaling(state, app);
 
-    handleSelecting(state, app);
-
-    graphics.clear();
-
     drawDungeonObjects(app.stage, state);
-    drawGrid(graphics, state.dungeon.size.width, state.dungeon.size.height);
+    gridRenderer.renderGrid(state.dungeon.size.width, state.dungeon.size.height);
 
     handleExporting(state, app);
 
     if (app.renderer.plugins.interaction.mouseOverRenderer) {
+        graphics.clear();
         ToolRouter.renderTool(state, graphics);
 
         let mousePosition = app.renderer.plugins.interaction.mouse.getLocalPosition(app.stage);
@@ -63,6 +60,12 @@ const drawDungeonObjects = (container, state) => {
         if (graphics.id) {
             let object = objectIdMap[graphics.id];
             if (object) {
+                if (state.editor.selectedTool === TOOL_TYPE.SELECT) {
+                    graphics.cursor = "move";
+                }
+                else {
+                    graphics.cursor = "default";
+                }
                 DungeonObjectOperations.renderObject(graphics, object, state.editor.selectedObjectIds.includes(graphics.id))
             }
             else {
@@ -72,54 +75,9 @@ const drawDungeonObjects = (container, state) => {
     });
 }
 
-const drawGrid = (graphics, gridWidth, gridHeight) => {
-    graphics.lineStyle(1, 0x444444, 1, 0.5);
-    for (let i = 0; i <= gridWidth; i++) {
-        graphics.moveTo(i * GRID_TILE_SIZE, 0);
-        graphics.lineTo(i * GRID_TILE_SIZE, gridHeight * GRID_TILE_SIZE);
-    }
-
-    for (let j = 0; j <= gridHeight; j++) {
-        graphics.moveTo(0, j * GRID_TILE_SIZE);
-        graphics.lineTo(gridWidth * GRID_TILE_SIZE, j * GRID_TILE_SIZE);
-    }
-}
-
 function handleExporting(state, app) {
     if (state.editor.exportToPngClicked) {
         exportImage(app, state);
-    }
-}
-
-function handleSelecting(state, app) {
-    if (state.editor.selectingAtPoint) {
-        let mousePoint = new PIXI.Point(
-            state.editor.selectingAtPoint.x,
-            state.editor.selectingAtPoint.y);
-        let globalPosition = app.stage.worldTransform.apply(mousePoint);
-        let selectedObject = app.renderer.plugins.interaction.hitTest(
-            globalPosition);
-
-        if (selectedObject) {
-            store.dispatch(selectObject(selectedObject.id, state.editor.selectingAtPoint.shouldMultiSelect));
-        }
-        else {
-            store.dispatch(selectObjects([], state.editor.selectingAtPoint.shouldMultiSelect));
-        }
-    }
-    else if (state.editor.selectingInBoundingBox) {
-        let objectIdsToSelect = [];
-        app.stage.children.forEach(child => {
-            if (doRectanglesIntersect(child.getLocalBounds(), state.editor.selectingInBoundingBox) && child.id) {
-                objectIdsToSelect.push(child.id);
-            }
-        });
-        if (objectIdsToSelect.length > 0) {
-            store.dispatch(selectObjects(objectIdsToSelect, state.editor.selectingInBoundingBox.shouldMultiSelect));
-        }
-        else {
-            store.dispatch(selectObjects([], state.editor.selectingInBoundingBox.shouldMultiSelect));
-        }
     }
 }
 

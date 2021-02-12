@@ -28,13 +28,12 @@ export const defaultEditorState = {
         heldKeys: {}
     },
     /** @type {string[]} */
-    selectedObjectIds: [],
-    /** @type {?{x: number, y: number, shouldMultiSelect: boolean}} */
-    selectingAtPoint: null,
-    /** @type {?{x: number, y: number, width: number, height: number, shouldMultiSelect: boolean}} */
-    selectingInBoundingBox: null
+    selectedObjectIds: []
 };
 
+/**
+ * @returns {EditorState}
+ */
 export const editorReducer = (state = defaultEditorState, action) => {
     switch (action.type) {
         case EDITOR_ACTION_TYPE.KEY_PRESSED: {
@@ -178,28 +177,6 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 selectedObjectIds: newSelectedObjectIds
             };
         }
-        case EDITOR_ACTION_TYPE.SELECT_AT_POINT: {
-            return {
-                ...state,
-                selectingAtPoint: {
-                    x: action.x,
-                    y: action.y,
-                    shouldMultiSelect: action.shouldMultiSelect
-                }
-            }
-        }
-        case EDITOR_ACTION_TYPE.SELECT_IN_BOUNDING_BOX: {
-            return {
-                ...state,
-                selectingInBoundingBox: {
-                    x: action.x,
-                    y: action.y,
-                    width: action.width,
-                    height: action.height,
-                    shouldMultiSelect: action.shouldMultiSelect
-                }
-            }
-        }
         case EDITOR_ACTION_TYPE.SELECT_OBJECT: {
             let newSelectedObjectIds;
             if (action.shouldMultiSelect && state.selectedObjectIds.includes(action.objectId)) {
@@ -213,9 +190,7 @@ export const editorReducer = (state = defaultEditorState, action) => {
             }
             return {
                 ...state,
-                selectedObjectIds: newSelectedObjectIds,
-                selectingAtPoint: null,
-                selectingInBoundingBox: null
+                selectedObjectIds: newSelectedObjectIds
             }
         }
         case EDITOR_ACTION_TYPE.SELECT_OBJECTS: {
@@ -228,9 +203,7 @@ export const editorReducer = (state = defaultEditorState, action) => {
             }
             return {
                 ...state,
-                selectedObjectIds: newSelectedObjectIds,
-                selectingAtPoint: null,
-                selectingInBoundingBox: null
+                selectedObjectIds: newSelectedObjectIds
             };
         }
         case DUNGEON_ACTION_TYPE.DELETE_OBJECTS: {

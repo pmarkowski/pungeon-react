@@ -1,11 +1,11 @@
 import AddDoorTool from "./AddDoorTool";
 import AddLabelTool from "./AddLabelTool";
+import AddSpacePolygonTool from "./AddSpacePolygonTool";
 import AddSpaceRectangleTool from "./AddSpaceRectangleTool";
+import AddTokenTool from "./AddTokenTool";
 import AddWallTool from "./AddWallTool";
 import SelectTool from "./SelectTool";
 import TOOL_TYPE from "./toolType";
-import AddSpacePolygonTool from "./AddSpacePolygonTool";
-import AddTokenTool from "./AddTokenTool";
 
 const toolMap = {
     [TOOL_TYPE.NEW_DOOR]: new AddDoorTool(),
@@ -17,9 +17,15 @@ const toolMap = {
     [TOOL_TYPE.NEW_TOKEN]: new AddTokenTool()
 }
 
-export const onMouseUp = (store) => {
+export const onMouseDown = (store, app) => {
     let state = store.getState();
-    toolMap[state.editor.selectedTool].onMouseUp(store);
+    toolMap[state.editor.selectedTool].onMouseDown?.(store, app);
+}
+
+export const onMouseUp = (store, app) => {
+    /** @type {import("../reducers").State} */
+    let state = store.getState();
+    toolMap[state.editor.selectedTool].onMouseUp(store, app);
 }
 
 export const renderTool = (state, graphics) => {

@@ -28,7 +28,7 @@ export class BaseDungeonObjectOperations {
     }
 
     /**
-     * @param {PIXI.DisplayObject} graphics
+     * @param {PIXI.DisplayObject} displayObject
      * @param {BaseDungeonObject} object
      * @param {boolean} objectIsSelected
      */

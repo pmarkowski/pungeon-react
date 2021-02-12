@@ -56,22 +56,6 @@ export const selectTool = (toolName) => ({
     selectedTool: toolName
 })
 
-export const selectAtPoint = (x, y, shouldMultiSelect) => ({
-    type: EDITOR_ACTION_TYPE.SELECT_AT_POINT,
-    x,
-    y,
-    shouldMultiSelect
-})
-
-export const selectInBoundingBox = (x, y, width, height, shouldMultiSelect) => ({
-    type: EDITOR_ACTION_TYPE.SELECT_IN_BOUNDING_BOX,
-    x,
-    y,
-    width,
-    height,
-    shouldMultiSelect
-})
-
 export const selectObject = (objectId, shouldMultiSelect) => ({
     type: EDITOR_ACTION_TYPE.SELECT_OBJECT,
     objectId,
