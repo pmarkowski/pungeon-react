@@ -18,7 +18,13 @@ export const handleMouseUp = (mouseEvent, store, app) => {
 
 export const handleMouseMove = (mouseEvent, store) => {
     if (mouseEvent.buttons === 2) {
-        store.dispatch(moveViewport(mouseEvent.movementX, mouseEvent.movementY));
+        let mouseMovementScaledByDisplayScaling = {
+            movementX: mouseEvent.movementX / window.devicePixelRatio,
+            movementY: mouseEvent.movementY / window.devicePixelRatio
+        }
+        store.dispatch(moveViewport(
+            mouseMovementScaledByDisplayScaling.movementX,
+            mouseMovementScaledByDisplayScaling.movementY));
     }
 }
 
