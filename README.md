@@ -1,4 +1,14 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# [Pungeon](https://pmarkowski.github.io/pungeon-react/)
+
+Pungeon is a a browser based web app to create maps for pen and paper role-playing games.
+Pungeon lets you sketch new map layouts quickly, and easily edit the existing layout as the
+map you're creating grows and changes.
+
+## Core Dependencies
+
+* [React](https://github.com/facebook/react/) is used for the chrome surrounding the map editor. This project was initially bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+* [PixiJS](https://github.com/pixijs/pixi.js/) is used to render the map and handle interactions with the canvas element.
+* [Redux](https://github.com/reduxjs/redux) along with [React Redux](https://github.com/reduxjs/react-redux) is used to manage state.
 
 ## Available Scripts
 
@@ -9,60 +19,27 @@ In the project directory, you can run:
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the app for production to the `build` folder.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Architecture Overview
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Redux Reducers
+As previously mentioned, Pungen uses Redux for state management. Broadly, there are two types of state: There's the state of the map itself, and there's state related to the editor. The map state should be considered the source of truth of how the map should look. Anything else such as the current zoom level, user preferences, or details related to what the user is currently doing should fall into editor state.
 
-### `npm run eject`
+### Rendering the Map
+The `DungeonEditor` component includes a `<canvas>` element and creates a PixiJS application with a tick function. On every tick, the PixiJS application synchronizes its internal state with the state in the Redux store, renders everything in the app, and emits any Redux actions if necessary. PixiJS uses its internal state to optimize performance, this necessitates the synchronization step since the Redux state should be considered the sole source of truth for the application.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Map Objects
+The logic related to the various objects that can exist in a map are contained in their respective `...Operations` classes. This includes object creation, movement, and rendering.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### User Input
+User input is captured and handled by `keyboardEventHandlers.js` and `mouseEventHandlers.js`. These methods are responsible for emitting any Redux actions if necessary based on the input, and forwarding input events to any other relevant classes.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Tools
+Most interactions with the map by the user are done via Tools. A Tool can be selected by clicking on a button in the `Toolbar` component. When a Tool is active, user input is forwarded to it along with the Redux store so that it can emit actions. As an example, it is common for tools to emit an action to add an object to the map when the user releases the mouse. Tools also have a method that is called during rendering to give the user visual feedback on what they are currently doing.
