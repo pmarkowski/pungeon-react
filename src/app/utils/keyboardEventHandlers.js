@@ -1,5 +1,6 @@
-import { deleteObjects, moveObjects } from "../reducers/dungeonActions"
-import { keyPressed, keyReleased } from "../reducers/editorActions";
+import { deleteObjects, moveObjects } from "../reducers/dungeonActions";
+import { keyPressed, keyReleased, selectObjects } from "../reducers/editorActions";
+import TOOL_TYPE from "../tools/toolType";
 
 /**
  * @param {KeyboardEvent} keyboardEvent
@@ -9,6 +10,9 @@ export const handleKeyPressed = (keyboardEvent, store) => {
     if (!keyboardEvent.repeat) {
         store.dispatch(keyPressed(keyboardEvent.key));
     }
+    /**
+     * @type {import("../reducers").State}
+     */
     let state = store.getState();
     switch (keyboardEvent.key) {
         case 'Delete':
@@ -21,6 +25,13 @@ export const handleKeyPressed = (keyboardEvent, store) => {
             return store.dispatch(moveObjects(state.editor.selectedObjectIds, 0, 1));
         case 'ArrowUp':
             return store.dispatch(moveObjects(state.editor.selectedObjectIds, 0, -1));
+        case 'a':
+        case 'A':
+            keyboardEvent.preventDefault();
+            if (state.editor.selectedTool === TOOL_TYPE.SELECT && keyboardEvent.ctrlKey) {
+                store.dispatch(selectObjects(state.dungeon.objects.map(object => object.id)))
+            }
+            return;
         default:
             return;
     }
