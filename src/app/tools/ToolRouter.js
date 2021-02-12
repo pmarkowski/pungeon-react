@@ -19,9 +19,7 @@ const toolMap = {
 
 export const onMouseDown = (store, app) => {
     let state = store.getState();
-    if (toolMap[state.editor.selectedTool].onMouseDown) {
-        toolMap[state.editor.selectedTool].onMouseDown(store, app);
-    }
+    toolMap[state.editor.selectedTool].onMouseDown?.(store, app);
 }
 
 export const onMouseUp = (store, app) => {
