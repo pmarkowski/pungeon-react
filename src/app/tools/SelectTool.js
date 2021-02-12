@@ -7,7 +7,7 @@ import { doRectanglesIntersect } from '../utils/geometry';
 
 const DRAG_THRESHOLD = 5;
 
-const isDragging = (startPosition, endPosition) => {
+const pastDragThreshold = (startPosition, endPosition) => {
     return Math.abs(endPosition.x - startPosition.x) > DRAG_THRESHOLD ||
         Math.abs(endPosition.y - startPosition.y) > DRAG_THRESHOLD;
 }
@@ -26,10 +26,19 @@ const createRectangle = (startPosition, endPosition) => ({
 
 let startedMove = false;
 
+// TODO: Should this be a Flags style enum?
+const STATES = {
+    SELECT_BOUNDING_BOX: "SELECT_BOUNDING_BOX",
+    DRAGGING_TO_MOVE: "DRAGGING_TO_MOVE",
+    SELECTING_OBJECT: "SELECTING_OBJECT",
+    DESELECTING: "DESELECTING"
+};
+
 export default class SelectTool {
     /**
      * @private
      */
+    // TODO: Rename to something like initializeMoveGraphics...? This is the only time it's used
     initializeGraphics(graphics, state) {
         this.graphics = graphics;
         this.graphics.zIndex = 9;
@@ -54,7 +63,7 @@ export default class SelectTool {
         startedMove = false;
     }
 
-    // TODO: Consider injecting `app` via ctor
+    // TODO: Consider injecting `app` via ctor instead of function
     onMouseDown(store, app) {
         /** @type {import("../reducers").State} */
         let state = store.getState();
@@ -69,31 +78,27 @@ export default class SelectTool {
         let hitObject = app.renderer.plugins.interaction.hitTest(
             globalPosition);
 
-
         if (!hitObject && !shouldAddToSelection) {
             store.dispatch(selectObjects([], false));
-            this.state = "SELECT_BOUNDING_BOX";
+            this.state = STATES.SELECT_BOUNDING_BOX;
         }
         else if (!hitObject && shouldAddToSelection) {
-            // start click and drag selection
-            this.state = "SELECT_BOUNDING_BOX";
+            this.state = STATES.SELECT_BOUNDING_BOX;
         }
-        else if (hitObject && shouldAddToSelection) {
-            if (state.editor.selectedObjectIds.includes(hitObject.id)) {
-                // We are either deselecting this object or starting a Drag-To-Move operation
-                this.state = "DRAGGING_TO_MOVE|DESELECTING";
-                this.lastHitId = hitObject.id;
-            }
-            else {
-                store.dispatch(selectObject(hitObject.id, shouldAddToSelection));
-                this.state = "DRAGGING_TO_MOVE";
-            }
+        else if (hitObject && shouldAddToSelection && state.editor.selectedObjectIds.includes(hitObject.id)) {
+            // We are either deselecting this object or starting a Drag-To-Move operation
+            this.state = `${STATES.DRAGGING_TO_MOVE}|${STATES.DESELECTING}`;
+            this.lastHitId = hitObject.id;
+        }
+        else if (hitObject && shouldAddToSelection && !state.editor.selectedObjectIds.includes(hitObject.id)) {
+            store.dispatch(selectObject(hitObject.id, shouldAddToSelection));
+            this.state = STATES.DRAGGING_TO_MOVE;
         }
         else if (hitObject && !shouldAddToSelection) { // this could also be dragging to move though and possibly shouldn't deselect...
             if (!state.editor.selectedObjectIds.includes(hitObject.id)) {
                 store.dispatch(selectObject(hitObject.id, shouldAddToSelection));
             }
-            this.state = "DRAGGING_TO_MOVE|SELECTING_OBJECT"
+            this.state = `${STATES.DRAGGING_TO_MOVE}|${STATES.SELECTING_OBJECT}`
             this.lastHitId = hitObject.id
         }
     }
@@ -105,8 +110,9 @@ export default class SelectTool {
         const startPosition = state.editor.mouse.startPosition;
         const endPosition = state.editor.mouse.currentPosition;
         const shouldAddToSelection = state.editor.keyboard.heldKeys["Shift"];
+        const isDragging = pastDragThreshold(startPosition, endPosition);
 
-        if (this.state === "SELECT_BOUNDING_BOX" && isDragging(startPosition, endPosition)) {
+        if (this.state === STATES.SELECT_BOUNDING_BOX && isDragging) {
             let boundingRectangle = createRectangle(startPosition, endPosition);
 
             let objectIdsToSelect = [];
@@ -123,17 +129,17 @@ export default class SelectTool {
             }
             delete this.state;
         }
-        else if (this.state?.includes("DESELECTING") && !isDragging(startPosition, endPosition)) {
+        else if (this.state?.includes(STATES.DESELECTING) && !isDragging) {
             store.dispatch(selectObject(this.lastHitId, true));
             delete this.state;
             delete this.lastHitId;
         }
-        else if (this.state?.includes("SELECTING_OBJECT") && !isDragging(startPosition, endPosition)) {
+        else if (this.state?.includes(STATES.SELECTING_OBJECT) && !isDragging) {
             store.dispatch(selectObject(this.lastHitId, false));
             delete this.state;
             delete this.lastHitId;
         }
-        else if (this.state?.includes("DRAGGING_TO_MOVE") && isDragging(startPosition, endPosition)) {
+        else if (this.state?.includes(STATES.DRAGGING_TO_MOVE) && isDragging) {
             // On letting go of the mouse, compare mouse coordinates from where you began
             let {deltaX, deltaY} = getTranslation(
                 state.editor.mouse.currentPosition,
@@ -159,17 +165,17 @@ export default class SelectTool {
      * @param {PIXI.Graphics} graphics
      */
     renderTool(state, graphics) {
-
         const startPosition = state.editor.mouse.startPosition;
         const endPosition = state.editor.mouse.currentPosition;
+        const isDragging = pastDragThreshold(startPosition, endPosition);
 
-        if (this.state === "SELECT_BOUNDING_BOX" && isDragging(startPosition, endPosition)) {
+        if (this.state === STATES.SELECT_BOUNDING_BOX && isDragging) {
             let boundingRectangle = createRectangle(startPosition, endPosition);
             graphics.lineStyle(1, 0xfffd00)
                 .drawRect(boundingRectangle.x, boundingRectangle.y, boundingRectangle.width, boundingRectangle.height)
                 .lineStyle();
         }
-        else if (this.state?.includes("DRAGGING_TO_MOVE") && isDragging(startPosition, endPosition)) {
+        else if (this.state?.includes(STATES.DRAGGING_TO_MOVE) && isDragging) {
             if (!this.graphics) {
                 this.initializeGraphics(graphics, state);
             }
