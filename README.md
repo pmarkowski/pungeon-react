@@ -38,6 +38,8 @@ The `DungeonEditor` component includes a `<canvas>` element and creates a PixiJS
 ### Map Objects
 The logic related to the various objects that can exist in a map are contained in their respective `...Operations` classes. This includes object creation, movement, and rendering.
 
+Each Map Object must have a unique identifier associated with it. This unique identifier is crucial so that the PixiJS application knows what object in its scene graph corresponds to which object in the map.
+
 ### User Input
 User input is captured and handled by `keyboardEventHandlers.js` and `mouseEventHandlers.js`. These methods are responsible for emitting any Redux actions if necessary based on the input, and forwarding input events to any other relevant classes.
 
