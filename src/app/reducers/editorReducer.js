@@ -28,7 +28,9 @@ export const defaultEditorState = {
         heldKeys: {}
     },
     /** @type {string[]} */
-    selectedObjectIds: []
+    selectedObjectIds: [],
+    /** @type {import("../dungeonObjects/DungeonObjectOperations").DungeonObject[]} */
+    clipboard: []
 };
 
 /**
@@ -68,6 +70,12 @@ export const editorReducer = (state = defaultEditorState, action) => {
             return {
                 ...state,
                 exportToPngClicked: true
+            }
+        }
+        case EDITOR_ACTION_TYPE.COPY_OBJECTS: {
+            return {
+                ...state,
+                clipboard: action.objects
             }
         }
         case EDITOR_ACTION_TYPE.CLEAR_ONGOING_SPACE_POLYGON: {
