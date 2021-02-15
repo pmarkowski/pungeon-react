@@ -3,6 +3,7 @@ import { createRenderObject, renderObject, translate } from '../dungeonObjects/D
 import { moveObjects } from '../reducers/dungeonActions';
 import { selectObject, selectObjects } from "../reducers/editorActions";
 import { GRID_TILE_SIZE } from "../utils/constants";
+import copyObject from '../utils/copyObject';
 import { doRectanglesIntersect } from '../utils/geometry';
 
 const DRAG_THRESHOLD = 5;
@@ -185,7 +186,7 @@ export default class SelectTool {
                 state.dungeon.objects
                     .filter(dungeonObject => state.editor.selectedObjectIds.includes(dungeonObject.id))
                     .forEach(dungeonObject => {
-                        let objectCopy = JSON.parse(JSON.stringify(dungeonObject));
+                        let objectCopy = copyObject(dungeonObject);
                         translate(objectCopy, deltaX, deltaY);
                         let renderObjectCopy = this.graphics.children.filter(child => child.id === objectCopy.id)[0];
                         renderObject(renderObjectCopy, objectCopy, false);
