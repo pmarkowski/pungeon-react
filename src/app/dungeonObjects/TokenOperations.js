@@ -44,6 +44,10 @@ export class TokenOperations extends BaseDungeonObjectOperations {
         return new PIXI.Sprite();
     }
 
+    position(token) {
+        return token.position;
+    }
+
     renderObject(sprite, token, objectIsSelected) {
         sprite.zIndex = 4;
         sprite.texture = PIXI.Texture.from(process.env.PUBLIC_URL + token.textureUrl);

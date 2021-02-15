@@ -55,6 +55,21 @@ export class SpaceOperations extends BaseDungeonObjectOperations {
         }
     }
 
+    /**
+     * @param {Space} space
+     */
+    position(space) {
+        if (space.position) {
+            return space.position;
+        }
+        else {
+            return {
+                x: Math.min(...space.points.map(point => point.x)),
+                y: Math.min(...space.points.map(point => point.y))
+            }
+        }
+    }
+
     renderObject(graphics, space, objectIsSelected) {
         graphics.clear();
         graphics.beginFill(0xd6d5d5);

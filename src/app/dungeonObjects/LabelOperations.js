@@ -33,6 +33,10 @@ export class LabelOperations extends BaseDungeonObjectOperations {
         object.position.y += y;
     }
 
+    position(label) {
+        return label.position;
+    }
+
     renderObject(graphics, label, objectIsSelected) {
         graphics.zIndex = 4;
         graphics.clear();
