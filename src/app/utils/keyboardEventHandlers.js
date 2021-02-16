@@ -1,6 +1,7 @@
 import { deleteObjects, moveObjects } from "../reducers/dungeonActions";
 import { keyPressed, keyReleased, selectObjects } from "../reducers/editorActions";
 import TOOL_TYPE from "../tools/toolType";
+import { copyToClipboard, pasteFromClipboard } from "./clipboard";
 
 /**
  * @param {KeyboardEvent} keyboardEvent
@@ -26,10 +27,20 @@ export const handleKeyPressed = (keyboardEvent, store) => {
         case 'ArrowUp':
             return store.dispatch(moveObjects(state.editor.selectedObjectIds, 0, -1));
         case 'a':
-        case 'A':
             keyboardEvent.preventDefault();
             if (state.editor.selectedTool === TOOL_TYPE.SELECT && keyboardEvent.ctrlKey) {
                 store.dispatch(selectObjects(state.dungeon.objects.map(object => object.id)))
+            }
+            return;
+        case 'c':
+            keyboardEvent.preventDefault();
+            if (keyboardEvent.ctrlKey) {
+                copyToClipboard(store, state);
+            }
+            return;
+        case 'v':
+            if (keyboardEvent.ctrlKey && state.editor.clipboard.length) {
+                pasteFromClipboard(state, store);
             }
             return;
         default:

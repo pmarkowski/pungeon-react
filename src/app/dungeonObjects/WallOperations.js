@@ -39,6 +39,16 @@ export class WallOperations extends BaseDungeonObjectOperations {
     }
 
     /**
+     * @param {Wall} wall
+     */
+    position(wall) {
+        return {
+            x: Math.min(wall.start.x, wall.end.x),
+            y: Math.min(wall.start.y, wall.end.y)
+        };
+    }
+
+    /**
      *
      * @param {PIXI.Graphics} graphics
      * @param {Wall} wall

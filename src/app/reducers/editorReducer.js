@@ -1,4 +1,5 @@
 import TOOL_TYPE from "../tools/toolType";
+import copyObject from "../utils/copyObject";
 import DUNGEON_ACTION_TYPE from "./dungeonActionType";
 import EDITOR_ACTION_TYPE from "./editorActionType";
 
@@ -28,7 +29,9 @@ export const defaultEditorState = {
         heldKeys: {}
     },
     /** @type {string[]} */
-    selectedObjectIds: []
+    selectedObjectIds: [],
+    /** @type {import("../dungeonObjects/DungeonObjectOperations").DungeonObject[]} */
+    clipboard: []
 };
 
 /**
@@ -68,6 +71,12 @@ export const editorReducer = (state = defaultEditorState, action) => {
             return {
                 ...state,
                 exportToPngClicked: true
+            }
+        }
+        case EDITOR_ACTION_TYPE.COPY_OBJECTS: {
+            return {
+                ...state,
+                clipboard: action.objects.map(copyObject)
             }
         }
         case EDITOR_ACTION_TYPE.CLEAR_ONGOING_SPACE_POLYGON: {
@@ -212,10 +221,10 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 selectedObjectIds: []
             }
         }
-        case DUNGEON_ACTION_TYPE.ADD_OBJECT: {
+        case DUNGEON_ACTION_TYPE.ADD_OBJECTS: {
             return {
                 ...state,
-                selectedObjectIds: [action.newObject.id]
+                selectedObjectIds: action.newObjects.map(object => object.id)
             }
         }
         default: {

@@ -26,6 +26,11 @@ export const exportToPngClicked = () => ({
     type: EDITOR_ACTION_TYPE.EXPORT_TO_PNG_CLICKED
 })
 
+export const addObjectsToClipboard = (objects) => ({
+    type: EDITOR_ACTION_TYPE.COPY_OBJECTS,
+    objects: objects
+})
+
 export const clearOngoingSpacePolygonPoint = () => ({
     type: EDITOR_ACTION_TYPE.CLEAR_ONGOING_SPACE_POLYGON
 })

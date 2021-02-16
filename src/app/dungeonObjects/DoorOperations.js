@@ -62,4 +62,14 @@ export class DoorOperations extends BaseDungeonObjectOperations {
             door.end.x * GRID_TILE_SIZE - half, door.end.y * GRID_TILE_SIZE - half,
         ]);
     }
+
+    /**
+     * @param {Door} door
+     */
+    position(door) {
+        return {
+            x: Math.min(door.start.x, door.end.x),
+            y: Math.min(door.start.y, door.end.y)
+        };
+    }
 }

@@ -9,13 +9,15 @@ export const setDungeonName = (dungeonName) => ({
     name: dungeonName
 })
 
+export const addObjects = (objects) => ({
+    type: DUNGEON_ACTION_TYPE.ADD_OBJECTS,
+    newObjects: objects
+})
+
 /**
  * @param {import('../dungeonObjects/DungeonObjectOperations').DungeonObject} object
  */
-export const addObject = (object) => ({
-    type: DUNGEON_ACTION_TYPE.ADD_OBJECT,
-    newObject: object
-})
+export const addObject = (object) => addObjects([object])
 
 export const deleteObjects = (objectIds) => ({
     type: DUNGEON_ACTION_TYPE.DELETE_OBJECTS,

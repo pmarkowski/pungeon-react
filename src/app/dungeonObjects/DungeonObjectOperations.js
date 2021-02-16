@@ -29,3 +29,6 @@ export const createRenderObject = (dungeonObject) => {
 
 export const translate = (dungeonObject, x, y) =>
     objectOperations.filter(operation => operation.dungeonObjectType === dungeonObject.type).map(operation => operation.translate(dungeonObject, x, y))
+
+export const position = (dungeonObject) =>
+    objectOperations.filter(operation => operation.dungeonObjectType === dungeonObject.type).map(operation => operation.position(dungeonObject))[0]

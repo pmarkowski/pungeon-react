@@ -33,4 +33,9 @@ export class BaseDungeonObjectOperations {
      * @param {boolean} objectIsSelected
      */
     renderObject(displayObject, object, isObjectSelected) {}
+
+    /**
+     * @param {import('./DungeonObjectOperations').DungeonObject} object
+     */
+    position(object) {}
 }
