@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { position, translate } from "../dungeonObjects/DungeonObjectOperations";
-import { addObject } from "../reducers/dungeonActions";
+import { addObjects } from "../reducers/dungeonActions";
 import { addObjectsToClipboard, selectObjects } from "../reducers/editorActions";
 import { GRID_TILE_SIZE } from "./constants";
 import copyObject from "./copyObject";
@@ -21,12 +21,10 @@ export const pasteFromClipboard = (state, store) => {
         y: mousePosition.y - firstPositionOfSelection.y
     };
 
-    // TODO: Make this an array of objects so that it's an atomic action and can be undone
     copiedObjects.forEach(object => {
         translate(object, clipboardTranslation.x, clipboardTranslation.y);
-        store.dispatch(addObject(object));
     });
-    store.dispatch(selectObjects(copiedObjects.map(object => object.id)));
+    store.dispatch(addObjects(copiedObjects));
 }
 
 export const copyToClipboard = (store, state) => {

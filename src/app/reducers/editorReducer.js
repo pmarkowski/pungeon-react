@@ -221,10 +221,10 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 selectedObjectIds: []
             }
         }
-        case DUNGEON_ACTION_TYPE.ADD_OBJECT: {
+        case DUNGEON_ACTION_TYPE.ADD_OBJECTS: {
             return {
                 ...state,
-                selectedObjectIds: [action.newObject.id]
+                selectedObjectIds: action.newObjects.map(object => object.id)
             }
         }
         default: {

@@ -159,9 +159,9 @@ export const dungeonReducer = (state = defaultDungeonState, action) => {
             };
 
         }
-        case DUNGEON_ACTION_TYPE.ADD_OBJECT: {
+        case DUNGEON_ACTION_TYPE.ADD_OBJECTS: {
             let objectArray = state.objects.slice();
-            objectArray = [...objectArray, action.newObject];
+            objectArray = [...objectArray, ...action.newObjects];
             return {
                 ...state,
                 objects: objectArray
