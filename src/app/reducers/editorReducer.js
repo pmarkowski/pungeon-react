@@ -1,4 +1,5 @@
 import TOOL_TYPE from "../tools/toolType";
+import copyObject from "../utils/copyObject";
 import DUNGEON_ACTION_TYPE from "./dungeonActionType";
 import EDITOR_ACTION_TYPE from "./editorActionType";
 
@@ -75,7 +76,7 @@ export const editorReducer = (state = defaultEditorState, action) => {
         case EDITOR_ACTION_TYPE.COPY_OBJECTS: {
             return {
                 ...state,
-                clipboard: action.objects
+                clipboard: action.objects.map(copyObject)
             }
         }
         case EDITOR_ACTION_TYPE.CLEAR_ONGOING_SPACE_POLYGON: {
