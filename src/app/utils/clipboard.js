@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import { position, translate } from "../dungeonObjects/DungeonObjectOperations";
 import { addObjects } from "../reducers/dungeonActions";
-import { addObjectsToClipboard, selectObjects } from "../reducers/editorActions";
+import { addObjectsToClipboard } from "../reducers/editorActions";
 import { GRID_TILE_SIZE } from "./constants";
 import copyObject from "./copyObject";
 
