@@ -14,11 +14,11 @@ function App() {
       <div className="px-3 py-2">
         <Toolbar />
       </div>
-      <div className="flex-grow flex px-3">
+      <div className="flex-grow flex px-3 pb-2">
         <div className="flex-grow">
           <DungeonEditor />
         </div>
-        <div className="w-64">
+        <div className="w-64 pl-2">
           <StateEditor />
         </div>
       </div>

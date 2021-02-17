@@ -97,24 +97,28 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
     else {
         stateEditor = <React.Fragment>
             <StateEditorCard title="Instructions">
-                <p><i>Right click</i> to pan the view.</p>
-                <p><i>Scroll</i> to zoom in and out.</p>
-                <p><i>Left click and drag</i> to create new spaces with the New Space tool.</p>
-                <p><i>Left click</i> to select spaces with the Select tool.</p>
-                <p><i>Arrow keys</i> will move the currently selected space.</p>
+                <p className="mb-2"><i>Right click</i> to pan the view.</p>
+                <p className="mb-2"><i>Scroll</i> to zoom in and out.</p>
+                <p className="mb-2"><i>Left click and drag</i> to create new spaces with the New Space tool.</p>
+                <p className="mb-2"><i>Left click</i> to select spaces with the Select tool.</p>
+                <p className="mb-2"><i>Arrow keys</i> will move the currently selected space.</p>
                 <p><i>Delete</i> will delete the currently selected space.</p>
             </StateEditorCard>
             <StateEditorCard title="Actions">
-                <button
-                    className="btn btn-primary form-control mb-2"
-                    onClick={() => dispatch(EditorActions.exportToPngClicked())}>
-                        Download Dungeon as PNG
-                </button>
-                <button
-                    className="btn btn-outline-danger form-control mb-2"
-                    onClick={() => dispatch(DungeonActions.clearDungeon())}>
-                        New Dungeon
-                </button>
+                <div className="mb-1">
+                    <button
+                        className="p-2 bg-gray-200 rounded-sm hover:bg-gray-300 w-full"
+                        onClick={() => dispatch(EditorActions.exportToPngClicked())}>
+                            Download Dungeon as PNG
+                    </button>
+                </div>
+                <div>
+                    <button
+                        className="p-2 border-gray-200 border-2 rounded-sm w-full hover:bg-gray-200"
+                        onClick={() => dispatch(DungeonActions.clearDungeon())}>
+                            New Dungeon
+                    </button>
+                </div>
             </StateEditorCard>
             <StateEditorCard title="Dungeon Properties">
                 <label>
@@ -137,15 +141,15 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                             className="form-check-input"
                             type='checkbox'
                             value={scrollPansViewport}
-                            onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))} />
-                        Scroll to pan
+                            onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))}
+                        /> Scroll to pan
                     </label>
                 </div>
             </StateEditorCard>
         </React.Fragment>
     }
 
-    return <div className="px-2">
+    return <div className="space-y-6">
         {stateEditor}
     </div>;
 }
