@@ -5,13 +5,13 @@ import Toolbar from './components/Toolbar';
 
 function App() {
   return (
-    <div className="flex flex-col w-full h-full bg-gray-50 text-gray-900">
-      <nav className="bg-gray-300 p-3">
+    <div className="flex flex-col w-full h-full bg-white text-gray-900">
+      <nav className="bg-gray-50 p-3 shadow">
         <span className="text-4xl font-thin align-text-bottom">
           pungeon
         </span>
       </nav>
-      <div className="px-3 py-2">
+      <div className="p-3">
         <Toolbar />
       </div>
       <div className="flex-grow flex px-3 pb-2">
