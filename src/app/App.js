@@ -18,7 +18,7 @@ function App() {
         <div className="flex-grow">
           <DungeonEditor />
         </div>
-        <div className="w-64 pl-2">
+        <div className="w-96 pl-2">
           <StateEditor />
         </div>
       </div>
