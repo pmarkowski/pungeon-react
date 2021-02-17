@@ -5,26 +5,24 @@ import Toolbar from './components/Toolbar';
 
 function App() {
   return (
-    <React.Fragment>
-      <nav className="navbar navbar-dark bg-secondary">
-        <span className="navbar-brand">
-          Pungeon
+    <div className="flex flex-col w-full h-full bg-gray-50 text-gray-900">
+      <nav className="bg-gray-300 p-3">
+        <span className="text-4xl font-thin align-text-bottom">
+          pungeon
         </span>
       </nav>
-      <div className="px-5">
-        <div className="py-2">
-          <Toolbar />
+      <div className="px-3 py-2">
+        <Toolbar />
+      </div>
+      <div className="flex-grow flex px-3">
+        <div className="flex-grow">
+          <DungeonEditor />
         </div>
-        <div className="row">
-          <div className="col-md-9">
-            <DungeonEditor />
-          </div>
-          <div className="col-md-3">
-            <StateEditor />
-          </div>
+        <div className="w-64">
+          <StateEditor />
         </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 }
 

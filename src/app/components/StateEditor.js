@@ -7,8 +7,9 @@ import SizeEditor from "./SizeEditor"
 import StateEditorCard from "./StateEditorCard"
 
 let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, dungeonSize, scrollPansViewport }) => {
+    let stateEditor;
     if (selectedObjectId) {
-        return <React.Fragment>
+        stateEditor = <React.Fragment>
             {selectedObject.label !== undefined &&
                 <StateEditorCard title='Label'>
                     <label>
@@ -94,7 +95,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
         </React.Fragment>
     }
     else {
-        return <React.Fragment>
+        stateEditor = <React.Fragment>
             <StateEditorCard title="Instructions">
                 <p><i>Right click</i> to pan the view.</p>
                 <p><i>Scroll</i> to zoom in and out.</p>
@@ -143,6 +144,10 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
             </StateEditorCard>
         </React.Fragment>
     }
+
+    return <div className="px-2">
+        {stateEditor}
+    </div>;
 }
 
 const mapStateToProps = state => {
