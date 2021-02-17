@@ -8,8 +8,9 @@ let Toolbar = ({ dispatch, selectedTool }) => {
     const dispatchSelectedTool = (toolId) => dispatch(selectTool(toolId))
 
     return (
-        <div className="btn-group" role="group">
+        <div className="divide-x divide-gray-300" role="group">
             <ToolbarButton
+                className="rounded-l-sm"
                 toolName='Select'
                 toolId={TOOL_TYPE.SELECT}
                 selectedTool={selectedTool}
@@ -40,6 +41,7 @@ let Toolbar = ({ dispatch, selectedTool }) => {
                 selectedTool={selectedTool}
                 onClick={dispatchSelectedTool} />
             <ToolbarButton
+                className="rounded-r-sm"
                 toolName='New Token'
                 toolId={TOOL_TYPE.NEW_TOKEN}
                 selectedTool={selectedTool}
