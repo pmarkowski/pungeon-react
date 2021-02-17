@@ -5,10 +5,8 @@ const StateEditorCard = ({title, children}) =>
         <div className="font-light mb-4 text-2xl">
             <h5>{title}</h5>
         </div>
-        <div className="card-body">
-            <div className="form-group">
-                {children}
-            </div>
+        <div className="space-y-4">
+            {children}
         </div>
     </div>
 

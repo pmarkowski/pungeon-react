@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from 'react-redux'
 import * as DungeonActions from '../reducers/dungeonActions'
 import * as EditorActions from '../reducers/editorActions'
+import LabelWithInput from "./LabelWithInput"
 import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 import StateEditorCard from "./StateEditorCard"
@@ -12,25 +13,17 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
         stateEditor = <React.Fragment>
             {selectedObject.label !== undefined &&
                 <StateEditorCard title='Label'>
-                    <label>
-                        Label:
-                        <input
-                            className="form-control bg-secondary text-light"
-                            type="text"
-                            value={selectedObject.label}
-                            onChange={(changeEvent) => dispatch(DungeonActions.setSelectedObjectLabel(selectedObjectId, changeEvent.target.value))}>
-                        </input>
-                    </label>
+                    <LabelWithInput
+                        labelText="Label"
+                        value={selectedObject.label}
+                        onChange={(changeEvent) => dispatch(DungeonActions.setSelectedObjectLabel(selectedObjectId, changeEvent.target.value))} />
                 </StateEditorCard>}
             {selectedObject.textureUrl !== undefined &&
                 <StateEditorCard title="Texture Path">
-                    <label>
-                        Path:
-                        <input
-                            className="form-control bg-secondary text-light"
-                            value={selectedObject.textureUrl}
-                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectTextureUrl(selectedObjectId, changeEvent.target.value))}}></input>
-                    </label>
+                    <LabelWithInput
+                        labelText="Path"
+                        value={selectedObject.textureUrl}
+                        onChange={(changeEvent) => dispatch(DungeonActions.setSelectedObjectTextureUrl(selectedObjectId, changeEvent.target.value))} />
                 </StateEditorCard>
             }
             {selectedObject.position &&
@@ -61,26 +54,20 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
             }
             {selectedObject.angle !== undefined &&
                 <StateEditorCard title="Angle">
-                    <label>
-                        Angle:
-                        <input
-                            className="form-control bg-secondary text-light"
-                            type="number"
-                            step="45"
-                            min="-360"
-                            max="360"
-                            value={selectedObject.angle}
-                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(selectedObjectId, changeEvent.target.value))}}></input>
-                        <input
-                            className="form-control bg-secondary text-light"
-                            type="range"
-                            step="45"
-                            min="-360"
-                            max="360"
-                            style={{direction: "rtl"}}
-                            value={selectedObject.angle}
-                            onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(selectedObjectId, changeEvent.target.value))}}></input>
-                    </label>
+                    <LabelWithInput
+                        labelText="Angle"
+                        type="number"
+                        value={selectedObject.angle}
+                        onChange={(changeEvent) => dispatch(DungeonActions.setSelectedObjectAngle(selectedObjectId, changeEvent.target.value))} />
+                    <input
+                        className="w-full"
+                        type="range"
+                        step="45"
+                        min="-360"
+                        max="360"
+                        style={{direction: "rtl"}}
+                        value={selectedObject.angle}
+                        onChange={(changeEvent) => {dispatch(DungeonActions.setSelectedObjectAngle(selectedObjectId, changeEvent.target.value))}}></input>
                 </StateEditorCard>
             }
             {selectedObjectId &&
@@ -97,37 +84,30 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
     else {
         stateEditor = <React.Fragment>
             <StateEditorCard title="Instructions">
-                <p className="mb-2"><i>Right click</i> to pan the view.</p>
-                <p className="mb-2"><i>Scroll</i> to zoom in and out.</p>
-                <p className="mb-2"><i>Left click and drag</i> to create new spaces with the New Space tool.</p>
-                <p className="mb-2"><i>Left click</i> to select spaces with the Select tool.</p>
-                <p className="mb-2"><i>Arrow keys</i> will move the currently selected space.</p>
+                <p><i>Right click</i> to pan the view.</p>
+                <p><i>Scroll</i> to zoom in and out.</p>
+                <p><i>Left click and drag</i> to create new spaces with the New Space tool.</p>
+                <p><i>Left click</i> to select spaces with the Select tool.</p>
+                <p><i>Arrow keys</i> will move the currently selected space.</p>
                 <p><i>Delete</i> will delete the currently selected space.</p>
             </StateEditorCard>
             <StateEditorCard title="Actions">
-                <div className="mb-1">
-                    <button
-                        className="p-2 bg-gray-200 rounded-sm hover:bg-gray-300 w-full"
-                        onClick={() => dispatch(EditorActions.exportToPngClicked())}>
-                            Download Dungeon as PNG
-                    </button>
-                </div>
-                <div>
-                    <button
-                        className="p-2 border-gray-200 border-2 rounded-sm w-full hover:bg-gray-200"
-                        onClick={() => dispatch(DungeonActions.clearDungeon())}>
-                            New Dungeon
-                    </button>
-                </div>
+                <button
+                    className="p-2 bg-gray-200 rounded-sm hover:bg-gray-300 w-full"
+                    onClick={() => dispatch(EditorActions.exportToPngClicked())}>
+                        Download Dungeon as PNG
+                </button>
+                <button
+                    className="p-2 border-gray-200 border-2 rounded-sm w-full hover:bg-gray-200"
+                    onClick={() => dispatch(DungeonActions.clearDungeon())}>
+                        New Dungeon
+                </button>
             </StateEditorCard>
             <StateEditorCard title="Dungeon Properties">
-                <label>
-                    Dungeon Name:
-                    <input
-                        className="form-control bg-secondary text-light"
-                        value={dungeonName}
-                        onChange={(changeEvent) => dispatch(DungeonActions.setDungeonName(changeEvent.target.value)) } />
-                </label>
+                <LabelWithInput
+                    labelText="Dungeon Name"
+                    value={dungeonName}
+                    onChange={(changeEvent) => dispatch(DungeonActions.setDungeonName(changeEvent.target.value))} />
             </StateEditorCard>
             <SizeEditor
                 title="Dungeon Size"
@@ -135,16 +115,13 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                 height={dungeonSize.height}
                 onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
             <StateEditorCard title="Editor Options">
-                <div className="form-check">
-                    <label className="form-check-label">
-                        <input
-                            className="form-check-input"
-                            type='checkbox'
-                            value={scrollPansViewport}
-                            onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))}
-                        /> Scroll to pan
-                    </label>
-                </div>
+                <label className="block">
+                    <input
+                        type='checkbox'
+                        value={scrollPansViewport}
+                        onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))}
+                    /> Scroll to pan
+                </label>
             </StateEditorCard>
         </React.Fragment>
     }
