@@ -3,15 +3,17 @@ import { connect } from 'react-redux';
 import DungeonEditor from "./components/DungeonEditor.js";
 import StateEditor from './components/StateEditor';
 import Toolbar from './components/Toolbar';
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 
 let App = ({ darkMode }) => {
   return (
-    <div className={"h-full " + (darkMode? "dark" : "")}>
+    <div className={"h-full " + (darkMode ? "dark" : "")}>
       <div className="flex flex-col w-full h-full bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-50">
         <nav className="p-3 shadow bg-gray-50 dark:bg-gray-800">
           <span className="text-4xl font-thin align-text-bottom">
             pungeon
-        </span>
+          </span>
         </nav>
         <div className="p-3">
           <Toolbar />
@@ -20,9 +22,11 @@ let App = ({ darkMode }) => {
           <div className="flex-grow">
             <DungeonEditor />
           </div>
-          <div className="w-80 pl-2  overflow-y-scroll">
-            <StateEditor />
-          </div>
+          <SimpleBar className="w-80 pl-2" autoHide={false}>
+            <div className="mr-4">
+              <StateEditor />
+            </div>
+          </SimpleBar>
         </div>
       </div>
     </div>
