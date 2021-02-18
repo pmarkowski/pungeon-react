@@ -9,7 +9,7 @@ import * as MouseEventHandler from '../utils/mouseEventHandlers.js';
 export default class DungeonEditor extends React.Component {
     render() {
         return <div
-            className="h-full w-full"
+            className="h-full w-full focus:outline-none"
             tabIndex={-1}
             ref={(element) => this.canvasDiv = element}>
         </div>
