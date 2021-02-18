@@ -92,6 +92,17 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                 <p><i>Arrow keys</i> will move the currently selected space.</p>
                 <p><i>Delete</i> will delete the currently selected space.</p>
             </StateEditorCard>
+            <StateEditorCard title="Dungeon Properties">
+                <LabelWithInput
+                    labelText="Dungeon Name"
+                    value={dungeonName}
+                    onChange={(changeEvent) => dispatch(DungeonActions.setDungeonName(changeEvent.target.value))} />
+            </StateEditorCard>
+            <SizeEditor
+                title="Dungeon Size"
+                width={dungeonSize.width}
+                height={dungeonSize.height}
+                onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
             <StateEditorCard title="Actions">
                 <Button
                     className="bg-gray-200 hover:bg-gray-300 w-full"
@@ -104,17 +115,6 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                         New Dungeon
                 </Button>
             </StateEditorCard>
-            <StateEditorCard title="Dungeon Properties">
-                <LabelWithInput
-                    labelText="Dungeon Name"
-                    value={dungeonName}
-                    onChange={(changeEvent) => dispatch(DungeonActions.setDungeonName(changeEvent.target.value))} />
-            </StateEditorCard>
-            <SizeEditor
-                title="Dungeon Size"
-                width={dungeonSize.width}
-                height={dungeonSize.height}
-                onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
             <StateEditorCard title="Editor Options">
                 <label className="block">
                     <input
