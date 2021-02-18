@@ -8,7 +8,7 @@ import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 import StateEditorCard from "./StateEditorCard"
 
-let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, dungeonSize, scrollPansViewport }) => {
+let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, dungeonSize, scrollPansViewport, darkMode }) => {
     let stateEditor;
     if (selectedObjectId) {
         stateEditor = <React.Fragment>
@@ -123,6 +123,13 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                         onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))}
                     /> Scroll to pan
                 </label>
+                <label className="block">
+                    <input
+                        type='checkbox'
+                        value={darkMode}
+                        onChange={(event) => dispatch(EditorActions.setDarkMode(event.target.checked))}
+                    /> Dark mode
+                </label>
             </StateEditorCard>
         </React.Fragment>
     }
@@ -140,7 +147,8 @@ const mapStateToProps = state => {
         selectedObject: selectedObject,
         dungeonName: state.dungeon.name,
         dungeonSize: state.dungeon.size,
-        scrollMovesViewport: state.editor.scrollMovesViewport
+        scrollMovesViewport: state.editor.scrollMovesViewport,
+        darkMode: state.editor.darkMode
     }
 }
 
