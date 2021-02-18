@@ -1,6 +1,6 @@
 const LabelWithInput = ({labelText, type = "text", value, onChange}) => {
     return <label className="block">
-        <span className="block mb-1">{labelText}</span>
+        <span className="block mb-2">{labelText}</span>
         <input
             className="bg-white border-0 p-2 rounded-sm w-full"
             type={type}
