@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from 'react-redux'
 import * as DungeonActions from '../reducers/dungeonActions'
 import * as EditorActions from '../reducers/editorActions'
+import Button from "./Button"
 import LabelWithInput from "./LabelWithInput"
 import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
@@ -72,11 +73,11 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
             }
             {selectedObjectId &&
                 <StateEditorCard title="Actions">
-                    <button
-                        className="btn btn-outline-danger"
+                    <Button
+                        className="border-2 text-red-600 border-red-600 hover:bg-red-600 hover:text-gray-50"
                         onClick={() => dispatch(DungeonActions.deleteObjects([selectedObjectId]))}>
                             Delete Object
-                    </button>
+                    </Button>
                 </StateEditorCard>
             }
         </React.Fragment>
@@ -92,16 +93,16 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                 <p><i>Delete</i> will delete the currently selected space.</p>
             </StateEditorCard>
             <StateEditorCard title="Actions">
-                <button
-                    className="p-2 bg-gray-200 rounded-sm hover:bg-gray-300 w-full"
+                <Button
+                    className="bg-gray-200 hover:bg-gray-300 w-full"
                     onClick={() => dispatch(EditorActions.exportToPngClicked())}>
                         Download Dungeon as PNG
-                </button>
-                <button
-                    className="p-2 border-gray-200 border-2 rounded-sm w-full hover:bg-gray-200"
+                </Button>
+                <Button
+                    className="border-2 border-gray-200 hover:bg-gray-200 w-full"
                     onClick={() => dispatch(DungeonActions.clearDungeon())}>
                         New Dungeon
-                </button>
+                </Button>
             </StateEditorCard>
             <StateEditorCard title="Dungeon Properties">
                 <LabelWithInput
