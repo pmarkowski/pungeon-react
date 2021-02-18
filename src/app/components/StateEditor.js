@@ -105,12 +105,12 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                 onUpdate={(width, height) => dispatch(DungeonActions.setDungeonSize(width, height))} />
             <StateEditorCard title="Actions">
                 <Button
-                    className="bg-gray-200 hover:bg-gray-300 w-full"
+                    className="bg-gray-200 hover:bg-gray-300 w-full dark:text-gray-900"
                     onClick={() => dispatch(EditorActions.exportToPngClicked())}>
                         Download Dungeon as PNG
                 </Button>
                 <Button
-                    className="border-2 border-gray-200 hover:bg-gray-200 w-full"
+                    className="border-2 w-full border-gray-200 hover:bg-gray-200  dark:hover:text-gray-900"
                     onClick={() => dispatch(DungeonActions.clearDungeon())}>
                         New Dungeon
                 </Button>
