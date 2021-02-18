@@ -6,7 +6,7 @@ import Toolbar from './components/Toolbar';
 
 let App = ({ darkMode }) => {
   return (
-    <div className={"w-full h-full" + (darkMode? " dark" : "")}>
+    <div className={"h-full " + (darkMode? "dark" : "")}>
       <div className="flex flex-col w-full h-full bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-50">
         <nav className="p-3 shadow bg-gray-50 dark:bg-gray-800">
           <span className="text-4xl font-thin align-text-bottom">
@@ -16,11 +16,11 @@ let App = ({ darkMode }) => {
         <div className="p-3">
           <Toolbar />
         </div>
-        <div className="flex-grow flex px-3 pb-2">
+        <div className="flex-grow flex px-3 pb-2 overflow-hidden">
           <div className="flex-grow">
             <DungeonEditor />
           </div>
-          <div className="w-96 pl-2">
+          <div className="w-80 pl-2  overflow-y-scroll">
             <StateEditor />
           </div>
         </div>
