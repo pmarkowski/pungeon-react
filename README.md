@@ -9,6 +9,7 @@ map you're creating grows and changes.
 * [React](https://github.com/facebook/react/) is used for the chrome surrounding the map editor. This project was initially bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 * [PixiJS](https://github.com/pixijs/pixi.js/) is used to render the map and handle interactions with the canvas element.
 * [Redux](https://github.com/reduxjs/redux) along with [React Redux](https://github.com/reduxjs/react-redux) is used to manage state.
+* [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) is used to style the app.
 
 ## Available Scripts
 
