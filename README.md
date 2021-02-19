@@ -1,4 +1,4 @@
-# [Pungeon](https://pmarkowski.github.io/pungeon-react/)
+# [Pungeon](https://pmarkowski.github.io/pungeon/)
 
 Pungeon is a a browser based web app to create maps for pen and paper role-playing games.
 Pungeon lets you sketch new map layouts quickly, and easily edit the existing layout as the
