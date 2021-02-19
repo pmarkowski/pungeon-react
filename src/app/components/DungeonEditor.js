@@ -9,7 +9,7 @@ import * as MouseEventHandler from '../utils/mouseEventHandlers.js';
 export default class DungeonEditor extends React.Component {
     render() {
         return <div
-            style={{ height: "85vh" }}
+            className="h-full w-full focus:outline-none"
             tabIndex={-1}
             ref={(element) => this.canvasDiv = element}>
         </div>
@@ -20,12 +20,16 @@ export default class DungeonEditor extends React.Component {
             backgroundColor: 0x5f5f5f,
             sharedLoader: true,
             sharedTicker: true,
-            antialias: true
+            antialias: true,
+            resizeTo: this.canvasDiv,
         });
         this.app = app;
+        app.view.style.position = "absolute";
         this.canvasDiv.appendChild(app.view);
-        this.app.resizeTo = this.canvasDiv;
-        this.app.resize();
+
+        window.onresize = () => {
+            app.queueResize();
+        }
 
         let graphics = new PIXI.Graphics();
         graphics.zIndex = Number.MAX_SAFE_INTEGER;

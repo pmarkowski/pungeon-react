@@ -1,9 +1,12 @@
 import React from "react"
 
-const ToolbarButton = ({toolName, toolId, selectedTool, onClick}) =>
+const ToolbarButton = ({className, toolName, toolId, selectedTool, onClick}) =>
     <button
-        className={"btn btn-secondary" +
-            (selectedTool === toolId ? ' active' : '')}
+        className={"px-4 py-2 " +
+            (selectedTool === toolId ?
+                'bg-blue-300 hover:bg-blue-300 dark:bg-blue-900 dark:hover:bg-blue-900' :
+                'bg-gray-200 hover:bg-gray-300  dark:bg-gray-700 dark:hover:bg-gray-600')
+            + className}
         onClick={() => onClick(toolId)}>
             {toolName}
     </button>

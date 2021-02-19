@@ -8,6 +8,7 @@ import EDITOR_ACTION_TYPE from "./editorActionType";
  */
 export const defaultEditorState = {
     scrollMovesViewport: false,
+    darkMode: false,
     selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
     scale: 100,
     position: {
@@ -173,6 +174,12 @@ export const editorReducer = (state = defaultEditorState, action) => {
             return {
                 ...state,
                 scrollMovesViewport: action.scrollMovesViewport
+            }
+        }
+        case EDITOR_ACTION_TYPE.SET_DARK_MODE: {
+            return {
+                ...state,
+                darkMode: action.darkMode
             }
         }
         case EDITOR_ACTION_TYPE.SELECT_TOOL: {
