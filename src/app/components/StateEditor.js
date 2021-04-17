@@ -123,12 +123,16 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                         onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))}
                     /> Scroll to pan
                 </label>
+                {/* TODO: Componentify this */}
                 <label className="block">
-                    <input
-                        type='checkbox'
+                    <span className="block mb-2">Theme</span>
+                    <select
+                        className="border-0 p-2 rounded-sm w-full bg-white dark:bg-gray-900 space-y-2"
                         value={darkMode}
-                        onChange={(event) => dispatch(EditorActions.setDarkMode(event.target.checked))}
-                    /> Dark mode
+                        onChange={(event) => dispatch(EditorActions.setDarkMode(event.target.value == 'true'))}>
+                            <option value={false}>Light Theme</option>
+                            <option value={true}>Dark Theme</option>
+                    </select>
                 </label>
             </StateEditorCard>
         </React.Fragment>
