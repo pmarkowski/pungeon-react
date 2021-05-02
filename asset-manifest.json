@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/pungeon/static/css/main.56aa8d11.chunk.css",
-    "main.js": "/pungeon/static/js/main.34a00f98.chunk.js",
-    "main.js.map": "/pungeon/static/js/main.34a00f98.chunk.js.map",
+    "main.js": "/pungeon/static/js/main.10d9d924.chunk.js",
+    "main.js.map": "/pungeon/static/js/main.10d9d924.chunk.js.map",
     "runtime-main.js": "/pungeon/static/js/runtime-main.dc3e872a.js",
     "runtime-main.js.map": "/pungeon/static/js/runtime-main.dc3e872a.js.map",
     "static/css/2.3076a686.chunk.css": "/pungeon/static/css/2.3076a686.chunk.css",
-    "static/js/2.2c975536.chunk.js": "/pungeon/static/js/2.2c975536.chunk.js",
-    "static/js/2.2c975536.chunk.js.map": "/pungeon/static/js/2.2c975536.chunk.js.map",
+    "static/js/2.099d9867.chunk.js": "/pungeon/static/js/2.099d9867.chunk.js",
+    "static/js/2.099d9867.chunk.js.map": "/pungeon/static/js/2.099d9867.chunk.js.map",
     "index.html": "/pungeon/index.html",
     "static/css/2.3076a686.chunk.css.map": "/pungeon/static/css/2.3076a686.chunk.css.map",
     "static/css/main.56aa8d11.chunk.css.map": "/pungeon/static/css/main.56aa8d11.chunk.css.map",
-    "static/js/2.2c975536.chunk.js.LICENSE.txt": "/pungeon/static/js/2.2c975536.chunk.js.LICENSE.txt"
+    "static/js/2.099d9867.chunk.js.LICENSE.txt": "/pungeon/static/js/2.099d9867.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.dc3e872a.js",
     "static/css/2.3076a686.chunk.css",
-    "static/js/2.2c975536.chunk.js",
+    "static/js/2.099d9867.chunk.js",
     "static/css/main.56aa8d11.chunk.css",
-    "static/js/main.34a00f98.chunk.js"
+    "static/js/main.10d9d924.chunk.js"
   ]
 }
