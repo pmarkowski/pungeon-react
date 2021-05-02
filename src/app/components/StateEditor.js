@@ -2,13 +2,15 @@ import React from "react"
 import { connect } from 'react-redux'
 import * as DungeonActions from '../reducers/dungeonActions'
 import * as EditorActions from '../reducers/editorActions'
+import THEME from "../utils/theme"
 import Button from "./Button"
 import LabelWithInput from "./LabelWithInput"
+import LabelWithSelect from "./LabelWithSelect"
 import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 import StateEditorCard from "./StateEditorCard"
 
-let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, dungeonSize, scrollPansViewport, darkMode }) => {
+let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, dungeonSize, scrollPansViewport, theme }) => {
     let stateEditor;
     if (selectedObjectId) {
         stateEditor = <React.Fragment>
@@ -123,13 +125,14 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                         onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))}
                     /> Scroll to pan
                 </label>
-                <label className="block">
-                    <input
-                        type='checkbox'
-                        value={darkMode}
-                        onChange={(event) => dispatch(EditorActions.setDarkMode(event.target.checked))}
-                    /> Dark mode
-                </label>
+                <LabelWithSelect
+                    labelText="Theme"
+                    value={theme}
+                    options={[
+                        { value: THEME.SYSTEM_THEME, label: "System Default" },
+                        { value: THEME.LIGHT_THEME, label: "Light Theme" },
+                        { value: THEME.DARK_THEME, label: "Dark Theme" } ]}
+                    onChange={(event) => dispatch(EditorActions.setTheme(event.target.value))} />
             </StateEditorCard>
         </React.Fragment>
     }
@@ -148,7 +151,7 @@ const mapStateToProps = state => {
         dungeonName: state.dungeon.name,
         dungeonSize: state.dungeon.size,
         scrollMovesViewport: state.editor.scrollMovesViewport,
-        darkMode: state.editor.darkMode
+        theme: state.editor.theme
     }
 }
 

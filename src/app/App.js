@@ -5,6 +5,7 @@ import StateEditor from './components/StateEditor';
 import Toolbar from './components/Toolbar';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
+import THEME from './utils/theme.js';
 
 let App = ({ darkMode }) => {
   return (
@@ -34,7 +35,8 @@ let App = ({ darkMode }) => {
 }
 
 const mapStateToProps = state => ({
-  darkMode: state.editor.darkMode
+  darkMode: state.editor.theme === THEME.DARK_THEME ||
+    (state.editor.theme === THEME.SYSTEM_THEME && window.matchMedia("(prefers-color-scheme: dark)").matches)
 })
 
 App = connect(mapStateToProps)(App);
