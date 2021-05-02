@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from 'react-redux'
 import * as DungeonActions from '../reducers/dungeonActions'
 import * as EditorActions from '../reducers/editorActions'
+import THEME from "../utils/theme"
 import Button from "./Button"
 import LabelWithInput from "./LabelWithInput"
 import LabelWithSelect from "./LabelWithSelect"
@@ -149,7 +150,7 @@ const mapStateToProps = state => {
         dungeonName: state.dungeon.name,
         dungeonSize: state.dungeon.size,
         scrollMovesViewport: state.editor.scrollMovesViewport,
-        darkMode: state.editor.darkMode
+        darkMode: state.editor.theme === THEME.DARK_MODE
     }
 }
 

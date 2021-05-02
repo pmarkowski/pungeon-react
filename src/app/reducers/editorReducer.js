@@ -1,5 +1,6 @@
 import TOOL_TYPE from "../tools/toolType";
 import copyObject from "../utils/copyObject";
+import THEME from "../utils/theme";
 import DUNGEON_ACTION_TYPE from "./dungeonActionType";
 import EDITOR_ACTION_TYPE from "./editorActionType";
 
@@ -8,7 +9,7 @@ import EDITOR_ACTION_TYPE from "./editorActionType";
  */
 export const defaultEditorState = {
     scrollMovesViewport: false,
-    darkMode: false,
+    theme: THEME.LIGHT_MODE,
     selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
     scale: 100,
     position: {
@@ -179,7 +180,7 @@ export const editorReducer = (state = defaultEditorState, action) => {
         case EDITOR_ACTION_TYPE.SET_DARK_MODE: {
             return {
                 ...state,
-                darkMode: action.darkMode
+                theme: action.darkMode? THEME.DARK_MODE : THEME.LIGHT_MODE
             }
         }
         case EDITOR_ACTION_TYPE.SELECT_TOOL: {
