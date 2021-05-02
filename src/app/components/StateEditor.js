@@ -129,6 +129,7 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                     labelText="Theme"
                     value={theme}
                     options={[
+                        { value: THEME.SYSTEM_THEME, label: "System Default" },
                         { value: THEME.LIGHT_THEME, label: "Light Theme" },
                         { value: THEME.DARK_THEME, label: "Dark Theme" } ]}
                     onChange={(event) => dispatch(EditorActions.setTheme(event.target.value))} />

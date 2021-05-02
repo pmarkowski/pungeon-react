@@ -35,7 +35,8 @@ let App = ({ darkMode }) => {
 }
 
 const mapStateToProps = state => ({
-  darkMode: state.editor.theme === THEME.DARK_THEME
+  darkMode: state.editor.theme === THEME.DARK_THEME ||
+    (state.editor.theme === THEME.SYSTEM_THEME && window.matchMedia("(prefers-color-scheme: dark)").matches)
 })
 
 App = connect(mapStateToProps)(App);
