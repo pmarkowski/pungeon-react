@@ -10,7 +10,7 @@ import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 import StateEditorCard from "./StateEditorCard"
 
-let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, dungeonSize, scrollPansViewport, darkMode }) => {
+let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, dungeonSize, scrollPansViewport, theme }) => {
     let stateEditor;
     if (selectedObjectId) {
         stateEditor = <React.Fragment>
@@ -127,11 +127,11 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                 </label>
                 <LabelWithSelect
                     labelText="Theme"
-                    value={darkMode}
+                    value={theme}
                     options={[
-                        { value: false, label: "Light Theme" },
-                        { value: true, label: "Dark Theme" } ]}
-                    onChange={(event) => dispatch(EditorActions.setDarkMode(event.target.value == 'true'))} />
+                        { value: THEME.LIGHT_MODE, label: "Light Theme" },
+                        { value: THEME.DARK_MODE, label: "Dark Theme" } ]}
+                    onChange={(event) => dispatch(EditorActions.setTheme(event.target.value))} />
             </StateEditorCard>
         </React.Fragment>
     }
@@ -150,7 +150,7 @@ const mapStateToProps = state => {
         dungeonName: state.dungeon.name,
         dungeonSize: state.dungeon.size,
         scrollMovesViewport: state.editor.scrollMovesViewport,
-        darkMode: state.editor.theme === THEME.DARK_MODE
+        theme: state.editor.theme
     }
 }
 

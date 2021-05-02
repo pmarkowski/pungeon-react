@@ -78,9 +78,9 @@ export const setScrollMovesViewport = (scrollMovesViewport) => ({
     scrollMovesViewport: scrollMovesViewport
 })
 
-export const setDarkMode = (darkMode) => ({
-    type: EDITOR_ACTION_TYPE.SET_DARK_MODE,
-    darkMode: darkMode
+export const setTheme = (theme) => ({
+    type: EDITOR_ACTION_TYPE.SET_THEME,
+    theme: theme
 })
 
 export const setCurrentMousePosition = (x, y) => ({

@@ -177,10 +177,10 @@ export const editorReducer = (state = defaultEditorState, action) => {
                 scrollMovesViewport: action.scrollMovesViewport
             }
         }
-        case EDITOR_ACTION_TYPE.SET_DARK_MODE: {
+        case EDITOR_ACTION_TYPE.SET_THEME: {
             return {
                 ...state,
-                theme: action.darkMode? THEME.DARK_MODE : THEME.LIGHT_MODE
+                theme: action.theme
             }
         }
         case EDITOR_ACTION_TYPE.SELECT_TOOL: {
