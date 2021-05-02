@@ -4,6 +4,7 @@ import * as DungeonActions from '../reducers/dungeonActions'
 import * as EditorActions from '../reducers/editorActions'
 import Button from "./Button"
 import LabelWithInput from "./LabelWithInput"
+import LabelWithSelect from "./LabelWithSelect"
 import PositionEditor from "./PositionEditor"
 import SizeEditor from "./SizeEditor"
 import StateEditorCard from "./StateEditorCard"
@@ -123,17 +124,13 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                         onChange={(event) => dispatch(EditorActions.setScrollMovesViewport(event.target.checked))}
                     /> Scroll to pan
                 </label>
-                {/* TODO: Componentify this */}
-                <label className="block">
-                    <span className="block mb-2">Theme</span>
-                    <select
-                        className="border-0 p-2 rounded-sm w-full bg-white dark:bg-gray-900 space-y-2"
-                        value={darkMode}
-                        onChange={(event) => dispatch(EditorActions.setDarkMode(event.target.value == 'true'))}>
-                            <option value={false}>Light Theme</option>
-                            <option value={true}>Dark Theme</option>
-                    </select>
-                </label>
+                <LabelWithSelect
+                    labelText="Theme"
+                    value={darkMode}
+                    options={[
+                        { value: false, label: "Light Theme" },
+                        { value: true, label: "Dark Theme" } ]}
+                    onChange={(event) => dispatch(EditorActions.setDarkMode(event.target.value == 'true'))} />
             </StateEditorCard>
         </React.Fragment>
     }
