@@ -1,6 +1,6 @@
 const THEME = {
-    LIGHT_MODE: "light_mode",
-    DARK_MODE: "dark_mode",
+    LIGHT_THEME: "LIGHT_THEME",
+    DARK_THEME: "DARK_THEME",
 };
 
 export default THEME;

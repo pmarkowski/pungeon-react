@@ -9,7 +9,7 @@ import EDITOR_ACTION_TYPE from "./editorActionType";
  */
 export const defaultEditorState = {
     scrollMovesViewport: false,
-    theme: THEME.LIGHT_MODE,
+    theme: THEME.LIGHT_THEME,
     selectedTool: TOOL_TYPE.NEW_SPACE_RECTANGLE,
     scale: 100,
     position: {

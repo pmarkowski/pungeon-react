@@ -129,8 +129,8 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
                     labelText="Theme"
                     value={theme}
                     options={[
-                        { value: THEME.LIGHT_MODE, label: "Light Theme" },
-                        { value: THEME.DARK_MODE, label: "Dark Theme" } ]}
+                        { value: THEME.LIGHT_THEME, label: "Light Theme" },
+                        { value: THEME.DARK_THEME, label: "Dark Theme" } ]}
                     onChange={(event) => dispatch(EditorActions.setTheme(event.target.value))} />
             </StateEditorCard>
         </React.Fragment>

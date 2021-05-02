@@ -35,7 +35,7 @@ let App = ({ darkMode }) => {
 }
 
 const mapStateToProps = state => ({
-  darkMode: state.editor.theme === THEME.DARK_MODE
+  darkMode: state.editor.theme === THEME.DARK_THEME
 })
 
 App = connect(mapStateToProps)(App);
