@@ -1,5 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
+import { SPACE_TYPE } from "../dungeonObjects/SpaceOperations"
 import * as DungeonActions from '../reducers/dungeonActions'
 import * as EditorActions from '../reducers/editorActions'
 import THEME from "../utils/theme"
@@ -75,11 +76,21 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
             }
             {selectedObjectId &&
                 <StateEditorCard title="Actions">
-                    <Button
-                        className="border-2 text-red-600 border-red-600 hover:bg-red-600 hover:text-gray-50"
-                        onClick={() => dispatch(DungeonActions.deleteObjects([selectedObjectId]))}>
-                            Delete Object
-                    </Button>
+                    {selectedObject.type === SPACE_TYPE && selectedObject.points &&
+                        <div>
+                            <Button
+                                className="border-2 bg-blue-500 border-blue-500 hover:bg-blue-700 hover:border-blue-700 text-white w-full">
+                                Edit Points
+                            </Button>
+                        </div>
+                    }
+                    <div>
+                        <Button
+                            className="border-2 text-red-600 border-red-600 hover:bg-red-600 hover:text-gray-50 w-full"
+                            onClick={() => dispatch(DungeonActions.deleteObjects([selectedObjectId]))}>
+                                Delete Object
+                        </Button>
+                    </div>
                 </StateEditorCard>
             }
         </React.Fragment>
