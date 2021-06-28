@@ -1,5 +1,5 @@
 import { translate } from '../dungeonObjects/DungeonObjectOperations';
-import { createSpace } from '../dungeonObjects/SpaceOperations';
+import { createSpace, SPACE_TYPE } from '../dungeonObjects/SpaceOperations';
 import { createToken } from '../dungeonObjects/TokenOperations';
 import { createWall } from '../dungeonObjects/WallOperations';
 import { createArrayWithUpdatedObject, createArrayWithUpdatedObjects } from '../utils/createArrayWithUpdatedObject'
@@ -180,6 +180,26 @@ export const dungeonReducer = (state = defaultDungeonState, action) => {
             else {
                 return state;
             }
+        }
+        case DUNGEON_ACTION_TYPE.SET_POINT_POSITION: {
+            let spaceToUpdate = state.objects.find(object =>
+                object.type === SPACE_TYPE &&
+                object.points &&
+                object.points.find(point => point.id === action.pointId));
+            let arrayWithUpdatedObject = createArrayWithUpdatedObject(state.objects, spaceToUpdate.id, (space) =>
+            {
+                space.points = createArrayWithUpdatedObject(
+                    space.points,
+                    action.pointId,
+                    (point) => {
+                        point.x = action.position.x;
+                        point.y = action.position.y;
+                    });
+            });
+            return {
+                ...state,
+                objects: arrayWithUpdatedObject
+            };
         }
         default:
             return state

@@ -1,5 +1,6 @@
 import { GRID_TILE_SIZE } from "../utils/constants";
 import { createDungeonObject, BaseDungeonObjectOperations } from './BaseDungeonObjectOperations';
+import { v4 as uuid } from 'uuid';
 
 /**
  * @typedef {{
@@ -7,12 +8,23 @@ import { createDungeonObject, BaseDungeonObjectOperations } from './BaseDungeonO
  *  size: {width: number, height: number }
  * } & import("./BaseDungeonObjectOperations").BaseDungeonObject} RectangularSpace
  * @typedef {{
- *  points: {x: number, y: number}[]
+ *  points: {id: string, x: number, y: number}[]
  * } & import("./BaseDungeonObjectOperations").BaseDungeonObject} PolygonalSpace
  * @typedef {RectangularSpace | PolygonalSpace} Space
  */
 
 export const SPACE_TYPE = "space"
+
+/**
+ *
+ * @param {Array<points>} points
+ */
+const createPoints = (points) =>
+    points.map(point => ({
+        id: uuid(),
+        x: point.x,
+        y: point.y
+    }))
 
 /**
  * @returns {Space}
@@ -21,7 +33,7 @@ export const createSpace = ({points, startX, startY, endX, endY}) => {
     if (points) {
         return {
             ...createDungeonObject(SPACE_TYPE),
-            points
+            points: createPoints(points)
         }
     }
     else {

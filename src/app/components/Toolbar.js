@@ -46,6 +46,12 @@ let Toolbar = ({ dispatch, selectedTool }) => {
                 toolId={TOOL_TYPE.NEW_TOKEN}
                 selectedTool={selectedTool}
                 onClick={dispatchSelectedTool} />
+            <ToolbarButton
+                className="rounded-r-sm"
+                toolName='Edit Points'
+                toolId={TOOL_TYPE.EDIT_POINTS}
+                selectedTool={selectedTool}
+                onClick={dispatchSelectedTool} />
         </div>
     )
 }

@@ -76,14 +76,6 @@ let StateEditor = ({ dispatch, selectedObjectId, selectedObject, dungeonName, du
             }
             {selectedObjectId &&
                 <StateEditorCard title="Actions">
-                    {selectedObject.type === SPACE_TYPE && selectedObject.points &&
-                        <div>
-                            <Button
-                                className="border-2 bg-blue-500 border-blue-500 hover:bg-blue-700 hover:border-blue-700 text-white w-full">
-                                Edit Points
-                            </Button>
-                        </div>
-                    }
                     <div>
                         <Button
                             className="border-2 text-red-600 border-red-600 hover:bg-red-600 hover:text-gray-50 w-full"

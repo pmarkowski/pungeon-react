@@ -82,3 +82,9 @@ export const setDungeonSize = (width, height) => ({
     width: width,
     height: height
 })
+
+export const setPointPosition = (pointId, position) => ({
+    type: DUNGEON_ACTION_TYPE.SET_POINT_POSITION,
+    pointId,
+    position
+})
